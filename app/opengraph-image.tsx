@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Horadric: every coding agent on your Windows desktop";
+export const alt = "Horadric: every coding agent on your desktop";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,7 +20,7 @@ export default function Image() {
         <div style={{ display: "flex", flexDirection: "column", color: "#e8e9ed", fontSize: 64 }}>
           <div>horadric</div>
           <div style={{ fontSize: 30, color: "#5b5f68", marginTop: 16, maxWidth: 520 }}>
-            Every coding agent on your Windows desktop. The one that needs you lights up.
+            Every coding agent on your desktop, Windows and Mac. The one that needs you lights up.
           </div>
         </div>
       </div>

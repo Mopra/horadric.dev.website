@@ -53,6 +53,17 @@ a:hover { color: var(--text); }
 .install a { color: var(--text); border-bottom: 1px solid var(--dim); }
 .install code { font-family: ui-monospace, Consolas, monospace; color: var(--text); background: var(--off); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
 
+.mac { display: flex; justify-content: center; padding: 72px 16px 8px; scroll-margin-top: 40vh; }
+.copy {
+  display: flex; gap: 20px; align-items: baseline; max-width: 100%;
+  background: none; border: 0; color: var(--dim); cursor: pointer; font: inherit; letter-spacing: inherit;
+}
+.copy code {
+  font-family: inherit; color: var(--text); background: var(--off);
+  padding: 6px 12px; border-radius: 3px; overflow-x: auto; white-space: nowrap; max-width: 80vw;
+}
+.copy:hover span { color: var(--text); }
+
 .shots {
   display: flex; flex-direction: column; gap: 32px; align-items: center;
   padding: 24px 16px 96px; scroll-margin-top: 0;

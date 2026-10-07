@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Copy from "./copy";
 import Field from "./field";
 
 // Rebuild the page at most once an hour, so the download count stays fresh
@@ -8,7 +9,8 @@ export const revalidate = 3600;
 // Below this many downloads the count would undersell the project, so it stays hidden.
 const SHOW_DOWNLOADS_FROM = 500;
 
-// Only the app itself counts. latest.json is fetched by the auto-updater, not by people.
+// Only the app itself counts, on either system. The manifests are fetched by the
+// auto-updater, not by people.
 async function downloads() {
   try {
     const res = await fetch("https://api.github.com/repos/Mopra/horadric.dev/releases?per_page=100", {
@@ -18,7 +20,7 @@ async function downloads() {
     const releases: { assets: { name: string; download_count: number }[] }[] = await res.json();
     return releases
       .flatMap((r) => r.assets)
-      .filter((a) => a.name === "horadric.exe")
+      .filter((a) => a.name === "horadric.exe" || a.name === "Horadric-macos.tar.gz")
       .reduce((sum, a) => sum + a.download_count, 0);
   } catch {
     return 0;
@@ -47,7 +49,13 @@ export default async function Home() {
           <a className="get" href="https://github.com/Mopra/horadric.dev/releases/latest">
             download for windows
           </a>
+          <a className="get" href="#mac">
+            for mac
+          </a>
         </nav>
+      </section>
+      <section className="mac" id="mac" aria-label="Install on a Mac">
+        <Copy text="curl -fsSL https://horadric.dev/install.sh | sh" />
       </section>
       <section className="install" id="install" aria-label="How to install Horadric">
         <ol>
