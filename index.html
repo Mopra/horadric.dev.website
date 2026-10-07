@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Horadric</title>
+<meta name="description" content="Every coding agent session on your Windows desktop as a tile. The one that needs you lights up.">
+<link rel="icon" href="horadric.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f11;
+    --plate: #141518;
+    --plate-top: #191a1e;
+    --surface: #202227;
+    --well: #0c0d0f;
+    --screen: #08090b;
+    --text: #e8e9ed;
+    --dim: #8f939e;
+    --legend: #6e727c;
+    --working: #3db4ff;
+    --waiting: #ffb224;
+    --done: #3dd68c;
+    --idle: #6e6882;
+    --gold: #d4b26a;
+    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    background-image: radial-gradient(1200px 600px at 75% 40%, rgba(255,178,36,.06), transparent 60%);
+    color: var(--text);
+    font: 16px/1.5 Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+
+  .page {
+    min-height: 100vh;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 32px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+  nav { display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.01em; text-decoration: none; }
+  .brand img { width: 28px; height: 28px; }
+  nav .links a { color: var(--dim); text-decoration: none; margin-left: 24px; font-size: 15px; }
+  nav .links a:hover { color: var(--text); }
+
+  main {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 56px;
+    align-items: center;
+    padding: 24px 0;
+  }
+  h1 {
+    font-size: clamp(40px, 4.4vw, 58px);
+    line-height: 1.02;
+    letter-spacing: -.035em;
+    font-weight: 800;
+    margin-bottom: 24px;
+  }
+  h1 em { font-style: normal; color: var(--waiting); }
+  .copy p { color: var(--dim); font-size: 18px; max-width: 30em; margin-bottom: 14px; }
+  .copy p strong { color: var(--text); font-weight: 500; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px; border-radius: 10px;
+    font-weight: 700; font-size: 15px; text-decoration: none;
+    border: 1px solid rgba(255,255,255,.1);
+    background: var(--surface);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 2px 6px rgba(0,0,0,.5);
+  }
+  .btn.primary { background: var(--waiting); color: #1a1204; border-color: transparent; box-shadow: 0 0 30px rgba(255,178,36,.25); }
+  .btn:hover { filter: brightness(1.08); }
+  .fine { margin-top: 20px; font-size: 13px; color: var(--legend); font-family: var(--mono); }
+
+  footer { color: var(--legend); font-size: 13px; display: flex; justify-content: space-between; }
+
+  /* The mock: tiles on the left, the stage on the right, as on a real desktop. */
+  .desk {
+    position: relative;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 12px;
+    height: 500px;
+    padding: 14px;
+    border-radius: 16px;
+    background: linear-gradient(160deg, #1b1d22, #0f1013);
+    border: 1px solid rgba(255,255,255,.06);
+    box-shadow: 0 40px 80px rgba(0,0,0,.55);
+    font-size: 12px;
+    user-select: none;
+  }
+  .clusters { display: flex; flex-direction: column; gap: 10px; }
+  .cluster {
+    border-radius: 10px;
+    background: linear-gradient(var(--plate-top), var(--plate));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 4px 10px rgba(0,0,0,.5);
+    padding: 8px;
+  }
+  .cluster h3 {
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--gold); padding: 0 4px 6px; display: flex; justify-content: space-between;
+  }
+  .cluster h3 span { color: var(--legend); font-weight: 500; }
+  .tile {
+    position: relative;
+    display: grid; grid-template-columns: 14px 1fr; gap: 2px 8px;
+    padding: 7px 8px; margin-top: 5px;
+    border-radius: 7px;
+    background: var(--surface);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 1px 3px rgba(0,0,0,.5);
+    transition: background .4s, box-shadow .4s;
+  }
+  .tile .lamp {
+    grid-row: span 3; width: 9px; height: 9px; margin-top: 4px; border-radius: 50%;
+    background: var(--c, var(--idle)); box-shadow: 0 0 8px var(--c, transparent);
+    transition: background .4s, box-shadow .4s;
+  }
+  .tile .name { font-weight: 600; color: var(--text); }
+  .tile .age { color: var(--c, var(--dim)); font-size: 11px; transition: color .4s; }
+  .tile .last { color: var(--legend); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tile.working { --c: var(--working); }
+  .tile.working .lamp { animation: pulse 1.2s ease-in-out infinite; }
+  .tile.waiting { --c: var(--waiting); background: #3a2d12; box-shadow: inset 0 1px 0 rgba(255,220,150,.15), 0 0 0 1px rgba(255,178,36,.5), 0 0 22px rgba(255,178,36,.35); }
+  .tile.done { --c: var(--done); }
+  .tile.idle { --c: var(--idle); }
+  .tile.onstage::before {
+    content: ""; position: absolute; left: -8px; top: 8px; bottom: 8px; width: 3px; border-radius: 2px; background: var(--gold);
+  }
+  @keyframes pulse { 50% { opacity: .35; } }
+
+  .stage {
+    display: flex; flex-direction: column;
+    border-radius: 10px; overflow: hidden;
+    background: var(--plate);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 6px 16px rgba(0,0,0,.6);
+  }
+  .stage .bar {
+    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+    font-size: 11px; color: var(--dim); border-bottom: 1px solid rgba(0,0,0,.6);
+  }
+  .stage .bar b { color: var(--gold); letter-spacing: .08em; text-transform: uppercase; transition: opacity .25s; }
+  .panes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 6px; min-height: 0; transition: opacity .25s; }
+  .pane { display: flex; flex-direction: column; min-height: 0; border-radius: 6px; background: var(--screen); box-shadow: inset 0 2px 6px rgba(0,0,0,.8); overflow: hidden; }
+  .pane .head { padding: 5px 8px; font-size: 11px; color: var(--dim); background: var(--well); display: flex; gap: 6px; align-items: center; }
+  .pane .head i { width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--idle)); }
+  .pane .term {
+    flex: 1; padding: 8px 10px; font: 11px/1.6 var(--mono); color: #c9cbd2;
+    display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+  }
+  .term div { white-space: pre; overflow: hidden; text-overflow: ellipsis; }
+  .term .u { color: var(--text); }
+  .term .u::before { content: "> "; color: var(--legend); }
+  .term .tool { color: var(--working); }
+  .term .ok { color: var(--done); }
+  .term .ask { color: var(--waiting); }
+  .term .sel { color: var(--text); background: #1e3a5c; }
+
+  .cursor {
+    position: absolute; left: 0; top: 0; width: 18px; height: 18px; pointer-events: none; z-index: 5;
+    transition: transform .9s cubic-bezier(.5,0,.2,1);
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,.6));
+  }
+  .cursor.click::after {
+    content: ""; position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; border-radius: 50%;
+    border: 2px solid var(--waiting); animation: ripple .5s ease-out forwards;
+  }
+  @keyframes ripple { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+
+  @media (max-width: 960px) {
+    main { grid-template-columns: 1fr; gap: 40px; }
+    .page { padding: 20px 16px; }
+  }
+  @media (max-width: 560px) {
+    .desk { grid-template-columns: 1fr; height: auto; }
+    .stage { height: 300px; }
+    .panes { grid-template-columns: 1fr; }
+    .panes .pane:nth-child(2) { display: none; }
+    nav .links a:first-child { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tile.working .lamp { animation: none; }
+    .cursor { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <nav>
+    <a class="brand" href="/"><img src="horadric.png" alt="">Horadric</a>
+    <div class="links">
+      <a href="https://github.com/Mopra/horadric.dev#readme">Docs</a>
+      <a href="https://github.com/Mopra/horadric.dev">GitHub</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="copy">
+      <h1>Your agents are waiting.<br><em>Now you can see&nbsp;it.</em></h1>
+      <p>You run five Claude Code sessions. Four are working. One has been waiting on you for twelve minutes. You had no idea.</p>
+      <p><strong>Horadric puts every session on your desktop as a tile</strong>, grouped by project. The one that needs you lights up. Click it and it's a real terminal.</p>
+      <p>No chat UI in the way. The terminal is the UI.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/Mopra/horadric.dev/releases/latest">Download for Windows</a>
+        <a class="btn" href="https://github.com/Mopra/horadric.dev">Read the source</a>
+      </div>
+      <div class="fine">Pure Rust. Native Win32. No Electron. MIT.</div>
+    </div>
+
+    <div class="desk" id="desk" aria-label="Horadric tiles and stage, animated">
+      <div class="clusters" id="clusters"></div>
+      <div class="stage">
+        <div class="bar"><b id="stageName"></b><span id="stageCount"></span></div>
+        <div class="panes" id="panes"></div>
+      </div>
+      <svg class="cursor" id="cursor" viewBox="0 0 18 18"><path d="M2 1l13 8-6 1.4L6 16z" fill="#fff" stroke="#000" stroke-width="1"/></svg>
+    </div>
+  </main>
+
+  <footer>
+    <span>horadric.dev</span>
+    <span>Windows 10 and 11</span>
+  </footer>
+</div>
+
+<script>
+  // A scripted few seconds of a real day: sessions work, one stops to ask,
+  // you click its tile, answer, and it goes back to work.
+  const projects = [
+    { name: "horadric", sessions: [
+      { id: "tiles", name: "tiles-ui", state: "working", age: "working 4 min", last: "Resizing cluster windows" },
+      { id: "reload", name: "reload", state: "working", age: "working 1 min", last: "Running cargo test" },
+      { id: "docs", name: "docs", state: "idle", age: "idle 20 min", last: "Updated README" },
+    ]},
+    { name: "webshop", sessions: [
+      { id: "checkout", name: "checkout", state: "working", age: "working 7 min", last: "Writing CartSummary.tsx" },
+      { id: "login", name: "login-fix", state: "working", age: "working 2 min", last: "Reading auth/session.ts" },
+    ]},
+  ];
+
+  const scripts = {
+    tiles: [["u", "make the clusters resize smoothly"], ["tool", "● Read crates/horadric-ui/src/cluster.rs"], ["", "  The resize waits for WM_SIZE. Moving it into"], ["", "  the layout pass instead."], ["tool", "● Edit cluster.rs (+18 -6)"], ["tool", "● Bash cargo test -p horadric-ui"], ["ok", "  test result: ok. 142 passed"]],
+    reload: [["u", "reload should keep every session alive"], ["tool", "● Grep \"attach_host\""], ["tool", "● Read src/reload.rs"], ["", "  Hosts outlive the UI, so the new build"], ["", "  only has to attach to them."], ["tool", "● Bash cargo test reload"], ["ok", "  test result: ok. 12 passed"]],
+    checkout: [["u", "show tax in the cart summary"], ["tool", "● Read src/cart/CartSummary.tsx"], ["tool", "● Edit CartSummary.tsx (+9 -2)"], ["", "  Tax now comes from the order total."], ["tool", "● Bash npm run typecheck"], ["ok", "  0 errors"]],
+    login: [["u", "users get logged out after 5 minutes"], ["tool", "● Read auth/session.ts"], ["", "  The cookie maxAge is in seconds, not ms."], ["tool", "● Edit session.ts (+1 -1)"]],
+    loginAsk: [["ask", "Allow Bash(npm test auth)?"], ["sel", "❯ 1. Yes"], ["", "  2. Yes, and don't ask again"], ["", "  3. No"]],
+    loginAfter: [["tool", "● Bash npm test auth"], ["ok", "  14 passing"], ["", "  Fixed. Sessions now last 5 days."]],
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const session = (id) => projects.flatMap((p) => p.sessions).find((s) => s.id === id);
+  let onStage = "horadric";
+  const lines = {};
+
+  function renderClusters() {
+    $("clusters").innerHTML = projects.map((p) => `
+      <div class="cluster"><h3>${p.name}<span>+</span></h3>
+        ${p.sessions.map((s) => `
+          <div class="tile ${s.state} ${p.name === onStage ? "onstage" : ""}" data-id="${s.id}">
+            <span class="lamp"></span><span class="name">${s.name}</span>
+            <span class="age">${s.age}</span><span class="last">${s.last}</span>
+          </div>`).join("")}
+      </div>`).join("");
+  }
+
+  function renderStage() {
+    const p = projects.find((x) => x.name === onStage);
+    $("stageName").textContent = p.name;
+    $("stageCount").textContent = `${p.sessions.length} sessions`;
+    const shown = p.sessions.filter((s) => s.state !== "idle").slice(0, 2);
+    $("panes").innerHTML = shown.map((s) => `
+      <div class="pane"><div class="head" style="--c: var(--${s.state})"><i></i>${s.name}</div>
+        <div class="term" id="term-${s.id}">${(lines[s.id] || []).map(line).join("")}</div>
+      </div>`).join("");
+  }
+
+  const line = ([cls, text]) => `<div class="${cls}">${text.replace(/</g, "&lt;")}</div>`;
+
+  function set(id, patch) {
+    Object.assign(session(id), patch);
+    renderClusters();
+    renderStage();
+  }
+
+  async function type(id, script, gap = 650) {
+    for (const l of script) {
+      (lines[id] ||= []).push(l);
+      const term = $("term-" + id);
+      if (term) term.insertAdjacentHTML("beforeend", line(l));
+      await sleep(gap);
+    }
+  }
+
+  async function moveCursorTo(el) {
+    const desk = $("desk").getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    $("cursor").style.transform = `translate(${r.left - desk.left + r.width * 0.6}px, ${r.top - desk.top + r.height * 0.5}px)`;
+    await sleep(950);
+  }
+
+  async function click() {
+    const c = $("cursor");
+    c.classList.remove("click");
+    void c.offsetWidth;
+    c.classList.add("click");
+    await sleep(350);
+  }
+
+  async function switchStage(name) {
+    $("panes").style.opacity = 0;
+    $("stageName").style.opacity = 0;
+    await sleep(250);
+    onStage = name;
+    renderClusters();
+    renderStage();
+    $("panes").style.opacity = 1;
+    $("stageName").style.opacity = 1;
+  }
+
+  async function loop() {
+    for (const k in lines) delete lines[k];
+    Object.assign(session("login"), { state: "working", age: "working 2 min", last: "Reading auth/session.ts" });
+    Object.assign(session("docs"), { state: "idle", age: "idle 20 min", last: "Updated README" });
+    Object.assign(session("tiles"), { state: "working", age: "working 4 min", last: "Resizing cluster windows" });
+    onStage = "horadric";
+    renderClusters();
+    renderStage();
+    $("cursor").style.transform = "translate(420px, 380px)";
+
+    // Background work on the other project happens off stage, as it does for real.
+    type("checkout", scripts.checkout, 900);
+    type("login", scripts.login, 700);
+    type("reload", scripts.reload, 800);
+    await type("tiles", scripts.tiles, 700);
+    set("tiles", { state: "done", age: "done just now", last: "142 tests pass" });
+    await sleep(600);
+
+    set("login", { state: "waiting", age: "needs permission 0 min", last: "Allow Bash(npm test auth)?" });
+    lines.login.push(...scripts.loginAsk);
+    await sleep(1600);
+    set("login", { age: "needs permission 1 min" });
+    await sleep(700);
+
+    await moveCursorTo(document.querySelector('[data-id="login"]'));
+    await click();
+    await switchStage("webshop");
+    await sleep(900);
+
+    await moveCursorTo($("term-login"));
+    await click();
+    lines.login.splice(-4);
+    set("login", { state: "working", age: "working 3 min", last: "Running npm test" });
+    await type("login", scripts.loginAfter, 750);
+    set("login", { state: "done", age: "done just now", last: "Sessions now last 5 days" });
+    await sleep(3500);
+  }
+
+  async function run() {
+    renderClusters();
+    renderStage();
+    if (reduced) {
+      Object.values(scripts).slice(0, 4).forEach((s, i) => (lines[["tiles", "reload", "checkout", "login"][i]] = s));
+      set("login", { state: "waiting", age: "needs permission 12 min", last: "Allow Bash(npm test auth)?" });
+      return;
+    }
+    for (;;) await loop();
+  }
+  run();
+</script>
+</body>
+</html>
