@@ -21,8 +21,8 @@ Top down is the order to work them. State is one of: todo, done, skip
 
 | Place | State | Notes |
 |---|---|---|
-| winget (microsoft/winget-pkgs) | todo | A manifest PR for `Mopra.Horadric` pointing at the release. Read their contributing rules; the unsigned binary may be flagged. The install is two exes plus `horadric install`, so check a portable manifest fits. If it does not fit, skip and say why. |
-| Scoop (extras bucket) | todo | Same check as winget. |
+| winget (microsoft/winget-pkgs) | later, when a release ships a zip | Checked 2026-10-07 against v0.16.0. No star or age rule, so a new project can be listed, and an unsigned exe is not an automatic block (the pipeline runs AV and Defender scans and SmartScreen reputation checks; a false positive is appealed to Microsoft and re-run with `@wingetbot run`). The blocker is the shape of the release: it has two bare exes (`horadric.exe`, `horadricw.exe`) and no archive. A winget installer entry is one URL, and `horadric install` copies `horadricw.exe` from next to itself, so a portable manifest on `horadric.exe` alone would install a binary whose `horadric install` fails. Fix: the Horadric release also ships `horadric-x64.zip` holding both exes. Then a manifest with InstallerType zip, NestedInstallerType portable and two NestedInstallerFiles (`Mopra.Horadric`) fits. Quest added for the zip. Self-update will also drift from winget's recorded version, so say so in the PR. No manifest written yet: it needs the zip's SHA256. |
+| Scoop (extras bucket) | skip until it has users | Checked 2026-10-07. Extras takes what does not fit Main, and Main wants a widely used tool (its page says 500 stars, 150 forks). I could not load the Extras page itself, so its exact bar is unconfirmed, but Horadric has 0 stars and was created 2026-09-24, so a PR would be closed. Same two-exe problem as winget: a Scoop manifest can list both exes as `url` entries, so that part fits, but `horadric install` then self-installs outside Scoop's folder. Revisit at about 100 stars. Do not open a PR before. |
 
 ## Lists on GitHub
 
