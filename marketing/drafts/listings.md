@@ -165,6 +165,8 @@ warning in every long description.
 - Long description: the shared long description.
 - Special requirements: Visual C++ 2015 to 2022 Redistributable (x64).
 - Changes: the release notes of the version.
+- Icon (32x32): https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/icon-32.png
+- Screenshot: https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/screenshot-tiles.png
 
 ### MajorGeeks (email to mgnews at majorgeeks.com)
 
@@ -187,5 +189,11 @@ Morten
 
 - Program: Horadric. Version: the current release. Website: https://horadric.dev
 - Download link: the GitHub release URL above. Ask: "Please link to the GitHub release instead of mirroring, since the app updates itself."
-- License: Open Source (MIT). Icon 256x256 from docs/assets. Screenshots: the four app screenshots.
+- License: Open Source (MIT).
+- Icon (256x256): https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/icon-256.png
+- Screenshots:
+  1. https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/screenshot-tiles.png
+  2. https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/screenshot-terminal.png
+  3. https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/screenshot-browser.png
+  4. https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/screenshot-quests.png
 - Description: the shared long description. Features: the bullet list from it.
