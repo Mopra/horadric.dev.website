@@ -46,6 +46,6 @@ Top down is the order to work them. State is one of: todo, done, skip
 | r/windows | skip | Needs mod permission, which they are not granting. |
 | Hacker News | done 2026-10-07 | Human only from here on. |
 | Lobsters | skip | Invite only, and hostile to self promotion. |
-| dev.to | todo | One article on how Horadric reads agent state from hooks instead of scraping the terminal. Facts from the README and docs/PLAN.md in the Horadric repo only. |
+| dev.to | todo, draft ready | One article on how Horadric reads agent state from hooks instead of scraping the terminal. Draft in marketing/drafts/devto-hooks.md (front matter published: false). Rules (dev.to/terms, read 2026-10-07): content must be on-topic, high quality and not designed primarily for promotion or backlinks; the post must carry substance, not just an external link; affiliate links must be disclosed (none here). The guidelines page and editor guide say nothing on self promotion or AI disclosure. Max four tags. So keep it a technical article, links at the end, and one post only. |
 | X | done 2026-10-07 | Later posts only when a release ships something new, at most one a week. |
 | Bluesky | todo | Only if the human is signed in; never create an account here. |
