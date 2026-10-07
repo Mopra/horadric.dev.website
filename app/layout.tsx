@@ -5,16 +5,17 @@ import "./globals.css";
 
 const mono = Geist_Mono({ subsets: ["latin"], weight: ["300", "400"] });
 
-const description = "Every coding agent on your Windows desktop. The one that needs you lights up.";
+const description =
+  "Horadric is a free, open source Windows app that shows every Claude Code, Codex and Grok Build session as a tile on your desktop. The one that needs you turns amber.";
 
 // The page shows almost no text, so the title and these tags tell search engines what it is.
 export const metadata: Metadata = {
   metadataBase: new URL("https://horadric.dev"),
-  title: "Horadric: run every coding agent on your Windows desktop",
+  title: "Horadric: a Windows desktop for Claude Code, Codex and Grok Build sessions",
   description,
   alternates: { canonical: "/" },
-  openGraph: { title: "Horadric", description, url: "/", siteName: "Horadric", type: "website" },
-  twitter: { card: "summary_large_image", title: "Horadric", description },
+  openGraph: { title: "Horadric: every coding agent on your Windows desktop", description, url: "/", siteName: "Horadric", type: "website" },
+  twitter: { card: "summary_large_image", title: "Horadric: every coding agent on your Windows desktop", description },
 };
 
 const app = {
@@ -24,7 +25,7 @@ const app = {
   url: "https://horadric.dev",
   description,
   applicationCategory: "DeveloperApplication",
-  operatingSystem: "Windows",
+  operatingSystem: "Windows 10, Windows 11",
   softwareRequirements: "A Claude, Codex or xAI subscription",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   downloadUrl: "https://github.com/Mopra/horadric.dev/releases/latest",
