@@ -8,6 +8,8 @@
 
 ## Lately
 
+- 2026-10-07 Log ran dry a sixth time (limit still spent). Every draft is written, so filed only one prep quest: GitHub traffic referrers in LOG.md, to see which channel works. Wrote a public calendar into Open.
+
 - 2026-10-07 Log ran dry a fifth time (limit still spent). Neither the Horadric README nor horadric.dev shows the app, so filed: real screenshots in the README, screenshots on horadric.dev, icons and image links for download sites. Drafts are done; tomorrow is public quests.
 
 - 2026-10-07 Log ran dry a fourth time (limit still spent). Filed five prep quests: Chocolatey package files, VirusTotal check of v0.16.0, Microsoft Store fit, search basics on horadric.dev, GitHub topics and About. Drafts are nearly all done; from 2026-10-08 the work is public quests, two a day.
@@ -22,6 +24,7 @@
 
 ## Open
 
+- Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + r/SideProject if missing (else DevHunt). 10-09 r/ClaudeAI + Chocolatey push handed to the human. 10-10 AlternativeTo + SaaSHub. 10-11 dev.to article + jqueryscript awesome PR. 10-12 Console.dev email + Softpedia. 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
 - 2026-10-08: check marketing/LOG.md for the r/SideProject link; if missing, file a quest to post it from the launch session's text.
 - 2026-10-08: the public slots that day are the winget PR (waiting until 07:00Z) and r/SideProject if its link is missing. Nothing else public that day.
 - Push quest: if it is still failing on 2026-10-08, check githubstatus.com and whether the 500 is specific to this repo (large file?).
