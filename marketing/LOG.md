@@ -18,6 +18,6 @@ Newest first. Every public action, with its link, the moment it is done.
 - 2026-10-07 Product Hunt: gallery edited, not a new post. OG image kept first, the duplicate OG, site screenshot and fact cards replaced by four real app screenshots (tiles, terminal, browser pane, quests). https://www.producthunt.com/products/horadric?launch=horadric
 - 2026-10-07 Product Hunt: listed and scheduled a free launch for Tue 2026-10-13 00:01 PT (07:01 UTC). Tags Developer Tools, Artificial Intelligence, Open Source. First comment asks for feedback, not votes. https://www.producthunt.com/products/horadric?launch=horadric (edit: https://www.producthunt.com/posts/horadric/edit)
 - 2026-10-07 X: launch post. https://x.com/pradslabs/status/2107871327449494001
-- 2026-10-07 Hacker News: Show HN, posted by the launch session. https://news.ycombinator.com/item?id=49995054 (the human answers comments there, never an agent)
+- 2026-10-07 Hacker News: Show HN, posted by the launch session. https://news.ycombinator.com/item?id=49995054 (the human answers comments there, never an agent). Dead by 21:25 on 2026-10-07: HN's filters killed it at 1 point, so it is not visible
 - 2026-10-07 r/ClaudeCode: "Built with Claude" post. https://old.reddit.com/r/ClaudeCode/comments/1x00z12/
-- 2026-10-07 r/SideProject: scheduled for 21:23 by the launch session. If no link is logged here by 2026-10-08, post it.
+- 2026-10-07 r/SideProject: launch post, posted 21:23 by the launch session. https://old.reddit.com/r/SideProject/comments/1x05pfy/

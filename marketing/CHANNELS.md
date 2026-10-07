@@ -89,7 +89,7 @@ take Mac apps: when doing those, add macOS as a platform in the same entry.
 | Place | State | Notes |
 |---|---|---|
 | r/ClaudeCode | done 2026-10-07 | Standalone posts must say what was built, how Claude Code was used, what was learned. Flair "Built with Claude". Next post only for a big release, 30 days on. |
-| r/SideProject | todo | Scheduled for 2026-10-07 21:23 by the launch session. Check LOG.md. |
+| r/SideProject | done 2026-10-07 | https://old.reddit.com/r/SideProject/comments/1x05pfy/ No posting rules. Next post only for a big release, 30 days on. |
 | r/ClaudeAI | todo, draft ready | Draft in marketing/drafts/reddit.md. Rules read 2026-10-07: rule 7 also needs OP karma over 100 on feed posts. Rule 7: project built with Claude by you, describe how Claude helped in detail, free to try. Use the showcase flair. Not before 2026-10-09, so it does not look like a blast. |
 | r/codex | todo, draft ready | Draft in marketing/drafts/reddit.md, Showcase flair. Rules read 2026-10-07: no ban on self promotion; showcases skip the karma delay queue; wrong flair gets a post deleted. Automated mods weigh the poster's comment karma in r/codex. Make it about using Codex with Horadric, with detail. |
 | r/ChatGPTCoding | skip | Rules read 2026-10-07. Rule 5: posts whose main purpose is promoting a tool or repo belong in the weekly Self-Promotion thread ("delete the link: if nothing is left, it's an ad"). Rule 3 also bars a discussion post that promotes indirectly. Only a comment in the weekly thread would fit. AI text is allowed for grammar and clarity, not raw output. |
