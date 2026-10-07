@@ -3,10 +3,13 @@
 ## Rules
 
 - Marketing follows marketing/PLAYBOOK.md: at most two new public posts or listings a day across all channels, counted from marketing/LOG.md.
+- Do not file busywork prep to fill a dry log: when the daily public limit is spent and every draft exists, a dry log is fine until the next day's public slots.
 - Prep quests (drafts, images, research) may run any time; public action quests get filed only on the day they may run, one or two a day.
 - Hacker News is the human's alone. Never file a quest that posts or comments there.
 
 ## Lately
+
+- 2026-10-07 Log ran dry a seventh time (limit still spent). Prep is nearly used up, so filed only one quest: a plain install block on horadric.dev (which file, SmartScreen, horadric install), since the button lands on a release page with three files. Next wakes today: file nothing unless something real turns up; public quests start 2026-10-08.
 
 - 2026-10-07 Log ran dry a sixth time (limit still spent). Every draft is written, so filed only one prep quest: GitHub traffic referrers in LOG.md, to see which channel works. Wrote a public calendar into Open.
 
