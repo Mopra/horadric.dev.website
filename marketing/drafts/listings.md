@@ -1,0 +1,118 @@
+# Listing drafts
+
+Prepared 2026-10-07, not submitted. Every claim comes from the facts in
+`PLAYBOOK.md`. Rules and queue notes are in `CHANNELS.md`. Each site needs
+a sign in on the day, so only the human's Google or GitHub basic profile
+(playbook rule 11). Counts toward the two-a-day cap (rule 3).
+
+Always state the SmartScreen warning. Never ask for votes.
+
+## Shared copy
+
+**Name:** Horadric
+
+**Website:** https://horadric.dev
+**Source:** https://github.com/Mopra/horadric.dev
+**Download:** https://github.com/Mopra/horadric.dev/releases/latest
+
+**Tagline (60 chars):** Every coding agent session as a tile on your desktop
+
+**Tagline, short (40 chars):** Coding agent sessions as desktop tiles
+
+**One line:** A native Windows desktop for Claude Code, Codex and Grok Build sessions. It tells you which one is waiting for you.
+
+**Short description (about 300 chars):**
+Horadric turns every coding agent session into a small tile on the Windows desktop, grouped by project. A tile turns amber when the agent needs you. Click it and you get the real CLI in a real terminal. No chat UI of its own, no wrapper. Free, MIT licensed, no telemetry.
+
+**Long description:**
+
+Every coding agent session becomes a small tile on the Windows desktop, grouped by project. A tile turns amber when the agent needs you.
+
+Click a tile and you get the real CLI in a real terminal. Horadric has no chat UI of its own and does not wrap the agent.
+
+- Ctrl+Alt+Space jumps to the session that has waited longest.
+- A Windows notification fires when a session starts waiting and you look away.
+- Plain terminals and a browser pane sit beside the agents. Agents can drive the browser.
+- A quest log per project, Warriv the orchestrator, and the Runetome buttons.
+- It shows 5 hour, weekly and spend limits, and switches Claude subscriptions.
+- State comes from the agents' own hooks, not from scraping the terminal.
+- Sessions survive a crash, an update and a reboot.
+- Works with Claude Code, Codex and Grok Build.
+
+It is pure Rust on Win32 and Direct2D. About 45 MB with four sessions open. No CPU between events. No Electron.
+
+Free, MIT licensed, Windows 10 and 11. No telemetry.
+
+Claude Code wrote almost all of it. I made the calls.
+
+Not code signed yet, so SmartScreen warns the first time you run it.
+
+**Maker comment (first comment on launch sites, first person):**
+I built Horadric because I run several coding agents at once and kept losing track of which one was waiting on me. Now each session is a tile, and the tile turns amber when it needs me. Click it and I am in the real CLI, not a chat box someone built around it. It is free and MIT. Claude Code wrote almost all of it and I made the calls. It is not code signed yet, so SmartScreen will warn you the first time. Tell me what is missing.
+
+**Categories / tags:** Developer tools, AI coding agents, Terminal, Windows, Open source, Productivity
+**Pricing:** Free, open source (MIT)
+**Platforms:** Windows 10, Windows 11
+**Alternatives to name (only where the form asks, and only as honest comparisons):** Windows Terminal, tmux, Claude Squad
+
+**Assets to make** (the Horadric repo has no app screenshots yet, see the Product Hunt row):
+- Logo, square, 512x512 PNG.
+- Cover / OG image: the site's OG image (1200x630).
+- Gallery: 1270x760 site screenshot and three fact cards, as made for Product Hunt.
+
+---
+
+## DevHunt
+
+- Form: behind a GitHub or Google sign in (login at /login, no public /submit). Per the FAQ: name, website, description, logo, screenshots. Exact limits and image sizes not visible without signing in.
+- Free: yes. Free tools get a launch week from the queue; length of the wait is not published. Paid ($19 choose a week, $49 boosted) is off limits.
+- Dev tools only, so Horadric fits. Free links are nofollow.
+- Voting needs sign in; never ask anyone to vote.
+
+Copy: shared name, tagline (60), long description, categories "AI Coding tools, AI Agents tools, Open Source tools".
+
+## AlternativeTo
+
+- Form: "Suggest new application" in the user menu, after signing in and verifying email. Fields: platforms, license, descriptions, tags, official and creator website, social links.
+- Free: yes, but the normal queue "holds several thousand apps" and no date is promised. $5 priority review exists and is off limits (rule 10). Expect a very long wait or none.
+- No UTM tags on the official link. Plain https://horadric.dev.
+- After approval: on the page of Windows Terminal, tmux and Claude Squad use "Contribute to this page", then "Suggest Alternatives".
+
+Copy:
+- Platforms: Windows. License: Open Source (MIT). Price: Free.
+- Description: the short description above.
+- Tags: Terminal, AI coding agents, Developer tools, Session manager, Rust.
+
+## Uneed
+
+- Form: paste product name and address, it scrapes the page, then asks for sign up. Fields it scrapes: name, tagline, description, images.
+- Free: "Join the line". Launch date assigned up to 5 months out. Needs an upvote score of 10 to stay published and 20 for the do-follow backlink. Rule 4 means we cannot chase that score, so accept that it may be unpublished. Skip the line ($29.99) and Fast-track ($14.99) are off limits.
+- Copy: shared name, tagline, short description, maker comment.
+
+## Peerlist Launchpad
+
+- Needs a verified Peerlist profile of an individual (real name, profile picture, not a company). The human must have or make that profile (sign in with Google).
+- Add Horadric as a project on the profile to 100 percent: name, tagline, cover image, demo link, description. Cover size not published.
+- Free. Launch day is Monday (UTC), or schedule for any later week from the project's Launch button.
+- Rules: never ask for upvotes, no DMs to strangers, do not reshare the link over and over on Scroll. Engage with comments.
+- Copy: shared name, tagline (60), long description, categories "DevTool, Productivity, Open Source". Demo link: https://horadric.dev.
+
+## Microlaunch
+
+- Form: "New Launch" button, behind sign up. Fields and image sizes not visible without signing in.
+- Free: not confirmed. The public pages push Launch Pro ($39 to $49) and Launch Plus ($79 to $99), both off limits. The home page shows unpaid looking products on the leaderboard, so a free launch seems to exist, but I could not verify it. Check after sign in, and skip if only paid options show.
+- Copy: shared name, tagline, short description, "Dev Tools" category.
+
+## Fazier
+
+- Form: Submit Product at /launch, behind Google or email sign in. Fields from their launch guide: name, tagline, description, category, thumbnail, gallery, pricing. Image sizes not public.
+- Free: launches labelled Free, Freemium, Paid and Premium appear. Free launch seems available but the wait is not published. Verify after sign in, and skip if the free option is gone.
+- Copy: shared name, tagline, long description, pricing "Free".
+
+## SaaSHub
+
+- Form: https://www.saashub.com/services/submit after Register. Needs website URL, categories, and listed competitors (without competitors the submission goes to the bottom of the queue). Verifying with an email address on horadric.dev gives priority; ask the human whether such a mailbox exists, or skip verification.
+- Free. Rejected: unreleased products, free subdomains, non-English, waiting list pages. Horadric is released and on its own domain, so it fits. Is it a "SaaS"? It is a desktop app, which they list under "most software products and apps".
+- Competitors to list: Windows Terminal, tmux, Claude Squad.
+- Categories: Developer Tools, Terminal, AI.
+- Copy: shared short description and long description.

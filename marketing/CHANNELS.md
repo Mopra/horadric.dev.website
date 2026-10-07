@@ -8,14 +8,14 @@ Top down is the order to work them. State is one of: todo, done, skip
 | Place | State | Notes |
 |---|---|---|
 | Product Hunt | later 2026-10-13 | Free launch scheduled for Tue 2026-10-13 00:01 Pacific, made 2026-10-07. Gallery: the site's OG image (twice, PH pulled one in itself), a site screenshot and three fact cards, 1270x760, because the Horadric repo has no app screenshots yet. Quest 'Product Hunt launch day: answer comments' wakes on the day. Never ask for upvotes; ask for feedback. |
-| DevHunt (devhunt.org) | todo | Dev tools launch site, GitHub sign in. Free queue only. |
-| AlternativeTo | todo | List Horadric as an alternative to Windows Terminal, tmux, Claude Squad and similar agent managers. Accurate description, MIT, Windows. |
-| Uneed | todo | Free queue only. |
-| Peerlist Launchpad | todo | Weekly launch, free. |
-| Microlaunch | todo | Free only. |
-| Fazier | todo | Free only. |
+| DevHunt (devhunt.org) | todo, draft ready | Dev tools launch site, GitHub or Google sign in. Free queue only. Free tools get a launch week from the queue, wait not published. $19 and $49 launches are paid, skip. Free link is nofollow. Submit form is behind sign in (name, website, description, logo, screenshots). Draft in marketing/drafts/listings.md. |
+| AlternativeTo | todo, draft ready | List Horadric as an alternative to Windows Terminal, tmux, Claude Squad and similar agent managers. Accurate description, MIT, Windows. Needs a verified email to submit. Free queue holds several thousand apps with no promised date; $5 priority review is paid, skip it. No UTM tags on the official link. Draft ready. |
+| Uneed | todo, draft ready | Free queue only ("Join the line"): launch date assigned up to 5 months out. Needs an upvote score of 10 to stay published and 20 for the do-follow link, which we cannot chase (rule 4). Skip the line ($29.99) and Fast-track ($14.99) are paid, skip. Starts with name and URL, scrapes the page, then asks to sign up. |
+| Peerlist Launchpad | todo, draft ready | Weekly launch, free. Needs a verified Peerlist profile as an individual (real name, photo, not a company) and a project at 100 percent (name, tagline, cover image, demo link). Monday UTC is launch day, any later week can be scheduled. Rules: never ask for upvotes, no DMs to strangers, do not over-reshare on Scroll. |
+| Microlaunch | todo, check free tier | Free only. Public pages show only paid Launch Pro ($39) and Launch Plus ($79). A free launch is not confirmed without signing in; if only paid options show after sign in, mark skip. |
+| Fazier | todo, check free tier | Free only. Submit at fazier.com/launch after Google or email sign in: name, tagline, description, category, thumbnail, gallery, pricing. The home page marks listings Free, Freemium, Paid and Premium; a free launch is likely but unconfirmed, wait not published. Skip if only paid shows. |
 | Indie Hackers | todo | A post in the product's own voice about building it with Claude Code. |
-| SaaSHub | todo | Free listing. |
+| SaaSHub | todo, draft ready | Free listing. Must list competitors (else bottom of queue), give categories, and a released product on its own domain. Verifying with an email on horadric.dev raises priority. Rejects unreleased, free subdomains, waiting list pages. |
 
 ## Package managers (downloads, not just visits)
 
