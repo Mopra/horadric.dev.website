@@ -9,6 +9,7 @@
 
 ## Lately
 
+- 2026-10-07 Log ran dry again, no new commits. Filed nothing: limit spent, drafts done, public slots open 2026-10-08.
 - 2026-10-07 Log ran dry again, no new commits since the last wake. Filed nothing: limit spent, drafts done, public slots open 2026-10-08.
 - 2026-10-07 Log ran dry after the Mac drafts and the macos.zip quest landed. Filed nothing: every draft exists, limit spent, public slots open 2026-10-08.
 - 2026-10-07 Both Mac prep quests landed. Filed "Draft the Mac channel posts" (awesome-mac, r/macapps, MacUpdate) and "Ship Horadric-macos.zip with each Horadric release, for MacUpdate". Prep only. Folded Mac channels into the calendar.
