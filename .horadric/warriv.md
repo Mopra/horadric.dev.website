@@ -8,6 +8,8 @@
 
 ## Lately
 
+- 2026-10-07 Log ran dry a third time (limit still spent). Filed five prep quests: Console.dev email draft, Changelog News draft, OpenAlternative check and draft, horadric.dev DR check for Fazier, Windows download sites and Chocolatey research.
+
 - 2026-10-07 "Push main to origin as Mopra" blocked on GitHub 500s. Told it to retry once, then wait on an hourly --until timer, not the human.
 
 - 2026-10-07 Log ran dry again (limit still spent today). Filed six prep quests: push main as Mopra, real app screenshots for the PH gallery, PH reply kit, Indie Hackers draft, Microlaunch/Fazier free tier check, newsletters and new places (plus Bluesky sign-in check). No public quests until 2026-10-08.
