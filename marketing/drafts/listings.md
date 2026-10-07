@@ -122,3 +122,70 @@ Copy:
 - Not confirmed: whether finishing the form without paying leaves the tool in a free queue. The human can check on the day by signing in and stopping at the package step. Contact: hello@openalternative.co.
 - If a free path shows up, copy to use: shared name, short tagline, long description, Source URL, license MIT.
 - Alternative to name: Claude Code (they list tools as alternatives to proprietary software). Honest framing: Horadric is a free MIT desktop for running Claude Code, Codex and Grok Build sessions, so it fits as a companion rather than a replacement. Do not claim it replaces Claude Code.
+
+## Windows download sites
+
+Prepared 2026-10-07, not submitted. Rules and rehost notes are in the
+"Windows download sites" table of `CHANNELS.md`. Screenshot and icon URLs:
+raw links to the files in `docs/assets` of the Horadric repo. Download link
+everywhere: the GitHub release asset
+`https://github.com/Mopra/horadric.dev/releases/latest/download/horadric-x64.zip`
+(a zip holding `horadric.exe` and `horadricw.exe`). Say the SmartScreen
+warning in every long description.
+
+### Chocolatey (package `horadric`, maintainer account is the human's)
+
+- `title`: Horadric
+- `summary` (nuspec): Every coding agent session as a tile on the Windows desktop.
+- `description`:
+  Horadric turns every coding agent session into a tile on the Windows desktop, grouped by project. A tile turns amber when the agent needs you. Click it and you get the real CLI in a real terminal, not a chat UI.
+
+  * Works with Claude Code, Codex and Grok Build.
+  * Ctrl+Alt+Space jumps to the session that has waited longest.
+  * A Windows notification fires when a session starts waiting and you look away.
+  * Plain terminals and a browser pane beside the agents.
+  * State comes from the agents' own hooks, not from scraping the terminal.
+
+  Pure Rust on Win32 and Direct2D. No telemetry. Free, MIT licensed.
+
+  Notes: the exes are not code signed yet, so SmartScreen warns the first time. Horadric updates itself, so the installed version can run ahead of the version Chocolatey lists.
+- `projectUrl`: https://horadric.dev
+- `projectSourceUrl`: https://github.com/Mopra/horadric.dev
+- `licenseUrl`: https://github.com/Mopra/horadric.dev/blob/main/LICENSE
+- `tags`: horadric terminal claude-code codex agents developer-tools rust
+- dependency: `vcredist140`
+- `chocolateyInstall.ps1`: Install-ChocolateyZipPackage with the release URL and its SHA256 from the winget manifest, plus an `horadricw.exe.ignore` file next to the zip contents.
+
+### Softpedia (form at softpedia.com/user/submit.shtml)
+
+- Developer: Mopra. Developer site: https://horadric.dev
+- Program name: Horadric. Category: Programming > Other Programming Files, or Launchers & Shutdown Tools (pick on the day, whichever the list shows). Fallback: System > System Info is wrong, do not use it.
+- Supported OS: Windows 10 64 bit, Windows 11. License: MIT License (or Open Source).
+- Short description (128 max): Free Windows desktop that shows every coding agent session as a tile and lights it when it needs you.
+- Long description: the shared long description.
+- Special requirements: Visual C++ 2015 to 2022 Redistributable (x64).
+- Changes: the release notes of the version.
+
+### MajorGeeks (email to mgnews at majorgeeks.com)
+
+Subject: Horadric, a free MIT desktop for coding agent sessions (Windows)
+
+Hello,
+
+I would like to suggest Horadric for MajorGeeks. It is a free Windows 10/11 desktop that shows each coding agent session (Claude Code, Codex, Grok Build) as a tile, and the tile turns amber when the agent is waiting on you. It is MIT licensed, has no telemetry, and the source is public.
+
+I made it, with Claude Code writing most of the code. It is not code signed yet, so SmartScreen warns the first time, and some scanners may flag an unsigned Rust exe.
+
+Download: https://github.com/Mopra/horadric.dev/releases/latest (horadric-x64.zip)
+Site: https://horadric.dev
+Source: https://github.com/Mopra/horadric.dev
+
+Thanks for looking.
+Morten
+
+### FileHorse (contact form at filehorse.com/submit, "I am a developer")
+
+- Program: Horadric. Version: the current release. Website: https://horadric.dev
+- Download link: the GitHub release URL above. Ask: "Please link to the GitHub release instead of mirroring, since the app updates itself."
+- License: Open Source (MIT). Icon 256x256 from docs/assets. Screenshots: the four app screenshots.
+- Description: the shared long description. Features: the bullet list from it.
