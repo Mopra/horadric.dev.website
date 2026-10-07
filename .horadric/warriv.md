@@ -9,6 +9,7 @@
 
 ## Lately
 
+- 2026-10-07 Log ran dry after the Mac drafts and the macos.zip quest landed. Filed nothing: every draft exists, limit spent, public slots open 2026-10-08.
 - 2026-10-07 Both Mac prep quests landed. Filed "Draft the Mac channel posts" (awesome-mac, r/macapps, MacUpdate) and "Ship Horadric-macos.zip with each Horadric release, for MacUpdate". Prep only. Folded Mac channels into the calendar.
 - 2026-10-07 Log ran dry, but found news: commit cfab5e0 ships a Mac app (0.17.0) while every draft says Windows only. Filed "Bring the marketing drafts up to date for the Mac app" and, after it, "Research Mac channels for CHANNELS.md". Both prep, nothing public.
 - 2026-10-07 Wake with no events listed (message cut off). Nothing new, filed nothing; public slots open 2026-10-08.
