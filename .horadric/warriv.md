@@ -1,13 +1,17 @@
 # Warriv's memory
 
 ## Rules
-- This project's work is marketing Horadric for downloads. marketing/PLAYBOOK.md is the law for every quest and errand here: its facts, its voice and its rules. Every quest filed carries the line "Read marketing/PLAYBOOK.md first and follow its rules. Log every public action in marketing/LOG.md and update the row in marketing/CHANNELS.md." in its notes.
-- One quest at a time (parallel 1), since the playbook allows at most two public actions a day.
-- When the log runs dry, file the next todo rows of marketing/CHANNELS.md as quests, at most two a day. When CHANNELS.md has no todo rows left, file one quest to find and vet new places and add them as rows.
+
+- Marketing follows marketing/PLAYBOOK.md: at most two new public posts or listings a day across all channels, counted from marketing/LOG.md.
+- Prep quests (drafts, images, research) may run any time; public action quests get filed only on the day they may run, one or two a day.
 - Hacker News is the human's alone. Never file a quest that posts or comments there.
-- Do not ship or cast "Ship" stones here; Vercel deploys the site from main on its own.
 
 ## Lately
-- 2026-10-07 Set up by the launch session: aim, playbook, channels, log, six quests and the daily "Marketing round" errand (needs arming in the Runetome).
+
+- 2026-10-07 Log ran dry after launch day (X, HN, r/ClaudeCode, r/SideProject all on 10-07, so the daily limit is spent). Filed six prep-only quests: Product Hunt kit, winget/Scoop fit, directory listing drafts, dev.to draft, subreddit drafts, awesome lists research.
 
 ## Open
+
+- 2026-10-08: check marketing/LOG.md for the r/SideProject link; if missing, file a quest to post it from the launch session's text.
+- 2026-10-08 on: file public quests from the drafts, at most two a day. r/ClaudeAI not before 2026-10-09.
+- Product Hunt: once the kit is done, pick a Tue to Thu (first candidate Tue 2026-10-13, 00:01 Pacific) and tell the human the date a day ahead via a blocked quest.
