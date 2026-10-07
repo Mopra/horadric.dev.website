@@ -49,6 +49,23 @@ export default async function Home() {
           </a>
         </nav>
       </section>
+      <section className="install" id="install" aria-label="How to install Horadric">
+        <ol>
+          <li>
+            <b>download</b> horadric.exe and horadricw.exe from the{" "}
+            <a href="https://github.com/Mopra/horadric.dev/releases/latest">latest release</a>, into the same
+            folder. Leave the other files alone.
+          </li>
+          <li>
+            <b>windows may warn you.</b> The files are not code signed yet, so SmartScreen can stop you the
+            first time. Choose More info, then Run anyway.
+          </li>
+          <li>
+            <b>install:</b> open a terminal in that folder and run <code>.\horadric.exe install</code>. No
+            admin rights needed.
+          </li>
+        </ol>
+      </section>
       <section className="shots" id="shots" aria-label="Screenshots of Horadric">
         {shots.map((s) => (
           <Image key={s.src} src={s.src} alt={s.alt} width={1270} height={760} sizes="(max-width: 900px) 100vw, 880px" />

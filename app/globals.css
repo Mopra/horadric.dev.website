@@ -45,6 +45,14 @@ a:hover { color: var(--text); }
 .corner .get { color: var(--text); }
 .needs { position: absolute; bottom: 28px; left: 32px; color: var(--dim); }
 
+.install { display: flex; justify-content: center; padding: 72px 16px 24px; }
+.install ol { list-style: none; counter-reset: step; max-width: 560px; width: 100%; display: flex; flex-direction: column; gap: 20px; color: var(--dim); }
+.install li { counter-increment: step; position: relative; padding-left: 32px; }
+.install li::before { content: counter(step); position: absolute; left: 0; color: var(--wait); font-variant-numeric: tabular-nums; }
+.install b { font-weight: 400; color: var(--text); }
+.install a { color: var(--text); border-bottom: 1px solid var(--dim); }
+.install code { font-family: ui-monospace, Consolas, monospace; color: var(--text); background: var(--off); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+
 .shots {
   display: flex; flex-direction: column; gap: 32px; align-items: center;
   padding: 24px 16px 96px; scroll-margin-top: 0;
