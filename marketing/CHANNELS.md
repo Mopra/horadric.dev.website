@@ -7,7 +7,7 @@ Top down is the order to work them. State is one of: todo, done, skip
 
 | Place | State | Notes |
 |---|---|---|
-| Product Hunt | todo | Launch on a Tuesday to Thursday at 00:01 Pacific. Sign in with Google. Needs a gallery: at least 3 images at 1270x760 (screenshots from the README's docs/assets, the site's OG image). Free launch only. Never ask for upvotes; ask for feedback. The human should be told the launch date a day ahead so they can answer comments. |
+| Product Hunt | later 2026-10-13 | Free launch scheduled for Tue 2026-10-13 00:01 Pacific, made 2026-10-07. Gallery: the site's OG image (twice, PH pulled one in itself), a site screenshot and three fact cards, 1270x760, because the Horadric repo has no app screenshots yet. Quest 'Product Hunt launch day: answer comments' wakes on the day. Never ask for upvotes; ask for feedback. |
 | DevHunt (devhunt.org) | todo | Dev tools launch site, GitHub sign in. Free queue only. |
 | AlternativeTo | todo | List Horadric as an alternative to Windows Terminal, tmux, Claude Squad and similar agent managers. Accurate description, MIT, Windows. |
 | Uneed | todo | Free queue only. |
