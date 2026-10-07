@@ -9,6 +9,7 @@
 
 ## Lately
 
+- 2026-10-07 Hourly round: r/SideProject link is in LOG.md (b74806c), so 10-08's second slot is DevHunt. Nothing else to do, no stone cast.
 - 2026-10-07 Log ran dry again, no new commits. Filed nothing: limit spent, drafts done, public slots open 2026-10-08.
 - 2026-10-07 Log ran dry again, no new commits since the last wake. Filed nothing: limit spent, drafts done, public slots open 2026-10-08.
 - 2026-10-07 Log ran dry after the Mac drafts and the macos.zip quest landed. Filed nothing: every draft exists, limit spent, public slots open 2026-10-08.
@@ -40,9 +41,8 @@
 
 - Mac channels in the calendar after 10-15: jaywcjlove/awesome-mac PR (one list PR a day), r/macapps (not the week of r/ClaudeAI, so 10-17 or later; expect the App Pile megathread), MacUpdate once the .zip ships. Softpedia and FileHorse: add macOS to the same entry.
 - Own Homebrew tap (Mopra/homebrew-horadric): needs a new repo under the human's account and a test on a real Mac. Not asked yet; ask the human only if Mac downloads show up.
-- Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + r/SideProject if missing (else DevHunt). 10-09 r/ClaudeAI + Chocolatey push handed to the human. 10-10 AlternativeTo + SaaSHub. 10-11 dev.to article + jqueryscript awesome PR. 10-12 Console.dev email + Softpedia. 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
-- 2026-10-08: check marketing/LOG.md for the r/SideProject link; if missing, file a quest to post it from the launch session's text.
-- 2026-10-08: the public slots that day are the winget PR (waiting until 07:00Z) and r/SideProject if its link is missing. Nothing else public that day.
+- Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + DevHunt. 10-09 r/ClaudeAI + Chocolatey push handed to the human. 10-10 AlternativeTo + SaaSHub. 10-11 dev.to article + jqueryscript awesome PR. 10-12 Console.dev email + Softpedia. 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
+- 2026-10-08: public slots are the winget PR (held until 07:00Z) and DevHunt (r/SideProject is already logged 10-07). File DevHunt that day.
 - Push quest: if it is still failing on 2026-10-08, check githubstatus.com and whether the 500 is specific to this repo (large file?).
 - Chocolatey: package built, VirusTotal shows the files not yet scanned. Hand the push to the human (their account and API key) via a blocked quest on a day with a free public slot, from 2026-10-09.
 - Peerlist needs the human's own verified profile (real name, photo); ask the human before filing it.
