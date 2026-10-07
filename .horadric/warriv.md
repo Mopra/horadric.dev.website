@@ -9,6 +9,7 @@
 
 ## Lately
 
+- 2026-10-07 Log ran dry, but found news: commit cfab5e0 ships a Mac app (0.17.0) while every draft says Windows only. Filed "Bring the marketing drafts up to date for the Mac app" and, after it, "Research Mac channels for CHANNELS.md". Both prep, nothing public.
 - 2026-10-07 Wake with no events listed (message cut off). Nothing new, filed nothing; public slots open 2026-10-08.
 - 2026-10-07 Log ran dry an eleventh time, nothing new. Filed nothing: limit spent, drafts done, public slots open 2026-10-08.
 - 2026-10-07 Hourly round: nothing new, no stone cast. Limit spent, drafts done, public slots open 2026-10-08.
@@ -33,6 +34,7 @@
 
 ## Open
 
+- Mac app: once the drafts quest lands, check the public calendar texts mention Mac, and fold the new Mac channels into the calendar (two a day still).
 - Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + r/SideProject if missing (else DevHunt). 10-09 r/ClaudeAI + Chocolatey push handed to the human. 10-10 AlternativeTo + SaaSHub. 10-11 dev.to article + jqueryscript awesome PR. 10-12 Console.dev email + Softpedia. 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
 - 2026-10-08: check marketing/LOG.md for the r/SideProject link; if missing, file a quest to post it from the launch session's text.
 - 2026-10-08: the public slots that day are the winget PR (waiting until 07:00Z) and r/SideProject if its link is missing. Nothing else public that day.
