@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "mode": "auto",
+    "parallel": 1
+  },
+  "runewords": {
+    "Marketing round": {
+      "about": "Daily: measure downloads, answer comments on our posts, and move the marketing on by marketing/PLAYBOOK.md",
+      "every": "day 15:13",
+      "mode": "bypass",
+      "for": "60m",
+      "steps": [
+        {
+          "say": "Marketing round. Read marketing/PLAYBOOK.md first and follow every rule in it. 1) Write today's download count into marketing/LOG.md. 2) Open every post in marketing/LOG.md from the last 30 days (except Hacker News, which is the human's) and answer new comments since {since} by the playbook; anything you may not answer becomes a quest blocked on the human. 3) If fewer than two public actions are logged for today and no open quest covers the next row of marketing/CHANNELS.md, add one quest for it with horadric quest add and the playbook line in its notes. 4) Commit marketing/ and push. Then stop."
+        }
+      ]
+    }
+  }
+}

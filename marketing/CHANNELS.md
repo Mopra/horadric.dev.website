@@ -1,0 +1,51 @@
+# Channels
+
+Top down is the order to work them. State is one of: todo, done, skip
+(with why), later (with when). Rules checked on 2026-10-07 unless said.
+
+## Launch sites
+
+| Place | State | Notes |
+|---|---|---|
+| Product Hunt | todo | Launch on a Tuesday to Thursday at 00:01 Pacific. Sign in with Google. Needs a gallery: at least 3 images at 1270x760 (screenshots from the README's docs/assets, the site's OG image). Free launch only. Never ask for upvotes; ask for feedback. The human should be told the launch date a day ahead so they can answer comments. |
+| DevHunt (devhunt.org) | todo | Dev tools launch site, GitHub sign in. Free queue only. |
+| AlternativeTo | todo | List Horadric as an alternative to Windows Terminal, tmux, Claude Squad and similar agent managers. Accurate description, MIT, Windows. |
+| Uneed | todo | Free queue only. |
+| Peerlist Launchpad | todo | Weekly launch, free. |
+| Microlaunch | todo | Free only. |
+| Fazier | todo | Free only. |
+| Indie Hackers | todo | A post in the product's own voice about building it with Claude Code. |
+| SaaSHub | todo | Free listing. |
+
+## Package managers (downloads, not just visits)
+
+| Place | State | Notes |
+|---|---|---|
+| winget (microsoft/winget-pkgs) | todo | A manifest PR for `Mopra.Horadric` pointing at the release. Read their contributing rules; the unsigned binary may be flagged. The install is two exes plus `horadric install`, so check a portable manifest fits. If it does not fit, skip and say why. |
+| Scoop (extras bucket) | todo | Same check as winget. |
+
+## Lists on GitHub
+
+| Place | State | Notes |
+|---|---|---|
+| hesreallyhim/awesome-claude-code | human | Takes submissions only from a person through its web form. The human was asked to do it on 2026-10-07. Do not submit it. |
+| jqueryscript/awesome-claude-code | todo | Section "Clients & GUIs". Read its contribution guidelines, then a PR with one line. |
+| rohitg00/awesome-claude-code-toolkit | todo | Read the rules first. |
+| Other awesome lists for Codex, coding agents, Windows tools | todo | Search, read each list's rules, at most one PR a day. |
+
+## Communities
+
+| Place | State | Notes |
+|---|---|---|
+| r/ClaudeCode | done 2026-10-07 | Standalone posts must say what was built, how Claude Code was used, what was learned. Flair "Built with Claude". Next post only for a big release, 30 days on. |
+| r/SideProject | todo | Scheduled for 2026-10-07 21:23 by the launch session. Check LOG.md. |
+| r/ClaudeAI | todo | Rule 7: project built with Claude by you, describe how Claude helped in detail, free to try. Use the showcase flair. Not before 2026-10-09, so it does not look like a blast. |
+| r/codex | todo | Automated mods weigh the poster's comment karma in r/codex. Make it about using Codex with Horadric, with detail. |
+| r/ChatGPTCoding, r/AI_Agents, r/windowsapps | todo | Read rules first; skip any that bans self promotion. |
+| r/rust, r/opensource, r/commandline | skip | Ban AI-written posts or AI tools. |
+| r/windows | skip | Needs mod permission, which they are not granting. |
+| Hacker News | done 2026-10-07 | Human only from here on. |
+| Lobsters | skip | Invite only, and hostile to self promotion. |
+| dev.to | todo | One article on how Horadric reads agent state from hooks instead of scraping the terminal. Facts from the README and docs/PLAN.md in the Horadric repo only. |
+| X | done 2026-10-07 | Later posts only when a release ships something new, at most one a week. |
+| Bluesky | todo | Only if the human is signed in; never create an account here. |
