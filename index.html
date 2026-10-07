@@ -4,18 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Horadric</title>
-<meta name="description" content="Every coding agent session on your Windows desktop as a tile. The one that needs you lights up.">
+<meta name="description" content="Your coding agents, as tiles on your Windows desktop. The one that needs you lights up.">
 <link rel="icon" href="horadric.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e0f11;
-    --plate: #141518;
-    --plate-top: #191a1e;
-    --surface: #202227;
-    --well: #0c0d0f;
+    --wall: #0f1012;
+    --plate-top: #1b1c20;
+    --plate: #131417;
+    --key-top: #2a2c32;
+    --key: #212328;
     --screen: #08090b;
     --text: #e8e9ed;
     --dim: #8f939e;
@@ -25,167 +25,150 @@
     --done: #3dd68c;
     --idle: #6e6882;
     --gold: #d4b26a;
-    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    --edge: #7a5c22;
+    --sel: #1e3a5c;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
+  html, body { height: 100%; overflow: hidden; }
   body {
-    background: var(--bg);
-    background-image: radial-gradient(1200px 600px at 75% 40%, rgba(255,178,36,.06), transparent 60%);
+    background: var(--wall);
+    background-image:
+      radial-gradient(900px 700px at 70% 30%, #1a1c21, transparent 70%),
+      radial-gradient(600px 400px at 90% 100%, #15130f, transparent 70%);
     color: var(--text);
-    font: 16px/1.5 Inter, system-ui, sans-serif;
+    font-family: Archivo, system-ui, sans-serif;
+    font-variation-settings: "wdth" 100;
     -webkit-font-smoothing: antialiased;
+    display: grid;
+    grid-template-columns: 272px 1fr;
+    grid-template-rows: 1fr 44px;
+    grid-template-areas: "column desk" "bar bar";
   }
   a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-  .page {
-    min-height: 100vh;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 24px 32px;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-  }
-  nav { display: flex; align-items: center; justify-content: space-between; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: -.01em; text-decoration: none; }
-  .brand img { width: 28px; height: 28px; }
-  nav .links a { color: var(--dim); text-decoration: none; margin-left: 24px; font-size: 15px; }
-  nav .links a:hover { color: var(--text); }
-
-  main {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: 56px;
-    align-items: center;
-    padding: 24px 0;
-  }
-  h1 {
-    font-size: clamp(40px, 4.4vw, 58px);
-    line-height: 1.02;
-    letter-spacing: -.035em;
-    font-weight: 800;
-    margin-bottom: 24px;
-  }
-  h1 em { font-style: normal; color: var(--waiting); }
-  .copy p { color: var(--dim); font-size: 18px; max-width: 30em; margin-bottom: 14px; }
-  .copy p strong { color: var(--text); font-weight: 500; }
-  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 20px; border-radius: 10px;
-    font-weight: 700; font-size: 15px; text-decoration: none;
-    border: 1px solid rgba(255,255,255,.1);
-    background: var(--surface);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 2px 6px rgba(0,0,0,.5);
-  }
-  .btn.primary { background: var(--waiting); color: #1a1204; border-color: transparent; box-shadow: 0 0 30px rgba(255,178,36,.25); }
-  .btn:hover { filter: brightness(1.08); }
-  .fine { margin-top: 20px; font-size: 13px; color: var(--legend); font-family: var(--mono); }
-
-  footer { color: var(--legend); font-size: 13px; display: flex; justify-content: space-between; }
-
-  /* The mock: tiles on the left, the stage on the right, as on a real desktop. */
-  .desk {
-    position: relative;
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 12px;
-    height: 500px;
-    padding: 14px;
-    border-radius: 16px;
-    background: linear-gradient(160deg, #1b1d22, #0f1013);
-    border: 1px solid rgba(255,255,255,.06);
-    box-shadow: 0 40px 80px rgba(0,0,0,.55);
-    font-size: 12px;
-    user-select: none;
-  }
-  .clusters { display: flex; flex-direction: column; gap: 10px; }
+  /* The tile column, drawn the way the app draws it: metal plates lit from
+     above, keys standing up off them, lamps sunk into the keys. */
+  .column { grid-area: column; padding: 12px 0 12px 12px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
   .cluster {
-    border-radius: 10px;
+    border-radius: 12px;
     background: linear-gradient(var(--plate-top), var(--plate));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 4px 10px rgba(0,0,0,.5);
-    padding: 8px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.09), inset 0 -1px 0 rgba(0,0,0,.4), 0 8px 18px rgba(0,0,0,.6);
+    padding: 6px 8px 8px;
   }
-  .cluster h3 {
-    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--gold); padding: 0 4px 6px; display: flex; justify-content: space-between;
+  .cluster header { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 6px; }
+  .cluster h2 {
+    font-size: 13px; font-weight: 700; color: var(--dim);
+    font-variation-settings: "wdth" 112;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.8), 0 1px 0 rgba(255,255,255,.05);
   }
-  .cluster h3 span { color: var(--legend); font-weight: 500; }
+  .plus {
+    width: 20px; height: 20px; border-radius: 5px; display: grid; place-items: center;
+    background: linear-gradient(var(--key-top), var(--key)); color: var(--legend); font-size: 14px; line-height: 1;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 2px rgba(0,0,0,.6);
+  }
   .tile {
-    position: relative;
-    display: grid; grid-template-columns: 14px 1fr; gap: 2px 8px;
-    padding: 7px 8px; margin-top: 5px;
-    border-radius: 7px;
-    background: var(--surface);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 1px 3px rgba(0,0,0,.5);
-    transition: background .4s, box-shadow .4s;
+    position: relative; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer;
+    display: grid; grid-template-columns: 26px 1fr; column-gap: 9px; align-items: center;
+    padding: 9px 10px 9px 8px; margin-top: 6px; border: 0; border-radius: 8px; line-height: 1.4;
+    background: linear-gradient(var(--key-top), var(--key));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.11), inset 0 -1px 0 rgba(0,0,0,.35), 0 2px 4px rgba(0,0,0,.6);
+    transition: background .35s, box-shadow .35s, transform .08s;
   }
+  .tile:hover { background: linear-gradient(#2f3238, #25272c); }
+  .tile:active { transform: translateY(1px); }
   .tile .lamp {
-    grid-row: span 3; width: 9px; height: 9px; margin-top: 4px; border-radius: 50%;
-    background: var(--c, var(--idle)); box-shadow: 0 0 8px var(--c, transparent);
-    transition: background .4s, box-shadow .4s;
+    grid-row: span 3; width: 22px; height: 22px; border-radius: 50%;
+    --c: var(--idle);
+    background:
+      radial-gradient(circle, color-mix(in srgb, var(--c) 45%, white) 0 30%, var(--c) 31% 39%, #0a0b0d 40% 45%, color-mix(in srgb, var(--c) 18%, #1c1d22) 46% 70%, color-mix(in srgb, var(--c) 10%, #1c1d22) 71%);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.7);
+    transition: filter .35s;
   }
-  .tile .name { font-weight: 600; color: var(--text); }
-  .tile .age { color: var(--c, var(--dim)); font-size: 11px; transition: color .4s; }
-  .tile .last { color: var(--legend); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tile.working { --c: var(--working); }
-  .tile.working .lamp { animation: pulse 1.2s ease-in-out infinite; }
-  .tile.waiting { --c: var(--waiting); background: #3a2d12; box-shadow: inset 0 1px 0 rgba(255,220,150,.15), 0 0 0 1px rgba(255,178,36,.5), 0 0 22px rgba(255,178,36,.35); }
-  .tile.done { --c: var(--done); }
-  .tile.idle { --c: var(--idle); }
-  .tile.onstage::before {
-    content: ""; position: absolute; left: -8px; top: 8px; bottom: 8px; width: 3px; border-radius: 2px; background: var(--gold);
+  .tile .name { font-weight: 700; font-size: 13.5px; }
+  .tile .age { font-size: 11.5px; color: var(--c, var(--dim)); font-variant-numeric: tabular-nums; }
+  .tile .last { font-size: 11.5px; color: var(--legend); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tile.working, .tile.working .lamp { --c: var(--working); }
+  .tile.waiting, .tile.waiting .lamp { --c: var(--waiting); }
+  .tile.done, .tile.done .lamp { --c: var(--done); }
+  .tile.idle .age { color: var(--dim); }
+  .tile.working .lamp { animation: breathe 1.6s ease-in-out infinite; }
+  .tile.waiting {
+    background: linear-gradient(#4a3814, #3a2b0f);
+    box-shadow: inset 0 1px 0 rgba(255,220,150,.2), 0 0 0 1px rgba(255,178,36,.55), 0 0 28px rgba(255,178,36,.4);
   }
-  @keyframes pulse { 50% { opacity: .35; } }
+  .tile.waiting .lamp { filter: drop-shadow(0 0 6px var(--waiting)); }
+  .tile.lit::after {
+    content: ""; position: absolute; right: -8px; top: 10px; bottom: 10px; width: 3px; border-radius: 2px;
+    background: var(--gold); box-shadow: 0 0 8px var(--gold);
+  }
+  @keyframes breathe { 50% { filter: brightness(.55); } }
 
+  /* The desktop beside it: the stage grows here, the words sit below. */
+  .desk { grid-area: desk; position: relative; min-width: 0; }
   .stage {
-    display: flex; flex-direction: column;
-    border-radius: 10px; overflow: hidden;
-    background: var(--plate);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 6px 16px rgba(0,0,0,.6);
+    position: absolute; left: 28px; right: 48px; top: 28px; height: calc(100% - 400px); min-height: 240px;
+    display: none; flex-direction: column; border-radius: 10px; overflow: hidden; z-index: 3;
+    background: linear-gradient(var(--plate-top), var(--plate));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 30px 70px rgba(0,0,0,.7);
+    transform-origin: 0 0;
   }
-  .stage .bar {
-    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
-    font-size: 11px; color: var(--dim); border-bottom: 1px solid rgba(0,0,0,.6);
-  }
-  .stage .bar b { color: var(--gold); letter-spacing: .08em; text-transform: uppercase; transition: opacity .25s; }
-  .panes { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 6px; min-height: 0; transition: opacity .25s; }
-  .pane { display: flex; flex-direction: column; min-height: 0; border-radius: 6px; background: var(--screen); box-shadow: inset 0 2px 6px rgba(0,0,0,.8); overflow: hidden; }
-  .pane .head { padding: 5px 8px; font-size: 11px; color: var(--dim); background: var(--well); display: flex; gap: 6px; align-items: center; }
-  .pane .head i { width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--idle)); }
-  .pane .term {
-    flex: 1; padding: 8px 10px; font: 11px/1.6 var(--mono); color: #c9cbd2;
-    display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
-  }
-  .term div { white-space: pre; overflow: hidden; text-overflow: ellipsis; }
-  .term .u { color: var(--text); }
-  .term .u::before { content: "> "; color: var(--legend); }
-  .term .tool { color: var(--working); }
-  .term .ok { color: var(--done); }
-  .term .ask { color: var(--waiting); }
-  .term .sel { color: var(--text); background: #1e3a5c; }
+  .stage.open { display: flex; }
+  .stage .title { display: flex; align-items: center; gap: 10px; padding: 9px 14px; font-size: 12.5px; color: var(--dim); }
+  .stage .title b { color: var(--text); font-variation-settings: "wdth" 112; }
+  .stage .title .x { margin-left: auto; color: var(--legend); cursor: pointer; background: none; border: 0; font: inherit; font-size: 15px; }
+  .panes { flex: 1; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; padding: 0 6px 6px; min-height: 0; }
+  .pane { display: flex; flex-direction: column; min-width: 0; border-radius: 6px; background: var(--screen); box-shadow: inset 0 2px 8px rgba(0,0,0,.9); overflow: hidden; }
+  .pane .head { display: flex; align-items: center; gap: 7px; padding: 6px 10px; font-size: 11.5px; color: var(--dim); background: #0d0e10; }
+  .pane .head i { width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+  .term { flex: 1; padding: 10px 12px; font: 12px/1.65 "JetBrains Mono", Consolas, monospace; color: #c9cbd2; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+  .term div { white-space: pre; overflow: hidden; text-overflow: ellipsis; min-height: 1.65em; }
+  .term .me { color: var(--text); background: #16181c; margin: 0 -12px; padding: 0 12px; }
+  .term .me::before { content: "> "; color: var(--legend); }
+  .term .tool::first-letter { color: var(--done); }
+  .term .tool { color: var(--text); font-weight: 700; }
+  .term .out { color: var(--dim); }
+  .term .box { color: var(--waiting); }
+  .term .pick { color: var(--text); background: var(--sel); }
 
-  .cursor {
-    position: absolute; left: 0; top: 0; width: 18px; height: 18px; pointer-events: none; z-index: 5;
-    transition: transform .9s cubic-bezier(.5,0,.2,1);
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,.6));
+  .words { position: absolute; left: 56px; right: 48px; bottom: 44px; }
+  .words h1 {
+    display: flex; align-items: center; gap: .18em;
+    font-size: clamp(56px, 9.5vw, 156px); line-height: .9; font-weight: 900; letter-spacing: -.02em;
+    font-variation-settings: "wdth" 125;
   }
-  .cursor.click::after {
-    content: ""; position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; border-radius: 50%;
-    border: 2px solid var(--waiting); animation: ripple .5s ease-out forwards;
+  .words h1 img { width: .72em; height: .72em; }
+  .words p { margin-top: 22px; font-size: clamp(17px, 1.6vw, 22px); color: var(--dim); max-width: 26em; line-height: 1.4; }
+  .words .keys { display: flex; align-items: center; gap: 22px; margin-top: 28px; flex-wrap: wrap; }
+  .get {
+    display: inline-flex; align-items: center; gap: 12px; padding: 14px 22px 14px 16px; border-radius: 10px;
+    font-weight: 800; font-size: 16px; text-decoration: none; font-variation-settings: "wdth" 110;
+    background: linear-gradient(#34363d, #26282d);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 -2px 0 rgba(0,0,0,.4), 0 0 0 1px var(--edge), 0 6px 14px rgba(0,0,0,.6);
   }
-  @keyframes ripple { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+  .get:hover { background: linear-gradient(#3b3d45, #2b2d33); }
+  .get:active { transform: translateY(1px); }
+  .get .lamp { width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle, #fff3c4 0 35%, var(--gold) 40%); box-shadow: 0 0 10px var(--gold); }
+  .src { color: var(--dim); font-size: 15px; text-underline-offset: 4px; }
+  .src:hover { color: var(--text); }
 
-  @media (max-width: 960px) {
-    main { grid-template-columns: 1fr; gap: 40px; }
-    .page { padding: 20px 16px; }
-  }
-  @media (max-width: 560px) {
-    .desk { grid-template-columns: 1fr; height: auto; }
-    .stage { height: 300px; }
-    .panes { grid-template-columns: 1fr; }
-    .panes .pane:nth-child(2) { display: none; }
-    nav .links a:first-child { display: none; }
+  .cursor { position: fixed; left: 0; top: 0; width: 20px; height: 20px; z-index: 10; pointer-events: none; opacity: 0; transition: transform .85s cubic-bezier(.55,0,.2,1), opacity .3s; filter: drop-shadow(0 2px 3px rgba(0,0,0,.7)); }
+  .cursor.on { opacity: 1; }
+  .cursor.click::after { content: ""; position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gold); animation: ripple .45s ease-out forwards; }
+  @keyframes ripple { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.7); opacity: 0; } }
+
+  /* A Windows taskbar, because that is where Horadric lives: in the tray. */
+  .bar { grid-area: bar; display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding: 0 16px; background: rgba(28,29,33,.92); border-top: 1px solid rgba(255,255,255,.05); font-size: 12px; color: var(--dim); }
+  .bar img { width: 18px; height: 18px; }
+  .bar time { font-variant-numeric: tabular-nums; text-align: right; line-height: 1.25; }
+
+  @media (max-width: 820px), (max-height: 600px) {
+    html, body { overflow: auto; height: auto; }
+    body { grid-template-columns: 1fr; grid-template-rows: auto auto 44px; grid-template-areas: "desk" "column" "bar"; }
+    .words { position: static; padding: 40px 16px 24px; }
+    .column { padding: 0 16px 24px; }
+    .tile.lit::after { display: none; }
+    .stage { position: fixed; inset: 12px; height: auto; }
   }
   @media (prefers-reduced-motion: reduce) {
     .tile.working .lamp { animation: none; }
@@ -194,189 +177,219 @@
 </style>
 </head>
 <body>
-<div class="page">
-  <nav>
-    <a class="brand" href="/"><img src="horadric.png" alt="">Horadric</a>
-    <div class="links">
-      <a href="https://github.com/Mopra/horadric.dev#readme">Docs</a>
-      <a href="https://github.com/Mopra/horadric.dev">GitHub</a>
-    </div>
-  </nav>
+  <aside class="column" id="column" aria-label="Sessions, click one"></aside>
 
-  <main>
-    <div class="copy">
-      <h1>Your agents are waiting.<br><em>Now you can see&nbsp;it.</em></h1>
-      <p>You run five Claude Code sessions. Four are working. One has been waiting on you for twelve minutes. You had no idea.</p>
-      <p><strong>Horadric puts every session on your desktop as a tile</strong>, grouped by project. The one that needs you lights up. Click it and it's a real terminal.</p>
-      <p>No chat UI in the way. The terminal is the UI.</p>
-      <div class="cta">
-        <a class="btn primary" href="https://github.com/Mopra/horadric.dev/releases/latest">Download for Windows</a>
-        <a class="btn" href="https://github.com/Mopra/horadric.dev">Read the source</a>
+  <section class="desk" id="desk">
+    <div class="stage" id="stage" role="dialog" aria-label="Terminal">
+      <div class="title"><b id="stageName"></b><span id="stageCount"></span><button class="x" id="close" aria-label="Close">×</button></div>
+      <div class="panes" id="panes"></div>
+    </div>
+
+    <div class="words">
+      <h1><img src="horadric.png" alt="">Horadric</h1>
+      <p>Your coding agents, as tiles on your desktop. The one that needs you lights up.</p>
+      <div class="keys">
+        <a class="get" href="https://github.com/Mopra/horadric.dev/releases/latest"><span class="lamp"></span>Download for Windows</a>
+        <a class="src" href="https://github.com/Mopra/horadric.dev">Source on GitHub</a>
       </div>
-      <div class="fine">Pure Rust. Native Win32. No Electron. MIT.</div>
     </div>
+  </section>
 
-    <div class="desk" id="desk" aria-label="Horadric tiles and stage, animated">
-      <div class="clusters" id="clusters"></div>
-      <div class="stage">
-        <div class="bar"><b id="stageName"></b><span id="stageCount"></span></div>
-        <div class="panes" id="panes"></div>
-      </div>
-      <svg class="cursor" id="cursor" viewBox="0 0 18 18"><path d="M2 1l13 8-6 1.4L6 16z" fill="#fff" stroke="#000" stroke-width="1"/></svg>
-    </div>
-  </main>
+  <footer class="bar"><img src="horadric.png" alt="Horadric in the tray"><time id="clock"></time></footer>
 
-  <footer>
-    <span>horadric.dev</span>
-    <span>Windows 10 and 11</span>
-  </footer>
-</div>
+  <svg class="cursor" id="cursor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 1l14 9-6.5 1.3L6 18z" fill="#fff" stroke="#000"/></svg>
 
 <script>
-  // A scripted few seconds of a real day: sessions work, one stops to ask,
-  // you click its tile, answer, and it goes back to work.
   const projects = [
     { name: "horadric", sessions: [
-      { id: "tiles", name: "tiles-ui", state: "working", age: "working 4 min", last: "Resizing cluster windows" },
-      { id: "reload", name: "reload", state: "working", age: "working 1 min", last: "Running cargo test" },
-      { id: "docs", name: "docs", state: "idle", age: "idle 20 min", last: "Updated README" },
+      { id: "tiles", name: "tiles-ui", state: "working", since: -240, last: "Resizing cluster windows",
+        log: [["me", "make the clusters resize smoothly"], ["tool", "● Read(cluster.rs)"], ["out", "  ⎿ Read 412 lines"], ["", "The resize waits on WM_SIZE. Moving it"], ["", "into the layout pass."], ["tool", "● Update(cluster.rs)"], ["out", "  ⎿ +18 -6"]] },
+      { id: "reload", name: "reload", state: "working", since: -70, last: "Running cargo test",
+        log: [["me", "reload must keep every session alive"], ["tool", "● Search(\"attach_host\")"], ["out", "  ⎿ Found 4 files"], ["", "Hosts outlive the UI, so the new build"], ["", "only has to attach to them."]],
+        ask: "Bash(cargo test reload)", after: [["tool", "● Bash(cargo test reload)"], ["out", "  ⎿ test result: ok. 12 passed"], ["", "Reload attaches to every host."]], answer: "12 tests pass" },
+      { id: "docs", name: "docs", state: "idle", since: -1200, last: "Updated the README",
+        log: [["me", "describe the settings window"], ["tool", "● Update(README.md)"], ["out", "  ⎿ +14 -2"], ["", "Done."]] },
     ]},
     { name: "webshop", sessions: [
-      { id: "checkout", name: "checkout", state: "working", age: "working 7 min", last: "Writing CartSummary.tsx" },
-      { id: "login", name: "login-fix", state: "working", age: "working 2 min", last: "Reading auth/session.ts" },
+      { id: "checkout", name: "checkout", state: "working", since: -420, last: "Writing CartSummary.tsx",
+        log: [["me", "show tax in the cart summary"], ["tool", "● Read(CartSummary.tsx)"], ["tool", "● Update(CartSummary.tsx)"], ["out", "  ⎿ +9 -2"], ["", "Tax now comes from the order total."], ["tool", "● Bash(npm run typecheck)"]] },
+      { id: "login", name: "login-fix", state: "working", since: -130, last: "Reading session.ts",
+        log: [["me", "users get logged out after 5 minutes"], ["tool", "● Read(auth/session.ts)"], ["", "maxAge is in seconds, not milliseconds."], ["tool", "● Update(auth/session.ts)"], ["out", "  ⎿ +1 -1"]],
+        ask: "Bash(npm test auth)", after: [["tool", "● Bash(npm test auth)"], ["out", "  ⎿ 14 passing"], ["", "Fixed. Sessions last 5 days now."]], answer: "14 tests pass" },
+    ]},
+    { name: "blog", sessions: [
+      { id: "post", name: "launch-post", state: "working", since: -30, last: "Drafting the intro",
+        log: [["me", "draft a launch post from the changelog"], ["tool", "● Read(CHANGELOG.md)"], ["", "Three things worth a headline."]],
+        ask: "Write(posts/launch.md)", after: [["tool", "● Write(posts/launch.md)"], ["out", "  ⎿ 64 lines"], ["", "Draft is in posts/launch.md."]], answer: "Draft written" },
     ]},
   ];
-
-  const scripts = {
-    tiles: [["u", "make the clusters resize smoothly"], ["tool", "● Read crates/horadric-ui/src/cluster.rs"], ["", "  The resize waits for WM_SIZE. Moving it into"], ["", "  the layout pass instead."], ["tool", "● Edit cluster.rs (+18 -6)"], ["tool", "● Bash cargo test -p horadric-ui"], ["ok", "  test result: ok. 142 passed"]],
-    reload: [["u", "reload should keep every session alive"], ["tool", "● Grep \"attach_host\""], ["tool", "● Read src/reload.rs"], ["", "  Hosts outlive the UI, so the new build"], ["", "  only has to attach to them."], ["tool", "● Bash cargo test reload"], ["ok", "  test result: ok. 12 passed"]],
-    checkout: [["u", "show tax in the cart summary"], ["tool", "● Read src/cart/CartSummary.tsx"], ["tool", "● Edit CartSummary.tsx (+9 -2)"], ["", "  Tax now comes from the order total."], ["tool", "● Bash npm run typecheck"], ["ok", "  0 errors"]],
-    login: [["u", "users get logged out after 5 minutes"], ["tool", "● Read auth/session.ts"], ["", "  The cookie maxAge is in seconds, not ms."], ["tool", "● Edit session.ts (+1 -1)"]],
-    loginAsk: [["ask", "Allow Bash(npm test auth)?"], ["sel", "❯ 1. Yes"], ["", "  2. Yes, and don't ask again"], ["", "  3. No"]],
-    loginAfter: [["tool", "● Bash npm test auth"], ["ok", "  14 passing"], ["", "  Fixed. Sessions now last 5 days."]],
-  };
+  // Who asks for you next, round and round.
+  const askers = ["login", "post", "reload"];
 
   const $ = (id) => document.getElementById(id);
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const session = (id) => projects.flatMap((p) => p.sessions).find((s) => s.id === id);
-  let onStage = "horadric";
-  const lines = {};
+  const all = () => projects.flatMap((p) => p.sessions);
+  const byId = (id) => all().find((s) => s.id === id);
+  const projectOf = (id) => projects.find((p) => p.sessions.some((s) => s.id === id));
+  const now = () => Date.now() / 1000;
+  const t0 = now();
+  all().forEach((s) => (s.since += t0));
 
-  function renderClusters() {
-    $("clusters").innerHTML = projects.map((p) => `
-      <div class="cluster"><h3>${p.name}<span>+</span></h3>
-        ${p.sessions.map((s) => `
-          <div class="tile ${s.state} ${p.name === onStage ? "onstage" : ""}" data-id="${s.id}">
-            <span class="lamp"></span><span class="name">${s.name}</span>
-            <span class="age">${s.age}</span><span class="last">${s.last}</span>
-          </div>`).join("")}
-      </div>`).join("");
+  let staged = null; // project name on stage
+  let touched = 0;   // when the visitor last clicked, so the demo steps aside
+
+  function age(s) {
+    const d = Math.max(0, Math.floor(now() - s.since));
+    const span = d < 60 ? `${d} s` : `${Math.floor(d / 60)} min`;
+    return { working: `working ${span}`, waiting: `needs you ${span}`, done: `done ${span} ago`, idle: `idle ${span}` }[s.state];
   }
+
+  function renderColumn() {
+    $("column").innerHTML = projects.map((p) => `
+      <section class="cluster"><header><h2>${p.name}</h2><span class="plus">+</span></header>
+        ${p.sessions.map((s) => `
+          <button class="tile ${s.state} ${p.name === staged ? "lit" : ""}" data-id="${s.id}">
+            <span class="lamp"></span><span class="name">${s.name}</span>
+            <span class="age">${age(s)}</span><span class="last">${s.last}</span>
+          </button>`).join("")}
+      </section>`).join("");
+  }
+
+  const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const line = ([cls, t]) => `<div class="${cls}">${esc(t) || " "}</div>`;
+  const askBox = (s) => [["", ""], ["box", "Do you want to run " + s.ask + "?"], ["pick", "❯ 1. Yes"], ["", "  2. Yes, and don't ask again"], ["", "  3. No"]];
 
   function renderStage() {
-    const p = projects.find((x) => x.name === onStage);
+    const p = projects.find((x) => x.name === staged);
+    if (!p) return;
     $("stageName").textContent = p.name;
-    $("stageCount").textContent = `${p.sessions.length} sessions`;
-    const shown = p.sessions.filter((s) => s.state !== "idle").slice(0, 2);
-    $("panes").innerHTML = shown.map((s) => `
+    $("stageCount").textContent = p.sessions.length === 1 ? "1 session" : `${p.sessions.length} sessions`;
+    $("panes").innerHTML = p.sessions.filter((s) => s.state !== "idle" || p.sessions.length === 1).map((s) => `
       <div class="pane"><div class="head" style="--c: var(--${s.state})"><i></i>${s.name}</div>
-        <div class="term" id="term-${s.id}">${(lines[s.id] || []).map(line).join("")}</div>
+        <div class="term" id="term-${s.id}">${s.log.concat(s.state === "waiting" ? askBox(s) : []).map(line).join("")}</div>
       </div>`).join("");
   }
 
-  const line = ([cls, text]) => `<div class="${cls}">${text.replace(/</g, "&lt;")}</div>`;
+  function render() { renderColumn(); renderStage(); }
 
   function set(id, patch) {
-    Object.assign(session(id), patch);
-    renderClusters();
-    renderStage();
+    const s = byId(id);
+    if (patch.state && patch.state !== s.state) s.since = now();
+    Object.assign(s, patch);
+    render();
   }
 
-  async function type(id, script, gap = 650) {
-    for (const l of script) {
-      (lines[id] ||= []).push(l);
-      const term = $("term-" + id);
-      if (term) term.insertAdjacentHTML("beforeend", line(l));
+  // The stage grows out of the tile that was clicked and shrinks back into it.
+  function morph(from, open) {
+    const stage = $("stage");
+    const a = from.getBoundingClientRect(), b = stage.getBoundingClientRect();
+    const t = `translate(${a.left - b.left}px, ${a.top - b.top}px) scale(${a.width / b.width}, ${a.height / b.height})`;
+    const frames = [{ transform: t, opacity: 0.2 }, { transform: "none", opacity: 1 }];
+    return stage.animate(open ? frames : frames.reverse(), { duration: reduced ? 0 : 340, easing: "cubic-bezier(.2,.8,.2,1)" }).finished;
+  }
+
+  async function show(name, tile) {
+    if (staged === name) return hide(tile);
+    staged = name;
+    render();
+    $("stage").classList.add("open");
+    await morph(tile, true);
+  }
+
+  async function hide(tile) {
+    const p = staged;
+    tile = tile || document.querySelector(".tile.lit");
+    if (tile) await morph(tile, false);
+    $("stage").classList.remove("open");
+    if (staged === p) staged = null;
+    render();
+  }
+
+  async function type(id, lines, gap) {
+    for (const l of lines) {
+      byId(id).log.push(l);
+      $("term-" + id)?.insertAdjacentHTML("beforeend", line(l));
       await sleep(gap);
     }
   }
 
-  async function moveCursorTo(el) {
-    const desk = $("desk").getBoundingClientRect();
-    const r = el.getBoundingClientRect();
-    $("cursor").style.transform = `translate(${r.left - desk.left + r.width * 0.6}px, ${r.top - desk.top + r.height * 0.5}px)`;
-    await sleep(950);
-  }
+  // A visitor's click works as it does in the app: the tile opens its project
+  // on the stage, a second click closes it, and a waiting session gets its yes.
+  $("column").addEventListener("click", async (e) => {
+    const tile = e.target.closest(".tile");
+    if (!tile) return;
+    touched = now();
+    $("cursor").classList.remove("on");
+    const s = byId(tile.dataset.id);
+    await show(projectOf(s.id).name, tile);
+    if (s.state === "waiting" && staged) answer(s);
+  });
+  $("close").addEventListener("click", () => { touched = now(); hide(); });
 
-  async function click() {
-    const c = $("cursor");
-    c.classList.remove("click");
-    void c.offsetWidth;
-    c.classList.add("click");
-    await sleep(350);
-  }
-
-  async function switchStage(name) {
-    $("panes").style.opacity = 0;
-    $("stageName").style.opacity = 0;
-    await sleep(250);
-    onStage = name;
-    renderClusters();
-    renderStage();
-    $("panes").style.opacity = 1;
-    $("stageName").style.opacity = 1;
-  }
-
-  async function loop() {
-    for (const k in lines) delete lines[k];
-    Object.assign(session("login"), { state: "working", age: "working 2 min", last: "Reading auth/session.ts" });
-    Object.assign(session("docs"), { state: "idle", age: "idle 20 min", last: "Updated README" });
-    Object.assign(session("tiles"), { state: "working", age: "working 4 min", last: "Resizing cluster windows" });
-    onStage = "horadric";
-    renderClusters();
-    renderStage();
-    $("cursor").style.transform = "translate(420px, 380px)";
-
-    // Background work on the other project happens off stage, as it does for real.
-    type("checkout", scripts.checkout, 900);
-    type("login", scripts.login, 700);
-    type("reload", scripts.reload, 800);
-    await type("tiles", scripts.tiles, 700);
-    set("tiles", { state: "done", age: "done just now", last: "142 tests pass" });
-    await sleep(600);
-
-    set("login", { state: "waiting", age: "needs permission 0 min", last: "Allow Bash(npm test auth)?" });
-    lines.login.push(...scripts.loginAsk);
-    await sleep(1600);
-    set("login", { age: "needs permission 1 min" });
-    await sleep(700);
-
-    await moveCursorTo(document.querySelector('[data-id="login"]'));
-    await click();
-    await switchStage("webshop");
+  async function answer(s) {
+    if (s.answering) return;
+    s.answering = true;
     await sleep(900);
-
-    await moveCursorTo($("term-login"));
-    await click();
-    lines.login.splice(-4);
-    set("login", { state: "working", age: "working 3 min", last: "Running npm test" });
-    await type("login", scripts.loginAfter, 750);
-    set("login", { state: "done", age: "done just now", last: "Sessions now last 5 days" });
-    await sleep(3500);
+    set(s.id, { state: "working", last: "Working on it" });
+    await type(s.id, s.after, 700);
+    set(s.id, { state: "done", last: s.answer });
+    s.answering = false;
   }
 
-  async function run() {
-    renderClusters();
-    renderStage();
-    if (reduced) {
-      Object.values(scripts).slice(0, 4).forEach((s, i) => (lines[["tiles", "reload", "checkout", "login"][i]] = s));
-      set("login", { state: "waiting", age: "needs permission 12 min", last: "Allow Bash(npm test auth)?" });
-      return;
+  async function cursorTo(el, dx = 0.55, dy = 0.5) {
+    const r = el.getBoundingClientRect();
+    const c = $("cursor");
+    c.classList.add("on");
+    c.style.transform = `translate(${r.left + r.width * dx}px, ${r.top + r.height * dy}px)`;
+    await sleep(900);
+  }
+
+  async function clickAt() {
+    const c = $("cursor");
+    c.classList.remove("click"); void c.getBoundingClientRect(); c.classList.add("click");
+    await sleep(300);
+  }
+
+  const idle = () => now() - touched > 10;
+
+  async function demo() {
+    $("cursor").style.transform = `translate(${innerWidth * 0.6}px, ${innerHeight * 0.55}px)`;
+    let turn = 0;
+    for (;;) {
+      await sleep(1800);
+      if (!idle()) continue;
+      const s = byId(askers[turn++ % askers.length]);
+      if (staged) await hide();
+      // Whoever finished last round goes quiet, so the next round reads clearly.
+      all().forEach((x) => { if (x.state === "done") { x.state = "idle"; x.since = now(); } });
+      set(s.id, { state: "waiting", last: "Wants to run " + s.ask.split("(")[0] });
+      await sleep(2600);
+      if (!idle() || s.state !== "waiting") continue;
+      await cursorTo(document.querySelector(`[data-id="${s.id}"]`));
+      if (!idle()) continue;
+      await clickAt();
+      await show(projectOf(s.id).name, document.querySelector(`[data-id="${s.id}"]`));
+      await cursorTo($("term-" + s.id), 0.3, 0.88);
+      await clickAt();
+      await answer(s);
+      $("cursor").classList.remove("on");
+      await sleep(2600);
+      if (idle() && staged) await hide();
     }
-    for (;;) await loop();
   }
-  run();
+
+  function tick() {
+    document.querySelectorAll(".tile").forEach((el) => { el.querySelector(".age").textContent = age(byId(el.dataset.id)); });
+    const d = new Date();
+    $("clock").innerHTML = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "<br>" + d.toLocaleDateString();
+  }
+
+  render();
+  tick();
+  setInterval(tick, 1000);
+  if (reduced) set("login", { state: "waiting", last: "Wants to run Bash" });
+  else demo();
 </script>
 </body>
 </html>
