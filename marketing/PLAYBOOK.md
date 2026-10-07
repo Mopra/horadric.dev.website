@@ -101,6 +101,18 @@ Break one and the marketing does more harm than good.
     `LOG.md` with the date, place and link, the moment it is done.
     Check `LOG.md` before posting so nothing goes out twice.
 
+## GitHub
+
+Act on GitHub as Mopra, the owner of Horadric, never as MP-OPTI (the
+default `gh` account, a work account). For `gh`, prefix the command with
+`GH_TOKEN=$(gh auth token --user Mopra)`. To push this repository:
+
+```
+git push "https://x-access-token:$(gh auth token --user Mopra)@github.com/Mopra/horadric.dev.website.git" main
+```
+
+Never run `gh auth switch`; other sessions share it.
+
 ## Where
 
 `CHANNELS.md` lists every place, its rules and its state. Work it top
