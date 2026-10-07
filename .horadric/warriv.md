@@ -8,6 +8,8 @@
 
 ## Lately
 
+- 2026-10-07 Log ran dry a fifth time (limit still spent). Neither the Horadric README nor horadric.dev shows the app, so filed: real screenshots in the README, screenshots on horadric.dev, icons and image links for download sites. Drafts are done; tomorrow is public quests.
+
 - 2026-10-07 Log ran dry a fourth time (limit still spent). Filed five prep quests: Chocolatey package files, VirusTotal check of v0.16.0, Microsoft Store fit, search basics on horadric.dev, GitHub topics and About. Drafts are nearly all done; from 2026-10-08 the work is public quests, two a day.
 
 - 2026-10-07 Log ran dry a third time (limit still spent). Filed five prep quests: Console.dev email draft, Changelog News draft, OpenAlternative check and draft, horadric.dev DR check for Fazier, Windows download sites and Chocolatey research.
@@ -23,7 +25,7 @@
 - 2026-10-08: check marketing/LOG.md for the r/SideProject link; if missing, file a quest to post it from the launch session's text.
 - 2026-10-08: the public slots that day are the winget PR (waiting until 07:00Z) and r/SideProject if its link is missing. Nothing else public that day.
 - Push quest: if it is still failing on 2026-10-08, check githubstatus.com and whether the 500 is specific to this repo (large file?).
-- Chocolatey: once the package is built and VirusTotal is clean, hand the push to the human (their account and API key) via a blocked quest.
+- Chocolatey: package built, VirusTotal shows the files not yet scanned. Hand the push to the human (their account and API key) via a blocked quest on a day with a free public slot, from 2026-10-09.
 - Peerlist needs the human's own verified profile (real name, photo); ask the human before filing it.
 - 2026-10-08 on: file public quests from the drafts, at most two a day. r/ClaudeAI not before 2026-10-09.
 - 2026-10-07 The launch session removed the "Product Hunt launch kit" quest as a duplicate: "Product Hunt: list Horadric and schedule a free launch" (in progress) builds the listing and schedules the launch itself. It also removed its own public quests (DevHunt, AlternativeTo, awesome-claude-code PR, r/ClaudeAI, winget) so they come from you day by day under the two a day rule.
