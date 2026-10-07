@@ -152,3 +152,39 @@ Download and source: https://github.com/Mopra/horadric.dev/releases/latest
 
 Notes for the human before posting:
 - Flair: Developer.
+
+---
+
+## r/macapps
+
+Prepared 2026-10-07, not posted. Rules came from mod posts mirrored on
+redlib (reddit.com could not be fetched), so read the live sidebar and
+rules.json before posting. Format is PCP: Problem, Comparison, Pricing
+with a link. Horadric is outside the Mac App Store, the repo has 0 stars and
+the Mac app is new, so the mods may send it to the monthly "App Pile"
+megathread. If so, post the same text as a comment there. Do it after
+r/ClaudeAI, never the same week (playbook rule 3 and CHANNELS.md). Human's
+account. The account needs a verified email, and Reddit removes posts
+whose first comment holds a link, so put the links in the body.
+
+**Title:** Horadric: a free, open source dock for Claude Code, Codex and Grok Build sessions
+
+**Body:**
+
+**Problem.** I run several coding agent sessions at once (Claude Code, Codex, Grok Build). Each one stops when it needs a decision, and the terminal that is waiting is usually behind three others. I kept losing it.
+
+**What it is.** Horadric shows every session as a small tile, grouped by project. A tile turns amber when the agent needs you. Click it and you get the real CLI in a real terminal, with no chat window of mine around it. Cmd+J jumps to the session that has waited longest. The Dock icon shows how many are waiting and bounces. There is a menu bar menu, plain terminals beside the agents, and sessions that outlive the app. State comes from the agents' own hooks, not from reading terminal text. No telemetry.
+
+**Comparison.** Plain Terminal or iTerm2 with tabs or tmux works until you have five sessions, and then you are the one watching for the prompt. Claude Squad is a terminal UI that manages sessions in tmux. Horadric is a desktop app instead: tiles on the desktop, a notification of its own, the real terminal on click.
+
+**Pricing.** Free and MIT licensed. macOS 11 or later, Apple Silicon or Intel. https://horadric.dev and the source at https://github.com/Mopra/horadric.dev
+
+**Two things to know.** I made it with Claude Code, which wrote almost all of the code. I made the calls on what it is. And the Mac app is not signed or notarized yet. It installs with `curl -fsSL https://horadric.dev/install.sh | sh`, which Gatekeeper does not stop. The Mac app is new in 0.17.0. The browser pane, quest log and usage window are Windows only for now.
+
+Tell me what is missing.
+
+Notes for the human before posting:
+- "Claude Squad is a terminal UI that manages sessions in tmux" is how I understand it, not from the facts file. Check it, or drop the sentence.
+- "The terminal that is waiting is usually behind three others" is the same story as the r/AI_Agents draft. Keep it only if it is true for you.
+- Flair: pick the developer or free flair the form offers.
+

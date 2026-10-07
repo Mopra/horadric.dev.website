@@ -199,3 +199,41 @@ Morten
   3. https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/screenshot-browser.png
   4. https://raw.githubusercontent.com/Mopra/horadric.dev/main/docs/assets/screenshot-quests.png
 - Description: the shared long description. Features: the bullet list from it.
+
+## MacUpdate
+
+Prepared 2026-10-07, not submitted. Form: macupdate.com/help/submit-app,
+reviewed by their content team. Whether an account is needed is not stated.
+Blocker: the download URL must be an App Store link or a direct .pkg, .dmg
+or .zip. The release ships only `Horadric-macos.tar.gz`, so a
+`Horadric.app` zip must be added to the release first (quest in the
+Horadric repo). Do not submit before that. Decline hosting and give the
+GitHub URL, so downloads count in the GitHub measure. A visible link back
+to the listing is optional, never a condition.
+
+- Name: Horadric
+- Download URL: the GitHub release asset of the Mac zip, once it exists, under https://github.com/Mopra/horadric.dev/releases/latest
+- Product page URL: https://horadric.dev
+- Price: leave blank (free). License: MIT.
+- Version: the current release (0.17.0 at the time of writing)
+- Category: Developer Tools
+- System requirements: macOS 11 or later, Apple Silicon or Intel.
+- Short description: Free Mac app that shows every Claude Code, Codex and Grok Build session as a tile and lights it when it needs you.
+- Description:
+
+  Horadric turns every coding agent session into a small tile, grouped by project. A tile turns amber when the agent needs you. Click it and you get the real CLI in a real terminal. Horadric has no chat UI of its own and does not wrap the agent.
+
+  * Works with Claude Code, Codex and Grok Build.
+  * Cmd+J jumps to the session that has waited longest.
+  * The Dock icon counts the sessions waiting and bounces.
+  * A menu bar menu, plain terminals beside the agents, and the app can open at login.
+  * Sessions survive the app closing, an update and a reboot.
+  * State comes from the agents' own hooks, not from scraping the terminal.
+  * Updates itself. Free, MIT licensed, no telemetry.
+
+  The browser pane, quest log, Warriv, files tile, usage window and Discord status are Windows only for now.
+
+  Claude Code wrote almost all of it. I made the calls.
+
+  The Mac app is not signed or notarized yet. A download from a browser may show a Gatekeeper warning. Installing with `curl -fsSL https://horadric.dev/install.sh | sh` avoids it.
+- Version changes: Horadric for the Mac, new in 0.17.0: tiles, the stage with real terminals, plain terminals, sessions that outlive the app, the menu bar menu, Cmd+J, a Dock badge and bounce, opening at login and the updater.
