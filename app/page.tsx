@@ -29,6 +29,7 @@ export default async function Home() {
   return (
     <>
       <Field />
+      <p className="needs">needs a Claude, Codex or xAI subscription</p>
       <nav className="corner">
         <a href="https://github.com/Mopra/horadric.dev">source</a>
         {n >= SHOW_DOWNLOADS_FROM && <span>{n.toLocaleString("en-US")} downloads</span>}

@@ -25,6 +25,7 @@ const app = {
   description,
   applicationCategory: "DeveloperApplication",
   operatingSystem: "Windows",
+  softwareRequirements: "A Claude, Codex or xAI subscription",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   downloadUrl: "https://github.com/Mopra/horadric.dev/releases/latest",
   isAccessibleForFree: true,

@@ -40,10 +40,12 @@ a:hover { color: var(--text); }
 .count b { font-weight: 400; color: var(--wait); }
 .corner { position: fixed; bottom: 28px; right: 32px; display: flex; gap: 28px; color: var(--dim); }
 .corner .get { color: var(--text); }
+.needs { position: fixed; bottom: 28px; left: 32px; color: var(--dim); }
 
 @media (max-width: 520px) {
   .field { grid-template-columns: repeat(8, 14px); }
   .corner { right: 0; left: 0; justify-content: center; }
+  .needs { left: 0; right: 0; bottom: 56px; text-align: center; }
 }
 @media (prefers-reduced-motion: reduce) {
   .a.wait { animation: none; }
