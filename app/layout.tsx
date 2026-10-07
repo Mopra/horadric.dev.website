@@ -27,6 +27,8 @@ const app = {
   operatingSystem: "Windows",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   downloadUrl: "https://github.com/Mopra/horadric.dev/releases/latest",
+  isAccessibleForFree: true,
+  license: "https://opensource.org/licenses/MIT",
   sameAs: ["https://github.com/Mopra/horadric.dev"],
 };
 
