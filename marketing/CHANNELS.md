@@ -29,9 +29,14 @@ Top down is the order to work them. State is one of: todo, done, skip
 | Place | State | Notes |
 |---|---|---|
 | hesreallyhim/awesome-claude-code | human | Takes submissions only from a person through its web form. The human was asked to do it on 2026-10-07. Do not submit it. |
-| jqueryscript/awesome-claude-code | todo | Section "Clients & GUIs". Read its contribution guidelines, then a PR with one line. |
-| rohitg00/awesome-claude-code-toolkit | todo | Read the rules first. |
-| Other awesome lists for Codex, coding agents, Windows tools | todo | Search, read each list's rules, at most one PR a day. |
+| jqueryscript/awesome-claude-code | todo, draft ready | Section "Clients & GUIs". Rules read 2026-10-07: the guidelines section says "Under Construction", so copy the neighbours' format. Line in marketing/drafts/awesome-lists.md. Active (pushed 2026-10-07) but no merged PR lately, so expect a wait. |
+| rohitg00/awesome-claude-code-toolkit | skip, stale | Rules read 2026-10-07: fork, PR, update the README table. Last merge was 2026-05-12 and about 40 PRs sit open, so it is not kept. Line is in the drafts file in case it wakes up. Recheck in January. |
+| RoggeOhta/awesome-codex-cli | todo, wait for users | Section "GUI & Desktop Apps". Pushed 2026-09-06. Self submission allowed, but rejects "self-promotion without substance" and wants real users. Needs a one-sentence description and a star badge. Submit after a few stars or about 50 more downloads. Line in drafts. |
+| jaywcjlove/awesome-rust-apps | todo, draft ready | Section "AI & Machine Learning". Pushed 2026-10-07, merged a PR on 2026-09-19. Open-source Rust apps, PR welcome, no other rules. Needs the two badge images. Line in drafts. |
+| milisp/awesome-codex-cli | skip | Wants proven external usage first ("No users yet? Submit once you get adoption"). Revisit at real adoption. |
+| 0PandaDEV/awesome-windows | skip | Rejects "vibecoded slop". Horadric is built with Claude Code, so do not submit. |
+| phamquiluan/awesome-cli-agents, cdleon/awesome-terminals | skip | The first is script generated from stars (2k and up). The second lists terminal emulators, off topic. |
+| Other lists | done 2026-10-07 | Searched Codex, coding agents, AI terminals, Windows, Rust. The rest are skills, plugins or subagent lists, or cover Gemini only. At most one PR a day across all of these. |
 
 ## Communities
 
