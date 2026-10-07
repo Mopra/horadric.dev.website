@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Field from "./field";
 
 // Rebuild the page at most once an hour, so the download count stays fresh
@@ -24,19 +25,35 @@ async function downloads() {
   }
 }
 
+// Real screenshots of the app. Alt text sticks to what the README and PLAYBOOK say it does.
+const shots = [
+  { src: "/screenshot-tiles.png", alt: "Horadric on the Windows desktop: every coding agent session as a small tile, grouped by project, with the quest log and Runetome buttons beside live terminals." },
+  { src: "/screenshot-terminal.png", alt: "Clicking a tile opens the real Claude Code CLI in a real terminal, with no chat UI of its own." },
+  { src: "/screenshot-quests.png", alt: "The quest log of a project, with Warriv the orchestrator driving it, above the Runetome buttons." },
+  { src: "/screenshot-browser.png", alt: "The browser pane that sits beside the agents, which agents can drive." },
+];
+
 export default async function Home() {
   const n = await downloads();
   return (
     <>
-      <Field />
-      <p className="needs">needs a Claude, Codex or xAI subscription</p>
-      <nav className="corner">
-        <a href="https://github.com/Mopra/horadric.dev">source</a>
-        {n >= SHOW_DOWNLOADS_FROM && <span>{n.toLocaleString("en-US")} downloads</span>}
-        <a className="get" href="https://github.com/Mopra/horadric.dev/releases/latest">
-          download for windows
-        </a>
-      </nav>
+      <section className="hero">
+        <Field />
+        <p className="needs">needs a Claude, Codex or xAI subscription</p>
+        <nav className="corner">
+          <a href="#shots">screenshots</a>
+          <a href="https://github.com/Mopra/horadric.dev">source</a>
+          {n >= SHOW_DOWNLOADS_FROM && <span>{n.toLocaleString("en-US")} downloads</span>}
+          <a className="get" href="https://github.com/Mopra/horadric.dev/releases/latest">
+            download for windows
+          </a>
+        </nav>
+      </section>
+      <section className="shots" id="shots" aria-label="Screenshots of Horadric">
+        {shots.map((s) => (
+          <Image key={s.src} src={s.src} alt={s.alt} width={1270} height={760} sizes="(max-width: 900px) 100vw, 880px" />
+        ))}
+      </section>
     </>
   );
 }
