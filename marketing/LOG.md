@@ -13,6 +13,7 @@ Newest first. Every public action, with its link, the moment it is done.
 
 ## Actions
 
+- 2026-10-07 Product Hunt: listing text edited for the Mac app, not a new post. Tagline now "Every coding agent on your desktop, at a glance" (was "...on your Windows desktop..."). Description says Windows 10 and 11 and macOS 11 or later, browser pane and quest log Windows only for now, Windows not code signed, Mac not notarized. Launch still scheduled for 2026-10-13 00:01 PT. https://www.producthunt.com/posts/horadric/edit
 - 2026-10-07 GitHub: set repo description, homepage (https://horadric.dev), and 10 topics (ai-agents, claude-code, codex, developer-tools, direct2d, open-source, rust, terminal, win32, windows). https://github.com/Mopra/horadric.dev
 - 2026-10-07 Product Hunt: gallery edited, not a new post. OG image kept first, the duplicate OG, site screenshot and fact cards replaced by four real app screenshots (tiles, terminal, browser pane, quests). https://www.producthunt.com/products/horadric?launch=horadric
 - 2026-10-07 Product Hunt: listed and scheduled a free launch for Tue 2026-10-13 00:01 PT (07:01 UTC). Tags Developer Tools, Artificial Intelligence, Open Source. First comment asks for feedback, not votes. https://www.producthunt.com/products/horadric?launch=horadric (edit: https://www.producthunt.com/posts/horadric/edit)

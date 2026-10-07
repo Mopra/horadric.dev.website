@@ -18,15 +18,15 @@ submit form). Rule 7 needs OP karma over 100 on the feed: check the
 account before posting. Link to the project is fine; no referral links.
 Free is stated in the body, as the rule asks.
 
-**Title:** I built a Windows desktop app almost entirely with Claude Code, and this is how it went
+**Title:** I built a desktop app almost entirely with Claude Code, and this is how it went
 
 **Body:**
 
-I run several Claude Code sessions at once and kept losing the one that was waiting for me. So I built Horadric, a Windows app that shows each session as a small tile and turns it amber when Claude needs a decision. It is free, MIT licensed, and works on Windows 10 and 11.
+I run several Claude Code sessions at once and kept losing the one that was waiting for me. So I built Horadric, an app for Windows and macOS that shows each session as a small tile and turns it amber when Claude needs a decision. It is free, MIT licensed, and works on Windows 10 and 11 and macOS 11 or later.
 
 Claude Code wrote almost all of the code. Here is what that looked like in practice.
 
-**The hard part was not the idea, it was the platform.** Horadric is pure Rust that draws straight to Win32 and Direct2D. No Electron, no UI framework. It sits at about 45 MB with four sessions open and uses no CPU between events. I would not have taken raw Win32 on by hand. Claude Code did, and it was good at the parts that are tedious and exact: window messages, DPI handling, text layout, the terminal underneath the tiles.
+**The hard part was not the idea, it was the platform.** On Windows, Horadric is pure Rust that draws straight to Win32 and Direct2D. No Electron, no UI framework. It sits at about 45 MB with four sessions open and uses no CPU between events. I would not have taken raw Win32 on by hand. Claude Code did, and it was good at the parts that are tedious and exact: window messages, DPI handling, text layout, the terminal underneath the tiles.
 
 **Claude worked from my own quest list.** Horadric has a per project quest log, a plain Markdown checklist. Clicking an item starts a Claude Code session on it. That is how most of the app got built: I wrote the next item down, a session picked it up, I reviewed what came back. I made the calls on what the product is. Claude made it exist.
 
@@ -34,7 +34,7 @@ Claude Code wrote almost all of the code. Here is what that looked like in pract
 
 **What I would tell someone starting the same way:** keep your own judgment on design and testing. Claude can write a lot of Rust that compiles and still feels wrong on screen. The testing was mine.
 
-What it does today: tiles grouped by project, a Ctrl+Alt+Space jump to the session that has waited longest, a Windows notification when a session starts waiting, plain terminals and a browser pane beside the agents, your 5 hour and weekly limits, and switching between Claude subscriptions with sessions resuming on the new one. Sessions survive a crash, an update or a reboot.
+What it does today: tiles grouped by project, a Ctrl+Alt+Space jump (Cmd+J on a Mac) to the session that has waited longest, a Windows notification when a session starts waiting, plain terminals beside the agents, and on Windows a browser pane, your 5 hour and weekly limits, and switching between Claude subscriptions with sessions resuming on the new one. The Mac app is new in 0.17.0 and has the tiles, terminals and sessions that outlive the app, not the browser pane, quest log or usage window yet. Sessions survive a crash, an update or a reboot.
 
 Free to try: https://horadric.dev
 Source: https://github.com/Mopra/horadric.dev
@@ -54,11 +54,11 @@ a wrong flair gets the post deleted). The rule is high information, so
 this is about using Codex with Horadric, not a tour of the app. One
 link each, at the end.
 
-**Title:** Running Codex sessions next to Claude Code in one place on Windows (Horadric, free, MIT)
+**Title:** Running Codex sessions next to Claude Code in one place on Windows and Mac (Horadric, free, MIT)
 
 **Body:**
 
-If you keep more than one Codex session going, you know the problem: which terminal is waiting on you? I made Horadric for that. It is a Windows app, free and MIT licensed, and Codex is a supported agent in it.
+If you keep more than one Codex session going, you know the problem: which terminal is waiting on you? I made Horadric for that. It is an app for Windows and macOS, free and MIT licensed, and Codex is a supported agent in it.
 
 How Codex works with it:
 
@@ -107,13 +107,13 @@ First, state has to come from the agent, not from the screen. Reading terminal o
 
 Second, do not wrap the agent in your own chat window. I keep the real CLI as the interface and only add a small tile around it that goes amber when the agent needs me. When the vendor ships a new feature, it just works, because I never replaced the part that changes.
 
-I turned this into a Windows app called Horadric. It is free and open source, written in Rust, with no Electron. Link in the comment.
+I turned this into a desktop app called Horadric, for Windows and macOS. It is free and open source, written in Rust, with no Electron. Link in the comment.
 
 The open question for me is what a good "needs you" signal looks like once agents run for an hour unattended. A notification is not enough and a wall of dashboards is too much. How do you handle it?
 
 First comment (post right after, same account):
 
-Horadric, if you want to look: https://horadric.dev, source at https://github.com/Mopra/horadric.dev. MIT, Windows 10 and 11, no telemetry. Not code signed yet, so SmartScreen warns on first run. I made it.
+Horadric, if you want to look: https://horadric.dev, source at https://github.com/Mopra/horadric.dev. MIT, Windows 10 and 11 and macOS 11 or later, no telemetry. Not code signed yet, so SmartScreen warns on first run, and the Mac app is not notarized, so it installs with the curl line on the site. I made it.
 
 Notes for the human before posting:
 - "I would not notice for twenty minutes" is an illustration I wrote. Change the number or drop it if it is not true for you.

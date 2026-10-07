@@ -18,7 +18,7 @@ Facts used, all from PLAYBOOK.md: MIT, free, no telemetry, pure Rust on Win32 an
 Direct2D, about 45 MB with four sessions open, no CPU between events, no Electron,
 state from the agents' own hooks, real CLI in a real terminal, Claude Code wrote
 almost all of it and the human made the calls, Claude Code / Codex / Grok Build,
-Windows 10 and 11, not code signed.
+Windows 10 and 11, and macOS 11 or later. Not code signed on Windows, not notarized on the Mac.
 
 ## URL
 
@@ -26,7 +26,7 @@ https://github.com/Mopra/horadric.dev
 
 ## Title
 
-Horadric: an MIT licensed Windows desktop for coding agents, in pure Rust
+Horadric: an MIT licensed desktop for coding agents, for Windows and macOS
 
 ## What's interesting about it?
 
@@ -36,6 +36,6 @@ The interesting part is how it knows what an agent is doing. It does not scrape 
 
 It was also built by the thing it hosts. Claude Code wrote almost all of the code, and I made the calls.
 
-Free, Windows 10 and 11. It is not code signed yet, so SmartScreen warns the first time you run it.
+Free, Windows 10 and 11, and macOS 11 or later. The Windows build is not code signed yet, so SmartScreen warns the first time you run it. The Mac app is not notarized yet, so it installs with `curl -fsSL https://horadric.dev/install.sh | sh`, which Gatekeeper does not stop.
 
 Site: https://horadric.dev

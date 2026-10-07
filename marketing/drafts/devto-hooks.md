@@ -1,13 +1,13 @@
 ---
 title: Ask the agent, don't read the screen
 published: false
-tags: ai, rust, windows, tooling
+tags: ai, rust, macos, tooling
 ---
 
 <!-- Draft prepared 2026-10-07, NOT published. Set published: true only when posting.
      Facts from README.md and docs/PLAN.md of the Horadric repo, plus marketing/PLAYBOOK.md. -->
 
-I run several coding agent sessions at once. The one that has waited twenty minutes for my permission is always the one at the bottom of the pile. So I built Horadric, a Windows desktop that shows every session as a small tile and turns it amber when the agent needs me.
+I run several coding agent sessions at once. The one that has waited twenty minutes for my permission is always the one at the bottom of the pile. So I built Horadric, a desktop app for Windows and macOS that shows every session as a small tile and turns it amber when the agent needs me.
 
 The interesting part is not the tile. It is how Horadric knows which tile to light.
 
@@ -53,11 +53,11 @@ A plain terminal has no hook either. For those, the tile reads the terminal titl
 
 Nothing much. Horadric is pure Rust, drawing straight to Win32 and Direct2D. About 45 MB with four sessions open, and no CPU between events. No Electron. There is no telemetry. The only thing that leaves the machine is the daily update check against GitHub.
 
-It works with Claude Code, Codex and Grok Build. It is free and MIT licensed, for Windows 10 and 11. Claude Code wrote almost all of it. I made the calls.
+It works with Claude Code, Codex and Grok Build. It is free and MIT licensed, for Windows 10 and 11 and macOS 11 or later. Claude Code wrote almost all of it. I made the calls.
 
 ## One warning
 
-The downloads are not code signed yet. Windows SmartScreen will warn you the first time. Choose "More info", then "Run anyway". Updates after that are checked against Horadric's own signature. I would rather you read that here than be surprised by it.
+The Windows downloads are not code signed yet. SmartScreen will warn you the first time. Choose "More info", then "Run anyway". The Mac app is not notarized yet, so it installs with one line, `curl -fsSL https://horadric.dev/install.sh | sh`, which Gatekeeper does not stop. Updates after that are checked against Horadric's own signature. I would rather you read that here than be surprised by it.
 
 ## Links
 

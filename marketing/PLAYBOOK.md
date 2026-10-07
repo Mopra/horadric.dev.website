@@ -42,9 +42,10 @@ there, do not make it.
 - State comes from the agents' own hooks, not from scraping the terminal.
 - Sessions survive a crash, an update and a reboot.
 - Works with Claude Code, Codex and Grok Build.
-- Free, MIT licensed, Windows 10 and 11. No telemetry.
+- Free, MIT licensed. Windows 10 and 11, and since 0.17.0 (2026-10-07) macOS 11 or later on Apple Silicon or Intel (README). No telemetry.
+- The Mac app has the tiles, the stage with real terminals, plain terminals, sessions that outlive the app, the menu bar menu, Cmd+J to the session that has waited longest, a Dock badge and bounce, opening at login and the updater. The browser pane, quest log, Warriv, files tile, usage window and Discord status are Windows only for now. The Mac app is not notarized: it installs with `curl -fsSL https://horadric.dev/install.sh | sh`. Linux: no. Say "Windows only" about those features, never about the app.
 - Claude Code wrote almost all of it; the human made the calls.
-- Not code signed yet: SmartScreen warns the first time. Always say so.
+- Not code signed yet: SmartScreen warns the first time. Always say so. On a Mac say it is not notarized yet.
 
 Links: https://horadric.dev (site), https://github.com/Mopra/horadric.dev
 (source), https://github.com/Mopra/horadric.dev/releases/latest

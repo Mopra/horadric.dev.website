@@ -3,7 +3,7 @@
 One line per list, written to each list's own format (read 2026-10-07).
 Repo: https://github.com/Mopra/horadric.dev (MIT, 0 stars on 2026-10-07).
 One PR per list, at most one PR a day. Say in the PR body that the author
-submits it, and what is real: Windows only, Claude Code, Codex and Grok Build.
+submits it, and what is real: Windows and macOS, Claude Code, Codex and Grok Build.
 
 ## jqueryscript/awesome-claude-code
 
@@ -13,7 +13,7 @@ there are no written rules. Copy the neighbours' format exactly. The list
 pushes to main daily, but no PR has been merged lately, so expect a wait.
 
 ```
-- [**Horadric**](https://github.com/Mopra/horadric.dev) - (0 ⭐) - Windows desktop dock that shows every Claude Code, Codex and Grok Build session as a tile, lights it when the agent needs you, and opens the real CLI in a real terminal.
+- [**Horadric**](https://github.com/Mopra/horadric.dev) - (0 ⭐) - Desktop dock for Windows and macOS that shows every Claude Code, Codex and Grok Build session as a tile, lights it when the agent needs you, and opens the real CLI in a real terminal.
 ```
 
 PR title: `Add Horadric to Clients & GUIs`
@@ -27,7 +27,7 @@ Status: do not open a PR. Last merge was 2026-05-12 and about 40 PRs sit open
 since, so the list is not being kept.
 
 ```
-| [Horadric](https://github.com/Mopra/horadric.dev) | - | Windows desktop dock for Claude Code, Codex and Grok Build sessions. One tile per session, amber when the agent needs you, the real CLI in a real terminal on click. Rust, no Electron |
+| [Horadric](https://github.com/Mopra/horadric.dev) | - | Desktop dock for Claude Code, Codex and Grok Build sessions, on Windows and macOS. One tile per session, amber when the agent needs you, the real CLI in a real terminal on click. No Electron |
 ```
 
 ## RoggeOhta/awesome-codex-cli
@@ -42,7 +42,7 @@ is allowed, but with 0 stars the "real users" test is the risk. Wait for about
 50 downloads of the exe beyond the first 20, or a few stars.
 
 ```
-- [Mopra/horadric.dev](https://github.com/Mopra/horadric.dev) - Windows dock that shows each Codex CLI session (and Claude Code and Grok Build) as a tile, lights it when it needs you, and opens the real CLI in a terminal. ![GitHub stars](https://img.shields.io/github/stars/Mopra/horadric.dev?style=flat-square)
+- [Mopra/horadric.dev](https://github.com/Mopra/horadric.dev) - Dock for Windows and macOS that shows each Codex CLI session (and Claude Code and Grok Build) as a tile, lights it when it needs you, and opens the real CLI in a terminal. ![GitHub stars](https://img.shields.io/github/stars/Mopra/horadric.dev?style=flat-square)
 ```
 
 ## jaywcjlove/awesome-rust-apps
@@ -53,7 +53,7 @@ No further file. Copy the neighbours' format with the two badges. Horadric is
 Rust on Win32 and Direct2D, MIT, so it fits.
 
 ```
-- [Horadric](https://github.com/Mopra/horadric.dev) <img align="bottom" height="13" src="https://badgen.net/github/stars/Mopra/horadric.dev?style=flat&label=" /> <img align="bottom" height="13" src="https://img.shields.io/github/last-commit/Mopra/horadric.dev?style=flat&label=" /> - A Windows desktop dock that shows every Claude Code, Codex and Grok Build session as a tile and opens the real CLI in a terminal.
+- [Horadric](https://github.com/Mopra/horadric.dev) <img align="bottom" height="13" src="https://badgen.net/github/stars/Mopra/horadric.dev?style=flat&label=" /> <img align="bottom" height="13" src="https://img.shields.io/github/last-commit/Mopra/horadric.dev?style=flat&label=" /> - A desktop dock for Windows and macOS that shows every Claude Code, Codex and Grok Build session as a tile and opens the real CLI in a terminal.
 ```
 
 PR title: `Add Horadric`

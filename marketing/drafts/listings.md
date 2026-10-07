@@ -19,40 +19,42 @@ Always state the SmartScreen warning. Never ask for votes.
 
 **Tagline, short (40 chars):** Coding agent sessions as desktop tiles
 
-**One line:** A native Windows desktop for Claude Code, Codex and Grok Build sessions. It tells you which one is waiting for you.
+**One line:** A desktop for Windows and macOS for Claude Code, Codex and Grok Build sessions. It tells you which one is waiting for you.
 
 **Short description (about 300 chars):**
-Horadric turns every coding agent session into a small tile on the Windows desktop, grouped by project. A tile turns amber when the agent needs you. Click it and you get the real CLI in a real terminal. No chat UI of its own, no wrapper. Free, MIT licensed, no telemetry.
+Horadric turns every coding agent session into a small tile on the desktop, grouped by project. A tile turns amber when the agent needs you. Click it and you get the real CLI in a real terminal. No chat UI of its own, no wrapper. Free, MIT licensed, no telemetry.
 
 **Long description:**
 
-Every coding agent session becomes a small tile on the Windows desktop, grouped by project. A tile turns amber when the agent needs you.
+Every coding agent session becomes a small tile on the desktop, grouped by project. A tile turns amber when the agent needs you.
 
 Click a tile and you get the real CLI in a real terminal. Horadric has no chat UI of its own and does not wrap the agent.
 
 - Ctrl+Alt+Space jumps to the session that has waited longest.
-- A Windows notification fires when a session starts waiting and you look away.
-- Plain terminals and a browser pane sit beside the agents. Agents can drive the browser.
-- A quest log per project, Warriv the orchestrator, and the Runetome buttons.
-- It shows 5 hour, weekly and spend limits, and switches Claude subscriptions.
+- A Windows notification fires when a session starts waiting and you look away. On a Mac the Dock icon counts the sessions waiting and bounces.
+- Plain terminals sit beside the agents. On Windows there is also a browser pane agents can drive.
+- On Windows: a quest log per project, Warriv the orchestrator, and the Runetome buttons.
+- On Windows it shows 5 hour, weekly and spend limits, and switches Claude subscriptions.
 - State comes from the agents' own hooks, not from scraping the terminal.
 - Sessions survive a crash, an update and a reboot.
 - Works with Claude Code, Codex and Grok Build.
 
-It is pure Rust on Win32 and Direct2D. About 45 MB with four sessions open. No CPU between events. No Electron.
+On Windows it is pure Rust on Win32 and Direct2D. About 45 MB with four sessions open. No CPU between events. No Electron.
 
-Free, MIT licensed, Windows 10 and 11. No telemetry.
+Free, MIT licensed, Windows 10 and 11 and macOS 11 or later (Apple Silicon or Intel). No telemetry.
+
+The Mac app is new in 0.17.0. It has the tiles, the stage with real terminals, sessions that outlive the app, the menu bar menu and the updater. The browser pane, quest log, Warriv, files tile, usage window and Discord status are Windows only for now.
 
 Claude Code wrote almost all of it. I made the calls.
 
-Not code signed yet, so SmartScreen warns the first time you run it.
+Not code signed yet, so SmartScreen warns the first time you run it. The Mac app is not notarized yet, so on a Mac install it with `curl -fsSL https://horadric.dev/install.sh | sh`, which Gatekeeper does not stop.
 
 **Maker comment (first comment on launch sites, first person):**
 I built Horadric because I run several coding agents at once and kept losing track of which one was waiting on me. Now each session is a tile, and the tile turns amber when it needs me. Click it and I am in the real CLI, not a chat box someone built around it. It is free and MIT. Claude Code wrote almost all of it and I made the calls. It is not code signed yet, so SmartScreen will warn you the first time. Tell me what is missing.
 
-**Categories / tags:** Developer tools, AI coding agents, Terminal, Windows, Open source, Productivity
+**Categories / tags:** Developer tools, AI coding agents, Terminal, Windows, macOS, Open source, Productivity
 **Pricing:** Free, open source (MIT)
-**Platforms:** Windows 10, Windows 11
+**Platforms:** Windows 10, Windows 11, macOS 11 or later
 **Alternatives to name (only where the form asks, and only as honest comparisons):** Windows Terminal, tmux, Claude Squad
 
 **Assets to make** (the Horadric repo has no app screenshots yet, see the Product Hunt row):
@@ -79,7 +81,7 @@ Copy: shared name, tagline (60), long description, categories "AI Coding tools, 
 - After approval: on the page of Windows Terminal, tmux and Claude Squad use "Contribute to this page", then "Suggest Alternatives".
 
 Copy:
-- Platforms: Windows. License: Open Source (MIT). Price: Free.
+- Platforms: Windows, Mac. License: Open Source (MIT). Price: Free.
 - Description: the short description above.
 - Tags: Terminal, AI coding agents, Developer tools, Session manager, Rust.
 
@@ -174,7 +176,7 @@ Subject: Horadric, a free MIT desktop for coding agent sessions (Windows)
 
 Hello,
 
-I would like to suggest Horadric for MajorGeeks. It is a free Windows 10/11 desktop that shows each coding agent session (Claude Code, Codex, Grok Build) as a tile, and the tile turns amber when the agent is waiting on you. It is MIT licensed, has no telemetry, and the source is public.
+I would like to suggest Horadric for MajorGeeks. It is a free Windows 10/11 and macOS desktop that shows each coding agent session (Claude Code, Codex, Grok Build) as a tile, and the tile turns amber when the agent is waiting on you. It is MIT licensed, has no telemetry, and the source is public.
 
 I made it, with Claude Code writing most of the code. It is not code signed yet, so SmartScreen warns the first time, and some scanners may flag an unsigned Rust exe.
 

@@ -11,9 +11,9 @@ upvotes. Log every reply in LOG.md the moment it is posted.
 
 ## Is there a Mac or Linux version?
 
-No. Horadric is Windows 10 and 11 only, for now. It is pure Rust drawing straight to Win32 and Direct2D, so it is not something I can flip a switch on. I would rather do one platform well.
+Mac, yes, since 0.17.0. It needs macOS 11 or later, Apple Silicon or Intel. In a terminal: `curl -fsSL https://horadric.dev/install.sh | sh`. It has the tiles, the stage with real terminals, sessions that outlive the app, the menu bar menu and the updater. The browser pane, quest log, Warriv, files tile and usage window are Windows only for now. The Mac app is not notarized yet, which is why it installs by that line and not by a browser download. Linux: no, not planned.
 
-ASK HUMAN: is a Mac or Linux port planned? The README only says "for now".
+ASK HUMAN: is Linux planned? The README lists "Mac or Linux, for now" under Not doing, which is out of date for the Mac. Until you say, the reply says only that there is no Linux version.
 
 ## Why isn't it signed? SmartScreen warned me.
 
@@ -43,13 +43,13 @@ ASK HUMAN: how state is detected for Codex and Grok Build, and whether they matc
 
 ## How is it different from tmux?
 
-Horadric is a Windows desktop app, not a terminal multiplexer. Each agent session is a small tile grouped by project, and it turns amber when the agent needs you. Ctrl+Alt+Space jumps to the session that has waited longest, and you get a Windows notification when one starts waiting. Click a tile and you get the real CLI in a real terminal.
+Horadric is a desktop app for Windows and macOS, not a terminal multiplexer. Each agent session is a small tile grouped by project, and it turns amber when the agent needs you. Ctrl+Alt+Space jumps to the session that has waited longest, and on Windows you get a notification when one starts waiting (on a Mac the Dock icon counts them and bounces). Cmd+J is the jump key on a Mac. Click a tile and you get the real CLI in a real terminal.
 
 ASK HUMAN: what to say about tmux itself. The facts say nothing about it, so no claim about what it lacks until the human writes one.
 
 ## How is it different from Claude Squad?
 
-Horadric shows every session as a tile on the Windows desktop and never puts a chat UI of its own in front of the agent. The terminal is the UI. It works with Claude Code, Codex and Grok Build.
+Horadric shows every session as a tile on the desktop, Windows or Mac, and never puts a chat UI of its own in front of the agent. The terminal is the UI. It works with Claude Code, Codex and Grok Build.
 
 ASK HUMAN: anything about Claude Squad itself. The facts say nothing about it, so no comparison claims until the human writes them.
 
@@ -69,7 +69,7 @@ Do not add any story about the build that the human has not told.
 
 ## Short ones for the follow ups
 
-**Is it Electron?** No. Pure Rust on Win32 and Direct2D. About 45 MB with four sessions open, and no CPU between events.
+**Is it Electron?** No. On Windows it is pure Rust on Win32 and Direct2D, about 45 MB with four sessions open, and no CPU between events. I have not measured the Mac app, so I will not quote a number for it.
 
 **What if it crashes or I reboot?** Sessions survive a crash, an update and a reboot. Click a paused tile and the conversation resumes.
 
