@@ -39,9 +39,11 @@ Top down is the order to work them. State is one of: todo, done, skip
 |---|---|---|
 | r/ClaudeCode | done 2026-10-07 | Standalone posts must say what was built, how Claude Code was used, what was learned. Flair "Built with Claude". Next post only for a big release, 30 days on. |
 | r/SideProject | todo | Scheduled for 2026-10-07 21:23 by the launch session. Check LOG.md. |
-| r/ClaudeAI | todo | Rule 7: project built with Claude by you, describe how Claude helped in detail, free to try. Use the showcase flair. Not before 2026-10-09, so it does not look like a blast. |
-| r/codex | todo | Automated mods weigh the poster's comment karma in r/codex. Make it about using Codex with Horadric, with detail. |
-| r/ChatGPTCoding, r/AI_Agents, r/windowsapps | todo | Read rules first; skip any that bans self promotion. |
+| r/ClaudeAI | todo, draft ready | Draft in marketing/drafts/reddit.md. Rules read 2026-10-07: rule 7 also needs OP karma over 100 on feed posts. Rule 7: project built with Claude by you, describe how Claude helped in detail, free to try. Use the showcase flair. Not before 2026-10-09, so it does not look like a blast. |
+| r/codex | todo, draft ready | Draft in marketing/drafts/reddit.md, Showcase flair. Rules read 2026-10-07: no ban on self promotion; showcases skip the karma delay queue; wrong flair gets a post deleted. Automated mods weigh the poster's comment karma in r/codex. Make it about using Codex with Horadric, with detail. |
+| r/ChatGPTCoding | skip | Rules read 2026-10-07. Rule 5: posts whose main purpose is promoting a tool or repo belong in the weekly Self-Promotion thread ("delete the link: if nothing is left, it's an ad"). Rule 3 also bars a discussion post that promotes indirectly. Only a comment in the weekly thread would fit. AI text is allowed for grammar and clarity, not raw output. |
+| r/AI_Agents | todo, draft ready | Draft in marketing/drafts/reddit.md. Rules read 2026-10-07: links go in comments, not posts (rule 3); self promotion about 1 in 10 of the account's posts and comments (rule 4); no low effort (rule 5). Check the account's history first, else use the weekly project display thread. |
+| r/windowsapps | todo, draft ready | Draft in marketing/drafts/reddit.md. Rules read 2026-10-07: promotional posts limited to 1 a week and must carry the "Developer" flair (rule 3); links must be official and safe (rule 2). |
 | r/rust, r/opensource, r/commandline | skip | Ban AI-written posts or AI tools. |
 | r/windows | skip | Needs mod permission, which they are not granting. |
 | Hacker News | done 2026-10-07 | Human only from here on. |
