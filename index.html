@@ -4,392 +4,147 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Horadric</title>
-<meta name="description" content="Your coding agents, as tiles on your Windows desktop. The one that needs you lights up.">
+<meta name="description" content="Every coding agent on your Windows desktop. The one that needs you lights up.">
 <link rel="icon" href="horadric.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
   :root {
-    --wall: #0f1012;
-    --plate-top: #1b1c20;
-    --plate: #131417;
-    --key-top: #2a2c32;
-    --key: #212328;
-    --screen: #08090b;
-    --text: #e8e9ed;
-    --dim: #8f939e;
-    --legend: #6e727c;
-    --working: #3db4ff;
-    --waiting: #ffb224;
+    --bg: #000;
+    --off: #15171b;
+    --work: #3db4ff;
+    --wait: #ffb224;
     --done: #3dd68c;
-    --idle: #6e6882;
-    --gold: #d4b26a;
-    --edge: #7a5c22;
-    --sel: #1e3a5c;
+    --text: #e8e9ed;
+    --dim: #5b5f68;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; overflow: hidden; }
+  html, body { height: 100%; }
   body {
-    background: var(--wall);
-    background-image:
-      radial-gradient(900px 700px at 70% 30%, #1a1c21, transparent 70%),
-      radial-gradient(600px 400px at 90% 100%, #15130f, transparent 70%);
-    color: var(--text);
-    font-family: Archivo, system-ui, sans-serif;
-    font-variation-settings: "wdth" 100;
+    background: var(--bg); color: var(--text);
+    font: 300 13px/1.5 "Geist Mono", ui-monospace, monospace;
+    letter-spacing: .02em;
     -webkit-font-smoothing: antialiased;
-    display: grid;
-    grid-template-columns: 272px 1fr;
-    grid-template-rows: 1fr 44px;
-    grid-template-areas: "column desk" "bar bar";
+    display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden;
   }
-  a { color: inherit; }
-  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--text); }
+  :focus-visible { outline: 1px solid var(--wait); outline-offset: 4px; }
 
-  /* The tile column, drawn the way the app draws it: metal plates lit from
-     above, keys standing up off them, lamps sunk into the keys. */
-  .column { grid-area: column; padding: 12px 0 12px 12px; display: flex; flex-direction: column; gap: 10px; overflow: hidden; }
-  .cluster {
-    border-radius: 12px;
-    background: linear-gradient(var(--plate-top), var(--plate));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.09), inset 0 -1px 0 rgba(0,0,0,.4), 0 8px 18px rgba(0,0,0,.6);
-    padding: 6px 8px 8px;
+  .field { display: grid; grid-template-columns: repeat(12, 14px); gap: 12px; }
+  .a {
+    width: 14px; height: 14px; border-radius: 3px; border: 0; padding: 0; cursor: default;
+    background: var(--off);
+    transition: background .5s, box-shadow .5s, transform .2s;
   }
-  .cluster header { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 6px; }
-  .cluster h2 {
-    font-size: 13px; font-weight: 700; color: var(--dim);
-    font-variation-settings: "wdth" 112;
-    text-shadow: 0 -1px 0 rgba(0,0,0,.8), 0 1px 0 rgba(255,255,255,.05);
+  .a.work { background: color-mix(in srgb, var(--work) var(--l, 30%), var(--off)); }
+  .a.wait {
+    background: var(--wait); cursor: pointer;
+    box-shadow: 0 0 12px var(--wait), 0 0 40px rgba(255,178,36,.45);
+    animation: call 1.4s ease-in-out infinite;
   }
-  .plus {
-    width: 20px; height: 20px; border-radius: 5px; display: grid; place-items: center;
-    background: linear-gradient(var(--key-top), var(--key)); color: var(--legend); font-size: 14px; line-height: 1;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 2px rgba(0,0,0,.6);
-  }
-  .tile {
-    position: relative; width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer;
-    display: grid; grid-template-columns: 26px 1fr; column-gap: 9px; align-items: center;
-    padding: 9px 10px 9px 8px; margin-top: 6px; border: 0; border-radius: 8px; line-height: 1.4;
-    background: linear-gradient(var(--key-top), var(--key));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.11), inset 0 -1px 0 rgba(0,0,0,.35), 0 2px 4px rgba(0,0,0,.6);
-    transition: background .35s, box-shadow .35s, transform .08s;
-  }
-  .tile:hover { background: linear-gradient(#2f3238, #25272c); }
-  .tile:active { transform: translateY(1px); }
-  .tile .lamp {
-    grid-row: span 3; width: 22px; height: 22px; border-radius: 50%;
-    --c: var(--idle);
-    background:
-      radial-gradient(circle, color-mix(in srgb, var(--c) 45%, white) 0 30%, var(--c) 31% 39%, #0a0b0d 40% 45%, color-mix(in srgb, var(--c) 18%, #1c1d22) 46% 70%, color-mix(in srgb, var(--c) 10%, #1c1d22) 71%);
-    box-shadow: inset 0 1px 2px rgba(0,0,0,.7);
-    transition: filter .35s;
-  }
-  .tile .name { font-weight: 700; font-size: 13.5px; }
-  .tile .age { font-size: 11.5px; color: var(--c, var(--dim)); font-variant-numeric: tabular-nums; }
-  .tile .last { font-size: 11.5px; color: var(--legend); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tile.working, .tile.working .lamp { --c: var(--working); }
-  .tile.waiting, .tile.waiting .lamp { --c: var(--waiting); }
-  .tile.done, .tile.done .lamp { --c: var(--done); }
-  .tile.idle .age { color: var(--dim); }
-  .tile.working .lamp { animation: breathe 1.6s ease-in-out infinite; }
-  .tile.waiting {
-    background: linear-gradient(#4a3814, #3a2b0f);
-    box-shadow: inset 0 1px 0 rgba(255,220,150,.2), 0 0 0 1px rgba(255,178,36,.55), 0 0 28px rgba(255,178,36,.4);
-  }
-  .tile.waiting .lamp { filter: drop-shadow(0 0 6px var(--waiting)); }
-  .tile.lit::after {
-    content: ""; position: absolute; right: -8px; top: 10px; bottom: 10px; width: 3px; border-radius: 2px;
-    background: var(--gold); box-shadow: 0 0 8px var(--gold);
-  }
-  @keyframes breathe { 50% { filter: brightness(.55); } }
+  .a.wait:hover { transform: scale(1.25); }
+  .a.done { background: var(--done); box-shadow: 0 0 14px var(--done); transition: none; }
+  @keyframes call { 50% { box-shadow: 0 0 6px var(--wait), 0 0 18px rgba(255,178,36,.2); } }
 
-  /* The desktop beside it: the stage grows here, the words sit below. */
-  .desk { grid-area: desk; position: relative; min-width: 0; }
-  .stage {
-    position: absolute; left: 28px; right: 48px; top: 28px; height: calc(100% - 400px); min-height: 240px;
-    display: none; flex-direction: column; border-radius: 10px; overflow: hidden; z-index: 3;
-    background: linear-gradient(var(--plate-top), var(--plate));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 30px 70px rgba(0,0,0,.7);
-    transform-origin: 0 0;
-  }
-  .stage.open { display: flex; }
-  .stage .title { display: flex; align-items: center; gap: 10px; padding: 9px 14px; font-size: 12.5px; color: var(--dim); }
-  .stage .title b { color: var(--text); font-variation-settings: "wdth" 112; }
-  .stage .title .x { margin-left: auto; color: var(--legend); cursor: pointer; background: none; border: 0; font: inherit; font-size: 15px; }
-  .panes { flex: 1; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; padding: 0 6px 6px; min-height: 0; }
-  .pane { display: flex; flex-direction: column; min-width: 0; border-radius: 6px; background: var(--screen); box-shadow: inset 0 2px 8px rgba(0,0,0,.9); overflow: hidden; }
-  .pane .head { display: flex; align-items: center; gap: 7px; padding: 6px 10px; font-size: 11.5px; color: var(--dim); background: #0d0e10; }
-  .pane .head i { width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
-  .term { flex: 1; padding: 10px 12px; font: 12px/1.65 "JetBrains Mono", Consolas, monospace; color: #c9cbd2; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
-  .term div { white-space: pre; overflow: hidden; text-overflow: ellipsis; min-height: 1.65em; }
-  .term .me { color: var(--text); background: #16181c; margin: 0 -12px; padding: 0 12px; }
-  .term .me::before { content: "> "; color: var(--legend); }
-  .term .tool::first-letter { color: var(--done); }
-  .term .tool { color: var(--text); font-weight: 700; }
-  .term .out { color: var(--dim); }
-  .term .box { color: var(--waiting); }
-  .term .pick { color: var(--text); background: var(--sel); }
+  .count { margin-top: 48px; text-align: center; color: var(--dim); font-variant-numeric: tabular-nums; }
+  .count b { font-weight: 400; color: var(--wait); }
+  .corner { position: fixed; bottom: 28px; right: 32px; display: flex; gap: 28px; color: var(--dim); }
+  .corner .get { color: var(--text); }
 
-  .words { position: absolute; left: 56px; right: 48px; bottom: 44px; }
-  .words h1 {
-    display: flex; align-items: center; gap: .18em;
-    font-size: clamp(56px, 9.5vw, 156px); line-height: .9; font-weight: 900; letter-spacing: -.02em;
-    font-variation-settings: "wdth" 125;
-  }
-  .words h1 img { width: .72em; height: .72em; }
-  .words p { margin-top: 22px; font-size: clamp(17px, 1.6vw, 22px); color: var(--dim); max-width: 26em; line-height: 1.4; }
-  .words .keys { display: flex; align-items: center; gap: 22px; margin-top: 28px; flex-wrap: wrap; }
-  .get {
-    display: inline-flex; align-items: center; gap: 12px; padding: 14px 22px 14px 16px; border-radius: 10px;
-    font-weight: 800; font-size: 16px; text-decoration: none; font-variation-settings: "wdth" 110;
-    background: linear-gradient(#34363d, #26282d);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.14), inset 0 -2px 0 rgba(0,0,0,.4), 0 0 0 1px var(--edge), 0 6px 14px rgba(0,0,0,.6);
-  }
-  .get:hover { background: linear-gradient(#3b3d45, #2b2d33); }
-  .get:active { transform: translateY(1px); }
-  .get .lamp { width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle, #fff3c4 0 35%, var(--gold) 40%); box-shadow: 0 0 10px var(--gold); }
-  .src { color: var(--dim); font-size: 15px; text-underline-offset: 4px; }
-  .src:hover { color: var(--text); }
-
-  .cursor { position: fixed; left: 0; top: 0; width: 20px; height: 20px; z-index: 10; pointer-events: none; opacity: 0; transition: transform .85s cubic-bezier(.55,0,.2,1), opacity .3s; filter: drop-shadow(0 2px 3px rgba(0,0,0,.7)); }
-  .cursor.on { opacity: 1; }
-  .cursor.click::after { content: ""; position: absolute; left: -11px; top: -11px; width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gold); animation: ripple .45s ease-out forwards; }
-  @keyframes ripple { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.7); opacity: 0; } }
-
-  /* A Windows taskbar, because that is where Horadric lives: in the tray. */
-  .bar { grid-area: bar; display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding: 0 16px; background: rgba(28,29,33,.92); border-top: 1px solid rgba(255,255,255,.05); font-size: 12px; color: var(--dim); }
-  .bar img { width: 18px; height: 18px; }
-  .bar time { font-variant-numeric: tabular-nums; text-align: right; line-height: 1.25; }
-
-  @media (max-width: 820px), (max-height: 600px) {
-    html, body { overflow: auto; height: auto; }
-    body { grid-template-columns: 1fr; grid-template-rows: auto auto 44px; grid-template-areas: "desk" "column" "bar"; }
-    .words { position: static; padding: 40px 16px 24px; }
-    .column { padding: 0 16px 24px; }
-    .tile.lit::after { display: none; }
-    .stage { position: fixed; inset: 12px; height: auto; }
+  @media (max-width: 520px) {
+    .field { grid-template-columns: repeat(8, 14px); }
+    .corner { right: 0; left: 0; justify-content: center; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .tile.working .lamp { animation: none; }
-    .cursor { display: none; }
+    .a.wait { animation: none; }
   }
 </style>
 </head>
 <body>
-  <aside class="column" id="column" aria-label="Sessions, click one"></aside>
-
-  <section class="desk" id="desk">
-    <div class="stage" id="stage" role="dialog" aria-label="Terminal">
-      <div class="title"><b id="stageName"></b><span id="stageCount"></span><button class="x" id="close" aria-label="Close">×</button></div>
-      <div class="panes" id="panes"></div>
-    </div>
-
-    <div class="words">
-      <h1><img src="horadric.png" alt="">Horadric</h1>
-      <p>Your coding agents, as tiles on your desktop. The one that needs you lights up.</p>
-      <div class="keys">
-        <a class="get" href="https://github.com/Mopra/horadric.dev/releases/latest"><span class="lamp"></span>Download for Windows</a>
-        <a class="src" href="https://github.com/Mopra/horadric.dev">Source on GitHub</a>
-      </div>
-    </div>
-  </section>
-
-  <footer class="bar"><img src="horadric.png" alt="Horadric in the tray"><time id="clock"></time></footer>
-
-  <svg class="cursor" id="cursor" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 1l14 9-6.5 1.3L6 18z" fill="#fff" stroke="#000"/></svg>
+  <main class="field" id="field" aria-label="Your agents"></main>
+  <p class="count" id="count" aria-live="polite"></p>
+  <nav class="corner">
+    <a href="https://github.com/Mopra/horadric.dev">source</a>
+    <a class="get" href="https://github.com/Mopra/horadric.dev/releases/latest">download for windows</a>
+  </nav>
 
 <script>
-  const projects = [
-    { name: "horadric", sessions: [
-      { id: "tiles", name: "tiles-ui", state: "working", since: -240, last: "Resizing cluster windows",
-        log: [["me", "make the clusters resize smoothly"], ["tool", "● Read(cluster.rs)"], ["out", "  ⎿ Read 412 lines"], ["", "The resize waits on WM_SIZE. Moving it"], ["", "into the layout pass."], ["tool", "● Update(cluster.rs)"], ["out", "  ⎿ +18 -6"]] },
-      { id: "reload", name: "reload", state: "working", since: -70, last: "Running cargo test",
-        log: [["me", "reload must keep every session alive"], ["tool", "● Search(\"attach_host\")"], ["out", "  ⎿ Found 4 files"], ["", "Hosts outlive the UI, so the new build"], ["", "only has to attach to them."]],
-        ask: "Bash(cargo test reload)", after: [["tool", "● Bash(cargo test reload)"], ["out", "  ⎿ test result: ok. 12 passed"], ["", "Reload attaches to every host."]], answer: "12 tests pass" },
-      { id: "docs", name: "docs", state: "idle", since: -1200, last: "Updated the README",
-        log: [["me", "describe the settings window"], ["tool", "● Update(README.md)"], ["out", "  ⎿ +14 -2"], ["", "Done."]] },
-    ]},
-    { name: "webshop", sessions: [
-      { id: "checkout", name: "checkout", state: "working", since: -420, last: "Writing CartSummary.tsx",
-        log: [["me", "show tax in the cart summary"], ["tool", "● Read(CartSummary.tsx)"], ["tool", "● Update(CartSummary.tsx)"], ["out", "  ⎿ +9 -2"], ["", "Tax now comes from the order total."], ["tool", "● Bash(npm run typecheck)"]] },
-      { id: "login", name: "login-fix", state: "working", since: -130, last: "Reading session.ts",
-        log: [["me", "users get logged out after 5 minutes"], ["tool", "● Read(auth/session.ts)"], ["", "maxAge is in seconds, not milliseconds."], ["tool", "● Update(auth/session.ts)"], ["out", "  ⎿ +1 -1"]],
-        ask: "Bash(npm test auth)", after: [["tool", "● Bash(npm test auth)"], ["out", "  ⎿ 14 passing"], ["", "Fixed. Sessions last 5 days now."]], answer: "14 tests pass" },
-    ]},
-    { name: "blog", sessions: [
-      { id: "post", name: "launch-post", state: "working", since: -30, last: "Drafting the intro",
-        log: [["me", "draft a launch post from the changelog"], ["tool", "● Read(CHANGELOG.md)"], ["", "Three things worth a headline."]],
-        ask: "Write(posts/launch.md)", after: [["tool", "● Write(posts/launch.md)"], ["out", "  ⎿ 64 lines"], ["", "Draft is in posts/launch.md."]], answer: "Draft written" },
-    ]},
-  ];
-  // Who asks for you next, round and round.
-  const askers = ["login", "post", "reload"];
-
-  const $ = (id) => document.getElementById(id);
-  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  // Each square is an agent. Working ones flicker with activity; now and then
+  // one stops and waits for you, and a click sends it back to work.
+  const N = matchMedia("(max-width: 520px)").matches ? 40 : 48;
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const all = () => projects.flatMap((p) => p.sessions);
-  const byId = (id) => all().find((s) => s.id === id);
-  const projectOf = (id) => projects.find((p) => p.sessions.some((s) => s.id === id));
-  const now = () => Date.now() / 1000;
-  const t0 = now();
-  all().forEach((s) => (s.since += t0));
+  const field = document.getElementById("field");
+  const count = document.getElementById("count");
+  const agents = [];
 
-  let staged = null; // project name on stage
-  let touched = 0;   // when the visitor last clicked, so the demo steps aside
-
-  function age(s) {
-    const d = Math.max(0, Math.floor(now() - s.since));
-    const span = d < 60 ? `${d} s` : `${Math.floor(d / 60)} min`;
-    return { working: `working ${span}`, waiting: `needs you ${span}`, done: `done ${span} ago`, idle: `idle ${span}` }[s.state];
+  for (let i = 0; i < N; i++) {
+    const el = document.createElement("button");
+    el.className = "a";
+    el.tabIndex = -1;
+    el.setAttribute("aria-label", "agent");
+    el.addEventListener("click", () => answer(i));
+    field.append(el);
+    agents.push({ el, state: Math.random() < 0.8 ? "work" : "off" });
   }
 
-  function renderColumn() {
-    $("column").innerHTML = projects.map((p) => `
-      <section class="cluster"><header><h2>${p.name}</h2><span class="plus">+</span></header>
-        ${p.sessions.map((s) => `
-          <button class="tile ${s.state} ${p.name === staged ? "lit" : ""}" data-id="${s.id}">
-            <span class="lamp"></span><span class="name">${s.name}</span>
-            <span class="age">${age(s)}</span><span class="last">${s.last}</span>
-          </button>`).join("")}
-      </section>`).join("");
+  function paint(i) {
+    const a = agents[i];
+    a.el.className = "a " + a.state;
+    a.el.tabIndex = a.state === "wait" ? 0 : -1;
+    a.el.setAttribute("aria-label", a.state === "wait" ? "agent waiting, answer it" : "agent");
   }
 
-  const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
-  const line = ([cls, t]) => `<div class="${cls}">${esc(t) || " "}</div>`;
-  const askBox = (s) => [["", ""], ["box", "Do you want to run " + s.ask + "?"], ["pick", "❯ 1. Yes"], ["", "  2. Yes, and don't ask again"], ["", "  3. No"]];
-
-  function renderStage() {
-    const p = projects.find((x) => x.name === staged);
-    if (!p) return;
-    $("stageName").textContent = p.name;
-    $("stageCount").textContent = p.sessions.length === 1 ? "1 session" : `${p.sessions.length} sessions`;
-    $("panes").innerHTML = p.sessions.filter((s) => s.state !== "idle" || p.sessions.length === 1).map((s) => `
-      <div class="pane"><div class="head" style="--c: var(--${s.state})"><i></i>${s.name}</div>
-        <div class="term" id="term-${s.id}">${s.log.concat(s.state === "waiting" ? askBox(s) : []).map(line).join("")}</div>
-      </div>`).join("");
+  function tally() {
+    const working = agents.filter((a) => a.state === "work").length;
+    const waiting = agents.filter((a) => a.state === "wait").length;
+    count.innerHTML = `${working} working. ` + (waiting ? `<b>${waiting} need${waiting === 1 ? "s" : ""} you.</b>` : "none need you.");
   }
 
-  function render() { renderColumn(); renderStage(); }
-
-  function set(id, patch) {
-    const s = byId(id);
-    if (patch.state && patch.state !== s.state) s.since = now();
-    Object.assign(s, patch);
-    render();
+  function answer(i) {
+    const a = agents[i];
+    if (a.state !== "wait") return;
+    clearTimeout(a.timer);
+    a.state = "done";
+    paint(i);
+    tally();
+    setTimeout(() => { a.state = "work"; paint(i); tally(); }, 600);
   }
 
-  // The stage grows out of the tile that was clicked and shrinks back into it.
-  function morph(from, open) {
-    const stage = $("stage");
-    const a = from.getBoundingClientRect(), b = stage.getBoundingClientRect();
-    const t = `translate(${a.left - b.left}px, ${a.top - b.top}px) scale(${a.width / b.width}, ${a.height / b.height})`;
-    const frames = [{ transform: t, opacity: 0.2 }, { transform: "none", opacity: 1 }];
-    return stage.animate(open ? frames : frames.reverse(), { duration: reduced ? 0 : 340, easing: "cubic-bezier(.2,.8,.2,1)" }).finished;
-  }
-
-  async function show(name, tile) {
-    if (staged === name) return hide(tile);
-    staged = name;
-    render();
-    $("stage").classList.add("open");
-    await morph(tile, true);
-  }
-
-  async function hide(tile) {
-    const p = staged;
-    tile = tile || document.querySelector(".tile.lit");
-    if (tile) await morph(tile, false);
-    $("stage").classList.remove("open");
-    if (staged === p) staged = null;
-    render();
-  }
-
-  async function type(id, lines, gap) {
-    for (const l of lines) {
-      byId(id).log.push(l);
-      $("term-" + id)?.insertAdjacentHTML("beforeend", line(l));
-      await sleep(gap);
+  // Activity: working squares change brightness in small steps, like drive lights.
+  function flicker() {
+    for (const a of agents) {
+      if (a.state === "work" && Math.random() < 0.18) {
+        a.el.style.setProperty("--l", 18 + Math.floor(Math.random() * 5) * 14 + "%");
+      }
     }
   }
 
-  // A visitor's click works as it does in the app: the tile opens its project
-  // on the stage, a second click closes it, and a waiting session gets its yes.
-  $("column").addEventListener("click", async (e) => {
-    const tile = e.target.closest(".tile");
-    if (!tile) return;
-    touched = now();
-    $("cursor").classList.remove("on");
-    const s = byId(tile.dataset.id);
-    await show(projectOf(s.id).name, tile);
-    if (s.state === "waiting" && staged) answer(s);
-  });
-  $("close").addEventListener("click", () => { touched = now(); hide(); });
-
-  async function answer(s) {
-    if (s.answering) return;
-    s.answering = true;
-    await sleep(900);
-    set(s.id, { state: "working", last: "Working on it" });
-    await type(s.id, s.after, 700);
-    set(s.id, { state: "done", last: s.answer });
-    s.answering = false;
-  }
-
-  async function cursorTo(el, dx = 0.55, dy = 0.5) {
-    const r = el.getBoundingClientRect();
-    const c = $("cursor");
-    c.classList.add("on");
-    c.style.transform = `translate(${r.left + r.width * dx}px, ${r.top + r.height * dy}px)`;
-    await sleep(900);
-  }
-
-  async function clickAt() {
-    const c = $("cursor");
-    c.classList.remove("click"); void c.getBoundingClientRect(); c.classList.add("click");
-    await sleep(300);
-  }
-
-  const idle = () => now() - touched > 10;
-
-  async function demo() {
-    $("cursor").style.transform = `translate(${innerWidth * 0.6}px, ${innerHeight * 0.55}px)`;
-    let turn = 0;
-    for (;;) {
-      await sleep(1800);
-      if (!idle()) continue;
-      const s = byId(askers[turn++ % askers.length]);
-      if (staged) await hide();
-      // Whoever finished last round goes quiet, so the next round reads clearly.
-      all().forEach((x) => { if (x.state === "done") { x.state = "idle"; x.since = now(); } });
-      set(s.id, { state: "waiting", last: "Wants to run " + s.ask.split("(")[0] });
-      await sleep(2600);
-      if (!idle() || s.state !== "waiting") continue;
-      await cursorTo(document.querySelector(`[data-id="${s.id}"]`));
-      if (!idle()) continue;
-      await clickAt();
-      await show(projectOf(s.id).name, document.querySelector(`[data-id="${s.id}"]`));
-      await cursorTo($("term-" + s.id), 0.3, 0.88);
-      await clickAt();
-      await answer(s);
-      $("cursor").classList.remove("on");
-      await sleep(2600);
-      if (idle() && staged) await hide();
+  function call() {
+    const waiting = agents.filter((a) => a.state === "wait").length;
+    if (waiting < 2) {
+      const candidates = agents.map((a, i) => i).filter((i) => agents[i].state === "work");
+      const i = candidates[Math.floor(Math.random() * candidates.length)];
+      agents[i].state = "wait";
+      paint(i);
+      // Nobody answering? It gets answered anyway, so the field never freezes.
+      agents[i].timer = setTimeout(() => answer(i), 9000);
     }
+    // Agents start and stop too.
+    const j = Math.floor(Math.random() * N);
+    if (agents[j].state === "off") agents[j].state = "work";
+    else if (agents[j].state === "work" && Math.random() < 0.3) agents[j].state = "off";
+    paint(j);
+    tally();
+    setTimeout(call, 2200 + Math.random() * 2600);
   }
 
-  function tick() {
-    document.querySelectorAll(".tile").forEach((el) => { el.querySelector(".age").textContent = age(byId(el.dataset.id)); });
-    const d = new Date();
-    $("clock").innerHTML = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) + "<br>" + d.toLocaleDateString();
-  }
-
-  render();
-  tick();
-  setInterval(tick, 1000);
-  if (reduced) set("login", { state: "waiting", last: "Wants to run Bash" });
-  else demo();
+  agents.forEach((_, i) => paint(i));
+  flicker();
+  tally();
+  if (!reduced) setInterval(flicker, 140);
+  setTimeout(call, 1200);
 </script>
 </body>
 </html>
