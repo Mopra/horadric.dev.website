@@ -114,3 +114,11 @@ Copy:
 - Competitors to list: Windows Terminal, tmux, Claude Squad.
 - Categories: Developer Tools, Terminal, AI.
 - Copy: shared short description and long description.
+
+## OpenAlternative
+
+- Checked 2026-10-07. Not submitted. The form at /submit needs a sign in first (email magic link, Google or GitHub). After the tool details, the package page (see openalternative.co/submit/jean as an example) lists only paid packages: Standard $97 (48h), Premium $137 (24h, dofollow), Ultimate $197/month (12h, featured). Standard is worded "Skip the queue and get published within 48 hours", so a free queue may exist, but no free option is shown. Paid is off limits (PLAYBOOK rule 10).
+- No rules page and no note on AI built projects found. The site has an "AI-native" collection and a "Claude Code Alternatives" collection (18 tools).
+- Not confirmed: whether finishing the form without paying leaves the tool in a free queue. The human can check on the day by signing in and stopping at the package step. Contact: hello@openalternative.co.
+- If a free path shows up, copy to use: shared name, short tagline, long description, Source URL, license MIT.
+- Alternative to name: Claude Code (they list tools as alternatives to proprietary software). Honest framing: Horadric is a free MIT desktop for running Claude Code, Codex and Grok Build sessions, so it fits as a companion rather than a replacement. Do not claim it replaces Claude Code.

@@ -81,7 +81,7 @@ Top down is the order to work them. State is one of: todo, done, skip
 
 | Place | State | Notes |
 |---|---|---|
-| OpenAlternative (openalternative.co/submit) | todo | Directory of open source alternatives, has a "Claude Code Alternatives" collection with 18 entries, so Horadric fits. Free submission was not confirmed on the page; if the form asks for money for a featured or fast slot, skip that. Contact hello@openalternative.co. Needs the repo URL, so frame it as an open source alternative to Windows Terminal with tabs, or similar agent managers. Nothing found on AI text. |
+| OpenAlternative (openalternative.co/submit) | skip, paid only | Checked 2026-10-07. Form needs sign in, then the package page shows only Standard $97, Premium $137, Ultimate $197/month. Standard says "skip the queue", so a free queue may exist, but no free option is shown. Paid is off limits (rule 10). No AI text rule found. Draft is in listings.md in case the human finds a free path. Contact hello@openalternative.co. |
 | SourceForge | todo, low priority | Free hosting for open source, offers "Import from GitHub", scans downloads for malware. It would add a second download mirror and a page that ranks. The SourceForge download counts would not appear in the GitHub download measure. Cons: needs an account, adds a second place to keep in sync. No AI text rule found in the page. Do only if the human wants it. |
 | LibHunt | skip | Add a project form at /repo/submit, but it is about libraries and repos by language, not GUI apps. Low fit. |
 | awesome-rust (rust-unofficial/awesome-rust) | skip until 50 stars | Rule: 50+ GitHub stars or 2,000+ crates.io downloads or equivalent popularity with proof. Horadric has neither. Revisit at 50 stars. |
