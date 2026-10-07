@@ -7,6 +7,10 @@ Newest first. Every public action, with its link, the moment it is done.
 - 2026-10-07: 20 (before any marketing)
 - 2026-10-07: 20 (Product Hunt listing made)
 
+## Traffic
+
+2026-10-07: Views 8 (3 unique), referrers none, downloads 21.
+
 ## Actions
 
 - 2026-10-07 GitHub: set repo description, homepage (https://horadric.dev), and 10 topics (ai-agents, claude-code, codex, developer-tools, direct2d, open-source, rust, terminal, win32, windows). https://github.com/Mopra/horadric.dev

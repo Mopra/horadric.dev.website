@@ -17,7 +17,9 @@ gh api "repos/Mopra/horadric.dev/releases?per_page=100" --jq '[.[].assets[]|sele
 ```
 
 20 on 2026-10-07, before any marketing. Write the number into `LOG.md`
-under "Downloads" at every errand, so the log shows what moved it.
+under "Downloads" at every errand, so the log shows what moved it. Also
+record GitHub traffic referrers, views, and current download count under
+a "## Traffic" section so the log shows which channel brings people.
 
 ## The facts
 
