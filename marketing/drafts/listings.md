@@ -99,14 +99,12 @@ Copy:
 
 ## Microlaunch
 
-- Form: "New Launch" button, behind sign up. Fields and image sizes not visible without signing in.
-- Free: not confirmed. The public pages push Launch Pro ($39 to $49) and Launch Plus ($79 to $99), both off limits. The home page shows unpaid looking products on the leaderboard, so a free launch seems to exist, but I could not verify it. Check after sign in, and skip if only paid options show.
-- Copy: shared name, tagline, short description, "Dev Tools" category.
+- Skipped 2026-10-07: after Google sign in only the paid Pro Launch shows. See CHANNELS.md.
 
 ## Fazier
 
-- Form: Submit Product at /launch, behind Google or email sign in. Fields from their launch guide: name, tagline, description, category, thumbnail, gallery, pricing. Image sizes not public.
-- Free: launches labelled Free, Freemium, Paid and Premium appear. Free launch seems available but the wait is not published. Verify after sign in, and skip if the free option is gone.
+- Form: Submit Product at /launch after Google sign in. Free path: 3 genuine comments on other products, product link, Fazier badge on horadric.dev, then Verify Badge. Fields: name, tagline, description, category, thumbnail, gallery, pricing. Image sizes and wait not published.
+- Needs the badge on the site and Domain Rating above 0 before it can be submitted.
 - Copy: shared name, tagline, long description, pricing "Free".
 
 ## SaaSHub
