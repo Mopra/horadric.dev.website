@@ -99,7 +99,7 @@
   function tally() {
     const working = agents.filter((a) => a.state === "work").length;
     const waiting = agents.filter((a) => a.state === "wait").length;
-    count.innerHTML = `${working} working. ` + (waiting ? `<b>${waiting} need${waiting === 1 ? "s" : ""} you.</b>` : "none need you.");
+    count.innerHTML = `${working} agents working. ` + (waiting ? `<b>${waiting} need${waiting === 1 ? "s" : ""} you.</b>` : "none need you.");
   }
 
   function answer(i) {
