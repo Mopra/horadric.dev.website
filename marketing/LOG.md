@@ -9,6 +9,7 @@ Newest first. Every public action, with its link, the moment it is done.
 
 ## Actions
 
+- 2026-10-07 GitHub: set repo description, homepage (https://horadric.dev), and 10 topics (ai-agents, claude-code, codex, developer-tools, direct2d, open-source, rust, terminal, win32, windows). https://github.com/Mopra/horadric.dev
 - 2026-10-07 Product Hunt: gallery edited, not a new post. OG image kept first, the duplicate OG, site screenshot and fact cards replaced by four real app screenshots (tiles, terminal, browser pane, quests). https://www.producthunt.com/products/horadric?launch=horadric
 - 2026-10-07 Product Hunt: listed and scheduled a free launch for Tue 2026-10-13 00:01 PT (07:01 UTC). Tags Developer Tools, Artificial Intelligence, Open Source. First comment asks for feedback, not votes. https://www.producthunt.com/products/horadric?launch=horadric (edit: https://www.producthunt.com/posts/horadric/edit)
 - 2026-10-07 X: launch post. https://x.com/pradslabs/status/2107871327449494001
