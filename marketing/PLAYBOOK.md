@@ -10,16 +10,21 @@ honest promotion inside each community's rules. Nothing else.
 
 ## The measure
 
-Downloads of `horadric.exe` across all releases:
+Downloads of the files a person installs from: `horadric.exe`,
+`horadric-x64.zip` and `Horadric-macos.tar.gz`, across all releases:
 
 ```
-gh api "repos/Mopra/horadric.dev/releases?per_page=100" --jq '[.[].assets[]|select(.name=="horadric.exe").download_count]|add'
+gh api "repos/Mopra/horadric.dev/releases?per_page=100" --jq '[.[].assets[]|select(.name=="horadric.exe" or .name=="horadric-x64.zip" or .name=="Horadric-macos.tar.gz").download_count]|add'
 ```
 
-20 on 2026-10-07, before any marketing. Write the number into `LOG.md`
-under "Downloads" at every errand, so the log shows what moved it. Also
-record GitHub traffic referrers, views, and current download count under
-a "## Traffic" section so the log shows which channel brings people.
+Not the GitHub badge total: it counts `latest.json` and `latest-macos.json`,
+which the updater fetches on every install's daily check, and
+`horadricw.exe`, which comes with `horadric.exe`. On 2026-10-08 the
+badge said 160 while people had downloaded 31.
+
+20 on 2026-10-07 (then `horadric.exe` alone), before any marketing.
+Write the number into `LOG.md` under "Downloads" at every errand, so
+the log shows what moved it.
 
 ## The facts
 
