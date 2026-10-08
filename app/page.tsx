@@ -8,8 +8,10 @@ export const revalidate = 3600;
 // Below this many downloads the count would undersell the project, so it stays hidden.
 const SHOW_DOWNLOADS_FROM = 500;
 
-// Only the app itself counts, on either system. The manifests are fetched by the
-// auto-updater, not by people.
+// Only the files people install from count, on either system: the same measure as
+// marketing/PLAYBOOK.md. The manifests are fetched by the auto-updater, not by people,
+// and horadricw.exe comes with horadric.exe.
+const INSTALL_FILES = new Set(["horadric.exe", "horadric-x64.zip", "Horadric-macos.tar.gz"]);
 async function downloads() {
   try {
     const res = await fetch("https://api.github.com/repos/Mopra/horadric.dev/releases?per_page=100", {
@@ -19,7 +21,7 @@ async function downloads() {
     const releases: { assets: { name: string; download_count: number }[] }[] = await res.json();
     return releases
       .flatMap((r) => r.assets)
-      .filter((a) => a.name === "horadric.exe" || a.name === "Horadric-macos.tar.gz")
+      .filter((a) => INSTALL_FILES.has(a.name))
       .reduce((sum, a) => sum + a.download_count, 0);
   } catch {
     return 0;
