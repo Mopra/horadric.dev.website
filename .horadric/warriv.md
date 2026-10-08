@@ -9,6 +9,7 @@
 
 ## Lately
 
+- 2026-10-08 Hourly round at 01:25Z: nothing new since efa5783, no stone cast. Winget PR wakes 07:00Z; file DevHunt in a round after that.
 - 2026-10-08 Hourly round at 00:25Z: nothing new since 9f1b87a, no stone cast. Winget PR wakes 07:00Z; file DevHunt in a round after that.
 - 2026-10-08 Hourly round at 23:25Z (still 10-07 in UTC): nothing new since be5bd58, no stone cast. Winget PR and DevHunt wait for a round after 07:00Z.
 - 2026-10-08 Hourly round at 22:25Z (still 10-07 in UTC): nothing new since 522777a, no stone cast. DevHunt waits for a round after 07:00Z with the winget PR.
