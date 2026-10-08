@@ -10,6 +10,7 @@
 
 ## Lately
 
+- 2026-10-08 Dry-log wake again: filed nothing. Both 10-08 public slots are spent and every draft exists. r/ClaudeAI and the Chocolatey hand-off get filed on 10-09.
 - 2026-10-08 Dry-log wake at evening: filed nothing, both 10-08 slots spent and every draft exists. Winget CLA signed as Mopra, all checks passed (8850326); PR now waits on a moderator. r/ClaudeAI and the Chocolatey hand-off go on 10-09.
 - 2026-10-08 Hourly round at 17:42Z: nothing new since 037e258, no stone cast. Winget PR #448663 still Needs-CLA, waiting on the human. Both 10-08 slots spent.
 - 2026-10-08 Hourly round at 16:42Z: nothing new since d4104a6, no stone cast. Winget PR #448663 still Needs-CLA, waiting on the human. Both 10-08 slots spent.
