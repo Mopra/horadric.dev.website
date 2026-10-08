@@ -9,6 +9,7 @@
 
 ## Lately
 
+- 2026-10-08 Hourly round at 06:42Z: nothing new since dcbc6ab, no stone cast. Winget PR wakes 07:00Z; both 10-08 slots spoken for.
 - 2026-10-08 Hourly round at 05:42Z: nothing new since 6b8362c, no stone cast. Winget PR wakes 07:00Z; both 10-08 slots spoken for.
 - 2026-10-08 Dry-log wake at 04:46Z (again): unchanged, both 10-08 slots spent, drafts exist. Filed nothing.
 - 2026-10-08 Dry-log wake at 04:46Z: same picture as 04:45Z, both 10-08 slots spent, drafts exist. Filed nothing.
