@@ -10,6 +10,7 @@
 
 ## Lately
 
+- 2026-10-08 Round at 19:27Z (human left): only download-count plumbing since (835e67a, 1d01ea1), no stone cast. Both 10-08 slots spent; r/ClaudeAI and the Chocolatey hand-off go on 10-09.
 - 2026-10-08 Hourly round at 18:42Z: only site plumbing since (Bing verify, IndexNow, Reddit replies stone), no stone cast. Both 10-08 slots spent; r/ClaudeAI and the Chocolatey hand-off go on 10-09.
 - 2026-10-08 Dry-log wake, late: filed nothing. Still 10-08, both slots spent (winget, DevHunt), every draft exists. r/ClaudeAI and the Chocolatey hand-off go on 10-09.
 - 2026-10-08 Dry-log wake again: filed nothing. Both 10-08 public slots are spent and every draft exists. r/ClaudeAI and the Chocolatey hand-off get filed on 10-09.
