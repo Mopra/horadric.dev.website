@@ -104,6 +104,45 @@ Break one and the marketing does more harm than good.
     `LOG.md` with the date, place and link, the moment it is done.
     Check `LOG.md` before posting so nothing goes out twice.
 
+## Replying on Reddit
+
+The "Reddit replies" errand does this every two hours. The account is
+u/PR4DE, signed in in the browser pane.
+
+1. Open https://old.reddit.com/ in the browser pane and do the rest with
+   `fetch` from the page (browser_evaluate), so it uses the signed in
+   session. The modhash is `data.modhash` from `/api/me.json`; send it as
+   `uh` and as the `X-Modhash` header on every POST.
+2. **Find what needs an answer.** Two sources:
+   - `/message/unread.json`: replies to our posts and to our comments
+     (`was_comment` true, `type` `comment_reply` or `post_reply`).
+   - Every Reddit post in `LOG.md` from the last 30 days:
+     `/comments/<id>.json?limit=500`, walking the whole tree.
+   A comment needs an answer when it is not by PR4DE or AutoModerator,
+   none of its direct replies is by PR4DE, it is not removed or deleted,
+   and it says or asks something. "Cool" or "nice" gets nothing, or at
+   most a short thanks.
+3. **Decide each one** by rule 8 above. Answer from the facts only. A
+   question the facts do not cover, a bug report, anything angry, legal
+   or about money: do not answer. Add a quest
+   `Reddit: the human answers <author> on r/<sub>` with the comment's
+   link and text in its notes, and the note "Do not reply. Mark this
+   quest blocked on the human with the link." A bug report also becomes
+   a quest in the Horadric repository with a `From: <link>` line.
+4. **Reply** with `POST /api/comment` (`thing_id` the comment's `t1_` name,
+   `text`, `api_type=json`). Wait 5 seconds between replies. At most 10
+   replies a run; the rest wait for the next run. Short: one to four
+   sentences. Never paste the same reply twice.
+5. **Check** each reply exists and is not removed
+   (`/user/PR4DE/comments.json`), then mark the inbox items read with
+   `POST /api/read_message` (`id` the comma separated names).
+6. **Log** one line a run in `LOG.md`: how many replies, where, with
+   links, and any comment handed to the human. A run with nothing to do
+   logs nothing.
+
+The browser pane is shared with other sessions. If a page is not where
+you left it, navigate back and do each step in one `browser_evaluate`.
+
 ## GitHub
 
 Act on GitHub as Mopra, the owner of Horadric, never as MP-OPTI (the
