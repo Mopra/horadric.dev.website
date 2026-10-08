@@ -45,23 +45,34 @@ a:hover { color: var(--text); }
 .corner .get { color: var(--text); }
 .needs { position: absolute; bottom: 28px; left: 32px; color: var(--dim); }
 
-.install { display: flex; justify-content: center; padding: 72px 16px 24px; }
-.install ol { list-style: none; counter-reset: step; max-width: 560px; width: 100%; display: flex; flex-direction: column; gap: 20px; color: var(--dim); }
-.install li { counter-increment: step; position: relative; padding-left: 32px; }
-.install li::before { content: counter(step); position: absolute; left: 0; color: var(--wait); font-variant-numeric: tabular-nums; }
-.install b { font-weight: 400; color: var(--text); }
-.install a { color: var(--text); border-bottom: 1px solid var(--dim); }
-.install code { font-family: ui-monospace, Consolas, monospace; color: var(--text); background: var(--off); padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+/* Two rows, one per system: the name on the left, its steps on the right. */
+.install {
+  max-width: 640px; margin: 0 auto; padding: 120px 16px 120px;
+  display: flex; flex-direction: column; gap: 56px;
+}
+.os { display: grid; grid-template-columns: 96px 1fr; gap: 24px; scroll-margin-top: 30vh; }
+.os h2 { font: inherit; color: var(--text); }
+.os ol { list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 16px; color: var(--dim); }
+.os li { counter-increment: step; position: relative; padding-left: 28px; }
+.os li::before { content: counter(step); position: absolute; left: 0; color: var(--dim); opacity: .6; font-variant-numeric: tabular-nums; }
+.os ol:has(> li:only-child) li { padding-left: 0; }
+.os ol:has(> li:only-child) li::before { content: none; }
+.os b { font-weight: 400; color: var(--text); }
+.os a { color: var(--text); border-bottom: 1px solid var(--dim); }
+.os a:hover { border-color: var(--text); }
+.os li .copy { margin-top: 10px; }
+.os li:only-child .copy { margin-top: 0; }
+.os:has(li:only-child) h2 { padding-top: 11px; }
 
-.mac { display: flex; justify-content: center; padding: 72px 16px 8px; scroll-margin-top: 40vh; }
 .copy {
-  display: flex; gap: 20px; align-items: baseline; max-width: 100%;
-  background: none; border: 0; color: var(--dim); cursor: pointer; font: inherit; letter-spacing: inherit;
+  display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 16px;
+  background: var(--off); border: 1px solid #22252b; border-radius: 6px; padding: 10px 14px;
+  color: var(--dim); cursor: pointer; font: inherit; letter-spacing: inherit; text-align: left;
+  transition: border-color .2s;
 }
-.copy code {
-  font-family: inherit; color: var(--text); background: var(--off);
-  padding: 6px 12px; border-radius: 3px; overflow-x: auto; white-space: nowrap; max-width: 80vw;
-}
+.copy code { font-family: inherit; color: var(--text); overflow-x: auto; white-space: nowrap; }
+.copy span { flex: none; }
+.copy:hover { border-color: var(--dim); }
 .copy:hover span { color: var(--text); }
 
 .shots {
@@ -78,6 +89,8 @@ a:hover { color: var(--text); }
   .field { grid-template-columns: repeat(8, 14px); }
   .corner { right: 0; left: 0; justify-content: center; }
   .needs { left: 0; right: 0; bottom: 56px; text-align: center; }
+  .os { grid-template-columns: 1fr; gap: 12px; }
+  .os:has(li:only-child) h2 { padding-top: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .a.wait { animation: none; }

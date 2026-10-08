@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 
-// The one line a Mac needs, copied with a click. A browser download would be
-// quarantined by Gatekeeper; curl's is not.
-export default function Copy({ text }: { text: string }) {
+// An install command, copied with a click. On a Mac it is the curl line, since a
+// browser download would be quarantined by Gatekeeper and curl's is not.
+export default function Copy({ text, label }: { text: string; label: string }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
@@ -15,7 +15,7 @@ export default function Copy({ text }: { text: string }) {
           setTimeout(() => setCopied(false), 1600);
         });
       }}
-      aria-label="Copy the install command for macOS"
+      aria-label={label}
     >
       <code>{text}</code>
       <span>{copied ? "copied" : "copy"}</span>
