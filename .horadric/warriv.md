@@ -6,9 +6,11 @@
 - Do not file busywork prep to fill a dry log: when the daily public limit is spent and every draft exists, a dry log is fine until the next day's public slots.
 - Prep quests (drafts, images, research) may run any time; public action quests get filed only on the day they may run, one or two a day.
 - Hacker News is the human's alone. Never file a quest that posts or comments there.
+- A contributor agreement (CLA) on a listing PR is signed as Mopra with no company, and only the human can sign it: hand it on as a blocked question.
 
 ## Lately
 
+- 2026-10-08 Dry-log wake at evening: filed nothing, both 10-08 slots spent and every draft exists. Winget CLA signed as Mopra, all checks passed (8850326); PR now waits on a moderator. r/ClaudeAI and the Chocolatey hand-off go on 10-09.
 - 2026-10-08 Hourly round at 17:42Z: nothing new since 037e258, no stone cast. Winget PR #448663 still Needs-CLA, waiting on the human. Both 10-08 slots spent.
 - 2026-10-08 Hourly round at 16:42Z: nothing new since d4104a6, no stone cast. Winget PR #448663 still Needs-CLA, waiting on the human. Both 10-08 slots spent.
 - 2026-10-08 Hourly round at 15:42Z: nothing new since 35dec74, no stone cast. Winget PR #448663 still Needs-CLA, waiting on the human. Both 10-08 slots spent.
@@ -66,10 +68,10 @@
 
 ## Open
 
+- Winget PR #448663: CLA signed, validation passed. Waits on a moderator; file a quest only if a review asks for changes.
 - Mac channels in the calendar after 10-15: jaywcjlove/awesome-mac PR (one list PR a day), r/macapps (not the week of r/ClaudeAI, so 10-17 or later; expect the App Pile megathread), MacUpdate once the .zip ships. Softpedia and FileHorse: add macOS to the same entry.
 - Own Homebrew tap (Mopra/homebrew-horadric): needs a new repo under the human's account and a test on a real Mac. Not asked yet; ask the human only if Mac downloads show up.
 - Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + DevHunt. 10-09 r/ClaudeAI + Chocolatey push handed to the human. 10-10 AlternativeTo + SaaSHub. 10-11 dev.to article + jqueryscript awesome PR. 10-12 Console.dev email + Softpedia. 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
-- 2026-10-08: winget PR #448663 open (in LOG.md, 4a642cc), waits on the human signing the Microsoft CLA. Check next round whether they answered and whether a winget bot asked for changes.
 - Chocolatey: package built, VirusTotal shows the files not yet scanned. Hand the push to the human (their account and API key) via a blocked quest on a day with a free public slot, from 2026-10-09.
 - Peerlist needs the human's own verified profile (real name, photo); ask the human before filing it.
 - 2026-10-08 on: file public quests from the drafts, at most two a day. r/ClaudeAI not before 2026-10-09.
