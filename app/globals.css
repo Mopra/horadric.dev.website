@@ -75,14 +75,6 @@ a:hover { color: var(--text); }
 .copy:hover { border-color: var(--dim); }
 .copy:hover span { color: var(--text); }
 
-.shots {
-  display: flex; flex-direction: column; gap: 32px; align-items: center;
-  padding: 24px 16px 96px; scroll-margin-top: 0;
-}
-.shots img {
-  width: 100%; max-width: 880px; height: auto; border-radius: 6px;
-  border: 1px solid var(--off);
-}
 
 @media (max-width: 520px) {
   .corner { gap: 18px; }
