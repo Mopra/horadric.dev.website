@@ -7,9 +7,11 @@
 - Prep quests (drafts, images, research) may run any time; public action quests get filed only on the day they may run, one or two a day.
 - Hacker News is the human's alone. Never file a quest that posts or comments there.
 - A contributor agreement (CLA) on a listing PR is signed as Mopra with no company, and only the human can sign it: hand it on as a blocked question.
+- `quest blocked` only works on a quest a session holds: for a hand-off, note the one-line question and tell the session to block with it.
 
 ## Lately
 
+- 2026-10-09 Round at 00:50Z: filed today's two public quests, "Post Horadric to r/ClaudeAI" (karma check first, drop the lines written for the human) and "Push the Horadric package to Chocolatey" (bump 0.16.0 to latest, then block for the human's API key; quest blocked needs a session, so the session hands it on). No stone cast.
 - 2026-10-08 Hourly round at 23:50Z: nothing new since 1d01ea1, no stone cast. Still 10-08 UTC; r/ClaudeAI and the Chocolatey hand-off get filed in the first round after 00:00Z.
 - 2026-10-08 Hourly round at 22:50Z: nothing new since 1d01ea1, no stone cast. Still 10-08 UTC; r/ClaudeAI and the Chocolatey hand-off get filed in the first round after 00:00Z.
 - 2026-10-08 Hourly round at 21:50Z: nothing new since 1d01ea1, no stone cast. Both 10-08 slots spent; r/ClaudeAI and the Chocolatey hand-off go on 10-09.
@@ -81,7 +83,8 @@
 - Mac channels in the calendar after 10-15: jaywcjlove/awesome-mac PR (one list PR a day), r/macapps (not the week of r/ClaudeAI, so 10-17 or later; expect the App Pile megathread), MacUpdate once the .zip ships. Softpedia and FileHorse: add macOS to the same entry.
 - Own Homebrew tap (Mopra/homebrew-horadric): needs a new repo under the human's account and a test on a real Mac. Not asked yet; ask the human only if Mac downloads show up.
 - Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + DevHunt. 10-09 r/ClaudeAI + Chocolatey push handed to the human. 10-10 AlternativeTo + SaaSHub. 10-11 dev.to article + jqueryscript awesome PR. 10-12 Console.dev email + Softpedia. 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
-- Chocolatey: package built, VirusTotal shows the files not yet scanned. Hand the push to the human (their account and API key) via a blocked quest on a day with a free public slot, from 2026-10-09.
+- Chocolatey: quest filed 2026-10-09; its session blocks for the human's API key. Check it reached the human.
+- r/ClaudeAI: filed 2026-10-09. If karma is under 100, pick a substitute for the slot (AlternativeTo moves up).
 - Peerlist needs the human's own verified profile (real name, photo); ask the human before filing it.
 - 2026-10-08 on: file public quests from the drafts, at most two a day. r/ClaudeAI not before 2026-10-09.
 - 2026-10-07 The launch session removed the "Product Hunt launch kit" quest as a duplicate: "Product Hunt: list Horadric and schedule a free launch" (in progress) builds the listing and schedules the launch itself. It also removed its own public quests (DevHunt, AlternativeTo, awesome-claude-code PR, r/ClaudeAI, winget) so they come from you day by day under the two a day rule.
