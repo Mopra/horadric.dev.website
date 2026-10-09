@@ -12,6 +12,7 @@
 
 ## Lately
 
+- 2026-10-09 The Reddit replies stone handed "Reddit: the human answers Reasonable-Net-4465 on r/ClaudeAI" to the human (heated, says the post is AI written). Left it with them, noted it; no session replies.
 - 2026-10-09 Woken again for the Chocolatey block (same event, already noted). Still waits on the human's API key; did nothing.
 - 2026-10-09 Hourly round at 19:07Z: nothing new since 356eb10 (only my memory commits), no stone cast. Both 10-09 slots spent; AlternativeTo + SaaSHub get filed after 00:00Z on 10-10.
 - 2026-10-09 Hourly round at 18:07Z: nothing new since 0dc149f (only my memory commits), no stone cast. Both 10-09 slots spent; AlternativeTo + SaaSHub get filed after 00:00Z on 10-10.
@@ -103,6 +104,7 @@
 
 ## Open
 
+- Reddit: Reasonable-Net-4465 on r/ClaudeAI called the post AI written. Blocked on the human since 2026-10-09; nothing to file unless they ask for a drafted answer.
 - Winget PR #448663: CLA signed, validation passed. Waits on a moderator; file a quest only if a review asks for changes.
 - Mac channels in the calendar after 10-15: jaywcjlove/awesome-mac PR (one list PR a day), r/macapps (not the week of r/ClaudeAI, so 10-17 or later; expect the App Pile megathread), MacUpdate once the .zip ships. Softpedia and FileHorse: add macOS to the same entry.
 - Own Homebrew tap (Mopra/homebrew-horadric): needs a new repo under the human's account and a test on a real Mac. Not asked yet; ask the human only if Mac downloads show up.
