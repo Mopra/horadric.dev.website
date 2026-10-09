@@ -7,10 +7,12 @@
 - Prep quests (drafts, images, research) may run any time; public action quests get filed only on the day they may run, one or two a day.
 - Hacker News is the human's alone. Never file a quest that posts or comments there.
 - A contributor agreement (CLA) on a listing PR is signed as Mopra with no company, and only the human can sign it: hand it on as a blocked question.
+- Plain `git push` here fails with 403: every quest that commits must push as Mopra with the token line in PLAYBOOK.md, and its notes should say so.
 - `quest blocked` only works on a quest a session holds: for a hand-off, note the one-line question and tell the session to block with it.
 
 ## Lately
 
+- 2026-10-09 Hourly round at 04:50Z: main was 13 commits ahead of origin (r/ClaudeAI log and Chocolatey bump pushed with plain git, 403). Filed "Push main to origin as Mopra (13 commits behind)", haiku. No stone cast.
 - 2026-10-09 Hourly round at 03:50Z: nothing new since bf21e61, no stone cast. Both 10-09 slots spent; AlternativeTo + SaaSHub get filed after 00:00Z on 10-10.
 - 2026-10-09 Hourly round about 02:50Z: nothing new since 860fec7, no stone cast. Daily look back: the day was clean, nothing went wrong twice. Both 10-09 slots spent; AlternativeTo + SaaSHub get filed after 00:00Z on 10-10.
 - 2026-10-09 Hourly round at 01:50Z: both 10-09 slots spent (r/ClaudeAI posted, Chocolatey waits on the key). Reddit replies stone runs every 2h by itself, so no cast. Filed nothing; AlternativeTo + SaaSHub go on 10-10.
@@ -83,6 +85,7 @@
 
 ## Open
 
+- Check next round that origin/main caught up after the Mopra push quest.
 - Winget PR #448663: CLA signed, validation passed. Waits on a moderator; file a quest only if a review asks for changes.
 - Mac channels in the calendar after 10-15: jaywcjlove/awesome-mac PR (one list PR a day), r/macapps (not the week of r/ClaudeAI, so 10-17 or later; expect the App Pile megathread), MacUpdate once the .zip ships. Softpedia and FileHorse: add macOS to the same entry.
 - Own Homebrew tap (Mopra/homebrew-horadric): needs a new repo under the human's account and a test on a real Mac. Not asked yet; ask the human only if Mac downloads show up.
