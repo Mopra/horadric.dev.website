@@ -14,6 +14,7 @@ Newest first. Every public action, with its link, the moment it is done.
 
 ## Actions
 
+- 2026-10-09 r/ClaudeAI: "Built with Claude" post, from the human's account (karma 581, rule 7 needs over 100). Dropped the DPI/text layout/terminal list and the Rust opinion paragraph from the draft. https://old.reddit.com/r/ClaudeAI/comments/1x17tgx/
 - 2026-10-08 X: Mac app announcement (0.17.0), asked for by the human. https://x.com/pradslabs/status/2108259788190629927
 - 2026-10-08 Replies, asked for by the human: r/ClaudeCode to djc1000 that the Mac app shipped (https://old.reddit.com/r/ClaudeCode/comments/1x00z12/i_built_a_windows_app_that_turns_each_claude_code/peornfn/); r/SideProject to killakwikz2021 on why a tile waits and exited vs verified (.../peoro34/) and to davidjones145 on wait reasons over a color scale (.../peorori/); X to @mitansh_j07.
 - 2026-10-08 winget: PR "New package: Mopra.Horadric version 0.16.0" from the Mopra fork. Waits on the Microsoft CLA, which the human must agree to. https://github.com/microsoft/winget-pkgs/pull/448663
