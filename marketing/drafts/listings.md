@@ -75,6 +75,7 @@ Copy: shared name, tagline (60), long description, categories "AI Coding tools, 
 
 ## AlternativeTo
 
+- Submitted 2026-10-09 with this copy, Windows and Mac. Short description used: "A desktop for Claude Code, Codex and Grok Build sessions that shows which one is waiting for you." Claude Squad is not on AlternativeTo; used tmux, Herdr, swe-mux, Saggar, PATAPIM, agent-manager instead.
 - Form: "Suggest new application" in the user menu, after signing in and verifying email. Fields: platforms, license, descriptions, tags, official and creator website, social links.
 - Free: yes, but the normal queue "holds several thousand apps" and no date is promised. $5 priority review exists and is off limits (rule 10). Expect a very long wait or none.
 - No UTM tags on the official link. Plain https://horadric.dev.

@@ -4,6 +4,7 @@ Newest first. Every public action, with its link, the moment it is done.
 
 ## Downloads
 
+- 2026-10-09 (AlternativeTo): 35 (horadric.exe 23, horadric-x64.zip 6, Horadric-macos.tar.gz 6)
 - 2026-10-09: 32 (horadric.exe 23, horadric-x64.zip 6, Horadric-macos.tar.gz 3)
 - 2026-10-08: 31 (horadric.exe 23, horadric-x64.zip 5, Horadric-macos.tar.gz 3; counted this way from now on)
 - 2026-10-07: 20 (before any marketing)
@@ -15,6 +16,7 @@ Newest first. Every public action, with its link, the moment it is done.
 
 ## Actions
 
+- 2026-10-09 AlternativeTo: submitted Horadric in the free queue, no paid review ($5 and $15 upsells declined). Signed in as Morten-2257 via GitHub (the Google sign in hit an older account with the same email but another sign in method); verified the email from Gmail. Platforms Windows and Mac, Free, open source MIT, source URL, tags developer-tools, claude-code, ai-coding-agent, openai-codex, session-manager, terminal. Platform notes say SmartScreen (Windows) and not notarized (Mac). Icon and four app screenshots from docs/assets. Suggested as alternatives to: tmux, Herdr, swe-mux, Saggar, PATAPIM, agent-manager (Claude Squad is not on AlternativeTo). Only visible to us until reviewed; no date promised. https://alternativeto.net/software/horadric/
 - 2026-10-09 Reddit replies: 2 on r/ClaudeAI, to Commercial_Ad_6904 on how Horadric differs from a chat app (https://old.reddit.com/r/ClaudeAI/comments/1x17tgx/i_built_a_desktop_app_almost_entirely_with_claude/pex1jmj/) and to Hazrd_Design that it is MIT (.../pex1kcn/). Handed to the human: Reasonable-Net-4465 ("At least write your own post dolt"). No new comments on X, the winget PR or the other Reddit posts.
 - 2026-10-09 r/ClaudeAI: "Built with Claude" post, from the human's account (karma 581, rule 7 needs over 100). Dropped the DPI/text layout/terminal list and the Rust opinion paragraph from the draft. https://old.reddit.com/r/ClaudeAI/comments/1x17tgx/
 - 2026-10-08 X: Mac app announcement (0.17.0), asked for by the human. https://x.com/pradslabs/status/2108259788190629927
