@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>horadric</id>
-    <version>0.16.0</version>
+    <version>0.17.0</version>
     <title>Horadric</title>
     <authors>Mopra</authors>
     <owners>mopra</owners>
@@ -11,7 +11,7 @@
     <packageSourceUrl>https://github.com/Mopra/horadric.dev</packageSourceUrl>
     <licenseUrl>https://github.com/Mopra/horadric.dev/blob/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <releaseNotes>https://github.com/Mopra/horadric.dev/releases/tag/v0.16.0</releaseNotes>
+    <releaseNotes>https://github.com/Mopra/horadric.dev/releases/tag/v0.17.0</releaseNotes>
     <tags>horadric terminal claude-code codex agents developer-tools rust</tags>
     <summary>Every coding agent session as a tile on the Windows desktop.</summary>
     <description><![CDATA[Horadric turns every coding agent session into a tile on the Windows desktop, grouped by project. A tile turns amber when the agent needs you. Click it and you get the real CLI in a real terminal, not a chat UI.
