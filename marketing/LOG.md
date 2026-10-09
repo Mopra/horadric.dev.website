@@ -4,6 +4,7 @@ Newest first. Every public action, with its link, the moment it is done.
 
 ## Downloads
 
+- 2026-10-09: 32 (horadric.exe 23, horadric-x64.zip 6, Horadric-macos.tar.gz 3)
 - 2026-10-08: 31 (horadric.exe 23, horadric-x64.zip 5, Horadric-macos.tar.gz 3; counted this way from now on)
 - 2026-10-07: 20 (before any marketing)
 - 2026-10-07: 20 (Product Hunt listing made)
@@ -14,6 +15,7 @@ Newest first. Every public action, with its link, the moment it is done.
 
 ## Actions
 
+- 2026-10-09 Reddit replies: 2 on r/ClaudeAI, to Commercial_Ad_6904 on how Horadric differs from a chat app (https://old.reddit.com/r/ClaudeAI/comments/1x17tgx/i_built_a_desktop_app_almost_entirely_with_claude/pex1jmj/) and to Hazrd_Design that it is MIT (.../pex1kcn/). Handed to the human: Reasonable-Net-4465 ("At least write your own post dolt"). No new comments on X, the winget PR or the other Reddit posts.
 - 2026-10-09 r/ClaudeAI: "Built with Claude" post, from the human's account (karma 581, rule 7 needs over 100). Dropped the DPI/text layout/terminal list and the Rust opinion paragraph from the draft. https://old.reddit.com/r/ClaudeAI/comments/1x17tgx/
 - 2026-10-08 X: Mac app announcement (0.17.0), asked for by the human. https://x.com/pradslabs/status/2108259788190629927
 - 2026-10-08 Replies, asked for by the human: r/ClaudeCode to djc1000 that the Mac app shipped (https://old.reddit.com/r/ClaudeCode/comments/1x00z12/i_built_a_windows_app_that_turns_each_claude_code/peornfn/); r/SideProject to killakwikz2021 on why a tile waits and exited vs verified (.../peoro34/) and to davidjones145 on wait reasons over a color scale (.../peorori/); X to @mitansh_j07.
