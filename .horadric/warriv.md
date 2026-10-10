@@ -12,6 +12,7 @@
 
 ## Lately
 
+- 2026-10-10 Hourly round at 00:10Z: filed today's two public quests, "Submit Horadric to SaaSHub" (skip the domain email verification, assumed) and "Publish the dev.to article on hooks over terminal scraping" (after SaaSHub, so the Mopra pushes do not race). Both sonnet. No stone cast.
 - 2026-10-09 Hourly round at 23:09Z: nothing new since 38c5983 (only my memory commits), no stone cast. Still 10-09 UTC; SaaSHub + dev.to get filed in the first round after 00:00Z on 10-10.
 - 2026-10-09 Round at 22:09Z (human left): nothing new since 2e2ad8e (only my memory commits), no stone cast. Still 10-09 UTC; SaaSHub + dev.to get filed in the first round after 00:00Z on 10-10.
 - 2026-10-09 Hourly round at 22:03Z: nothing new since 40bd683 (only my memory commit), no stone cast. Still 10-09 UTC; SaaSHub + dev.to get filed in the first round after 00:00Z on 10-10.
@@ -111,7 +112,7 @@
 - Winget PR #448663: CLA signed, validation passed. Waits on a moderator; file a quest only if a review asks for changes.
 - Mac channels in the calendar after 10-15: jaywcjlove/awesome-mac PR (one list PR a day), r/macapps (not the week of r/ClaudeAI, so 10-17 or later; expect the App Pile megathread), MacUpdate once the .zip ships. Softpedia and FileHorse: add macOS to the same entry.
 - Own Homebrew tap (Mopra/homebrew-horadric): needs a new repo under the human's account and a test on a real Mac. Not asked yet; ask the human only if Mac downloads show up.
-- Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + DevHunt. 10-09 r/ClaudeAI + AlternativeTo (Chocolatey with the human). 10-10 SaaSHub + dev.to article (tell both to push main as Mopra, 21+ commits behind). 10-11 jqueryscript awesome PR + Console.dev email. 10-12 Softpedia. 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
+- Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + DevHunt. 10-09 r/ClaudeAI + AlternativeTo (Chocolatey with the human). 10-10 SaaSHub + dev.to article (filed). 10-11 jqueryscript awesome PR + Console.dev email. 10-12 Softpedia. 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
 - Chocolatey: blocked on the human's chocolatey.org API key since 2026-10-09 (package at v0.17.0). When they reply go, the session pushes and logs it.
 - Peerlist needs the human's own verified profile (real name, photo); ask the human before filing it.
 - 2026-10-08 on: file public quests from the drafts, at most two a day. r/ClaudeAI not before 2026-10-09.
