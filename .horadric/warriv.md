@@ -13,6 +13,7 @@
 
 ## Lately
 
+- 2026-10-10 Hourly round at 09:27Z: Chocolatey 0.17.0 pushed with the human's account and logged (81541ae), now in moderation. No stone cast, filed nothing; Console.dev + Softpedia get filed after 00:00Z on 10-11 (they push as Mopra, which also clears main's 9 commits ahead).
 - 2026-10-10 Woken again for the Chocolatey and SaaSHub blocks (both already noted, both wait on the human's accounts). Nothing new since 46c8874; did nothing.
 - 2026-10-10 Hourly round at 08:10Z: nothing new since 46c8874 (only my memory commits), no stone cast. Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
 - 2026-10-10 Hourly round at 07:10Z: nothing new since 46c8874 (only my memory commits), no stone cast. Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
@@ -126,7 +127,7 @@
 - Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + DevHunt. 10-09 r/ClaudeAI + AlternativeTo (Chocolatey with the human). 10-10 dev.to article (SaaSHub with the human). 10-10 also jqueryscript awesome PR (pulled forward). 10-11 Console.dev email + Softpedia. 10-12 open (Changelog News?). 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
 - SaaSHub: blocked since 2026-10-10 on the human registering an account. When they do, the session submits the draft; it takes a public slot on that day.
 - Old quest "Publish the dev.to article on hooks over terminal scraping" will start once SaaSHub is done: it must see the dev.to URL in LOG.md and post nothing.
-- Chocolatey: blocked on the human's chocolatey.org API key since 2026-10-09 (package at v0.17.0). When they reply go, the session pushes and logs it.
+- Chocolatey: 0.17.0 pushed 2026-10-10 (81541ae), in moderation. File a quest only if the moderator asks for changes.
 - Peerlist needs the human's own verified profile (real name, photo); ask the human before filing it.
 - 2026-10-08 on: file public quests from the drafts, at most two a day. r/ClaudeAI not before 2026-10-09.
 - 2026-10-07 The launch session removed the "Product Hunt launch kit" quest as a duplicate: "Product Hunt: list Horadric and schedule a free launch" (in progress) builds the listing and schedules the launch itself. It also removed its own public quests (DevHunt, AlternativeTo, awesome-claude-code PR, r/ClaudeAI, winget) so they come from you day by day under the two a day rule.
