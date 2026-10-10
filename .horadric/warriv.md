@@ -13,6 +13,7 @@
 
 ## Lately
 
+- 2026-10-10 Round at 13:13Z (human left): nothing new since 81541ae (only my memory commits). SaaSHub block already noted, waits on the human's account. Marketing round errand is running itself, no stone cast. Console.dev + Softpedia get filed after 00:00Z on 10-11.
 - 2026-10-10 Hourly round at 09:27Z: Chocolatey 0.17.0 pushed with the human's account and logged (81541ae), now in moderation. No stone cast, filed nothing; Console.dev + Softpedia get filed after 00:00Z on 10-11 (they push as Mopra, which also clears main's 9 commits ahead).
 - 2026-10-10 Woken again for the Chocolatey and SaaSHub blocks (both already noted, both wait on the human's accounts). Nothing new since 46c8874; did nothing.
 - 2026-10-10 Hourly round at 08:10Z: nothing new since 46c8874 (only my memory commits), no stone cast. Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
