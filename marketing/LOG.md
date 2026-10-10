@@ -4,6 +4,7 @@ Newest first. Every public action, with its link, the moment it is done.
 
 ## Downloads
 
+- 2026-10-10: 48 (horadric.exe 27, horadric-x64.zip 9, Horadric-macos.tar.gz 12)
 - 2026-10-09 (AlternativeTo): 35 (horadric.exe 23, horadric-x64.zip 6, Horadric-macos.tar.gz 6)
 - 2026-10-09: 32 (horadric.exe 23, horadric-x64.zip 6, Horadric-macos.tar.gz 3)
 - 2026-10-08: 31 (horadric.exe 23, horadric-x64.zip 5, Horadric-macos.tar.gz 3; counted this way from now on)
