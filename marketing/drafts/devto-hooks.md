@@ -1,7 +1,7 @@
 ---
 title: Ask the agent, don't read the screen
-published: false
-tags: ai, rust, macos, tooling
+published: true
+tags: ai, rust, claude, tooling
 ---
 
 <!-- Draft prepared 2026-10-07, NOT published. Set published: true only when posting.
@@ -53,7 +53,7 @@ A plain terminal has no hook either. For those, the tile reads the terminal titl
 
 Nothing much. Horadric is pure Rust, drawing straight to Win32 and Direct2D. About 45 MB with four sessions open, and no CPU between events. No Electron. There is no telemetry. The only thing that leaves the machine is the daily update check against GitHub.
 
-It works with Claude Code, Codex and Grok Build. It is free and MIT licensed, for Windows 10 and 11 and macOS 11 or later. Claude Code wrote almost all of it. I made the calls.
+It works with Claude Code, Codex and Grok Build. The `http` hook above is Claude Code's. Codex only runs `command` hooks, and Grok Build refuses `http://` hook URLs, so those two take other routes. It is free and MIT licensed, for Windows 10 and 11 and macOS 11 or later. Claude Code wrote almost all of it. I made the calls.
 
 ## One warning
 
