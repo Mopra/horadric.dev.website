@@ -2,17 +2,14 @@
 
 ## Rules
 
-- Marketing follows marketing/PLAYBOOK.md: at most two new public posts or listings a day across all channels, counted from marketing/LOG.md.
-- Do not file busywork prep to fill a dry log: when the daily public limit is spent and every draft exists, a dry log is fine until the next day's public slots.
-- Prep quests (drafts, images, research) may run any time; public action quests get filed only on the day they may run, one or two a day.
-- Hacker News is the human's alone. Never file a quest that posts or comments there.
-- A contributor agreement (CLA) on a listing PR is signed as Mopra with no company, and only the human can sign it: hand it on as a blocked question.
-- Plain `git push` here fails with 403: every quest that commits must push as Mopra with the token line in PLAYBOOK.md, and its notes should say so.
-- Do not chain a day's two public quests with After: if the first blocks on the human, the second is stuck too. Tell the second to pull before it pushes instead.
+- Since 2026-10-10 (335e44e) Horadric's marketing lives in socialsandbox (C:/Users/morte/Documents/Github/socialsandbox/products/horadric/), with its playbook, log, drafts, runewords and aim. File no marketing quest here; the rules below that line are kept only as history for socialsandbox's Warriv.
+- (history) Marketing followed marketing/PLAYBOOK.md: at most two public posts a day, Hacker News is the human's alone, CLAs are the human's, push as Mopra (plain git push gives 403).
 - `quest blocked` only works on a quest a session holds: for a hand-off, note the one-line question and tell the session to block with it.
+- Do not file busywork to fill a dry log. With no aim open here, a dry log is fine.
 
 ## Lately
 
+- 2026-10-10 Hourly round at 18:13Z: the human moved marketing and its runewords to socialsandbox (335e44e) and dropped the aim; all 42 quests done. Nothing left here, filed nothing, no stone cast. Cleared the marketing items from Open.
 - 2026-10-10 Hourly round at 17:13Z: nothing new since 1b1a8a3 (only my memory commits), no stone cast. Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
 - 2026-10-10 Hourly round at 16:13Z: nothing new since 1b1a8a3 (only my memory commits), no stone cast. Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
 - 2026-10-10 Hourly round at 15:13Z: nothing new since 1b1a8a3 (only my memory commits), no stone cast (Marketing round errand fires itself now). Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
@@ -127,14 +124,4 @@
 
 ## Open
 
-- Winget PR #448663: CLA signed, validation passed. Waits on a moderator; file a quest only if a review asks for changes.
-- Mac channels in the calendar after 10-15: jaywcjlove/awesome-mac PR (one list PR a day), r/macapps (not the week of r/ClaudeAI, so 10-17 or later; expect the App Pile megathread), MacUpdate once the .zip ships. Softpedia and FileHorse: add macOS to the same entry.
-- Own Homebrew tap (Mopra/homebrew-horadric): needs a new repo under the human's account and a test on a real Mac. Not asked yet; ask the human only if Mac downloads show up.
-- Public calendar, two a day, file each on its day (shift if a slot slips): 10-08 winget PR + DevHunt. 10-09 r/ClaudeAI + AlternativeTo (Chocolatey with the human). 10-10 dev.to article (SaaSHub with the human). 10-10 also jqueryscript awesome PR (pulled forward). 10-11 Console.dev email + Softpedia. 10-12 open (Changelog News?). 10-13 PH launch day only. 10-14 r/codex + Indie Hackers. 10-15 FileHorse + MajorGeeks. Then Changelog News, r/windowsapps, Uneed, jaywcjlove awesome-rust-apps, r/AI_Agents (check karma rule).
-- SaaSHub: blocked since 2026-10-10 on the human registering an account. When they do, the session submits the draft; it takes a public slot on that day.
-- Old quest "Publish the dev.to article on hooks over terminal scraping" will start once SaaSHub is done: it must see the dev.to URL in LOG.md and post nothing.
-- Chocolatey: 0.17.0 pushed 2026-10-10 (81541ae), in moderation. File a quest only if the moderator asks for changes.
-- Peerlist needs the human's own verified profile (real name, photo); ask the human before filing it.
-- 2026-10-08 on: file public quests from the drafts, at most two a day. r/ClaudeAI not before 2026-10-09.
-- 2026-10-07 The launch session removed the "Product Hunt launch kit" quest as a duplicate: "Product Hunt: list Horadric and schedule a free launch" (in progress) builds the listing and schedules the launch itself. It also removed its own public quests (DevHunt, AlternativeTo, awesome-claude-code PR, r/ClaudeAI, winget) so they come from you day by day under the two a day rule.
-- Product Hunt: if that quest did not schedule it, pick a Tue to Thu (first candidate Tue 2026-10-13, 00:01 Pacific) and tell the human the date a day ahead via a blocked quest.
+- Nothing open here. Marketing waits (winget PR, Chocolatey moderation, SaaSHub account, calendar from 10-11) now live in socialsandbox. File quests here only if the human adds an aim or a site quest.
