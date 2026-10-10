@@ -13,6 +13,7 @@
 
 ## Lately
 
+- 2026-10-10 Woken again for the Chocolatey and SaaSHub blocks (both already noted, both wait on the human's accounts). Nothing new since 46c8874; did nothing.
 - 2026-10-10 Hourly round at 08:10Z: nothing new since 46c8874 (only my memory commits), no stone cast. Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
 - 2026-10-10 Hourly round at 07:10Z: nothing new since 46c8874 (only my memory commits), no stone cast. Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
 - 2026-10-10 Hourly round at 06:09Z: nothing new since 46c8874 (only my memory commits), no stone cast. Both 10-10 slots spent; Console.dev + Softpedia get filed after 00:00Z on 10-11.
