@@ -2,29 +2,5 @@
   "tasks": {
     "mode": "auto",
     "parallel": 1
-  },
-  "runewords": {
-    "Marketing round": {
-      "about": "Daily: measure downloads, answer comments on our posts, and move the marketing on by marketing/PLAYBOOK.md",
-      "every": "day 15:13",
-      "mode": "bypass",
-      "for": "60m",
-      "steps": [
-        {
-          "say": "Marketing round. Read marketing/PLAYBOOK.md first and follow every rule in it. 1) Write today's download count into marketing/LOG.md. 2) Open every post in marketing/LOG.md from the last 30 days (except Hacker News, which is the human's) and answer new comments since {since} by the playbook; anything you may not answer becomes a quest blocked on the human. 3) If fewer than two public actions are logged for today and no open quest covers the next row of marketing/CHANNELS.md, add one quest for it with horadric quest add and the playbook line in its notes. 4) Commit marketing/ and push as the playbook's GitHub section says. Then stop."
-        }
-      ]
-    },
-    "Reddit replies": {
-      "about": "Every two hours: answer new Reddit comments on our posts and replies, by marketing/PLAYBOOK.md",
-      "every": "2h",
-      "mode": "bypass",
-      "for": "30m",
-      "steps": [
-        {
-          "say": "Reddit replies. Read marketing/PLAYBOOK.md first, then do exactly what its section \"Replying on Reddit\" says for comments since {since}: find what needs an answer, answer what the facts cover, hand the rest to the human as quests, mark the inbox read, log it in marketing/LOG.md. If you logged anything, commit marketing/LOG.md and push as the playbook's GitHub section says. Then stop."
-        }
-      ]
-    }
   }
 }
