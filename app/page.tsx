@@ -57,20 +57,29 @@ export default async function Home() {
         </div>
         <div className="os" id="windows">
           <h2>windows</h2>
-          <ol>
-            <li>
-              Download <b>horadric.exe</b> and <b>horadricw.exe</b> from the{" "}
-              <a href="https://github.com/Mopra/horadric.dev/releases/latest">latest release</a> into one folder.
-            </li>
-            <li>
-              The files are not signed yet. If SmartScreen stops you, choose <b>More info</b>, then{" "}
-              <b>Run anyway</b>.
-            </li>
-            <li>
-              In a terminal in that folder, no admin needed:
-              <Copy text=".\horadric.exe install" label="Copy the install command for Windows" />
-            </li>
-          </ol>
+          <div className="ways">
+            <ol>
+              <li>
+                <Copy text="choco install horadric" label="Copy the Chocolatey install command for Windows" />
+                <p className="aside">updates itself, so it can run ahead of chocolatey</p>
+              </li>
+            </ol>
+            <p className="or">or by hand</p>
+            <ol>
+              <li>
+                Download <b>horadric.exe</b> and <b>horadricw.exe</b> from the{" "}
+                <a href="https://github.com/Mopra/horadric.dev/releases/latest">latest release</a> into one folder.
+              </li>
+              <li>
+                The files are not signed yet. If SmartScreen stops you, choose <b>More info</b>, then{" "}
+                <b>Run anyway</b>.
+              </li>
+              <li>
+                In a terminal in that folder, no admin needed:
+                <Copy text=".\horadric.exe install" label="Copy the install command for Windows" />
+              </li>
+            </ol>
+          </div>
         </div>
       </section>
     </>

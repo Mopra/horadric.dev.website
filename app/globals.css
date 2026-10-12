@@ -63,6 +63,9 @@ a:hover { color: var(--text); }
 .os li .copy { margin-top: 10px; }
 .os li:only-child .copy { margin-top: 0; }
 .os:has(li:only-child) h2 { padding-top: 11px; }
+.ways { display: flex; flex-direction: column; gap: 16px; }
+.os .aside { margin-top: 10px; color: var(--dim); }
+.os .or { margin-top: 16px; color: var(--dim); opacity: .6; }
 
 .copy {
   display: flex; width: 100%; justify-content: space-between; align-items: center; gap: 16px;
