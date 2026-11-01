@@ -8,7 +8,7 @@ import { FS, VS } from "./stone-shader";
 const GOLD: Rgb = [1, 0.62, 0.2];
 const CYCLE: Rgb[] = [GOLD, ...RUNES.map((r) => r.light)];
 
-const TURN = (Math.PI * 2) / 80; // one turn every 80 seconds
+const TURN = (Math.PI * 2) / 140; // one turn every two minutes and more
 const PITCH = (25 * Math.PI) / 180;
 const PITCH_MIN = (-40 * Math.PI) / 180;
 const PITCH_MAX = (65 * Math.PI) / 180;
@@ -79,7 +79,9 @@ export default function Stone() {
     const u = { res: U("res"), light: U("lightCol"), yaw: U("yaw"), pitch: U("pitch"), glow: U("glowK"), hot: U("hot"), time: U("time") };
 
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let yaw = 0.9, spin = TURN, pitchOff = 0, hot = -1, near = 0;
+    let yaw = 0.9, spin = still ? 0 : TURN, pitchOff = 0, hot = -1, near = 0;
+    // A hand on the stone: how hard it pushes the turn, and how far it means to tip it.
+    let push = 0, tilt = 0, strain = 0;
     let light: Rgb = GOLD, from: Rgb = GOLD, to: Rgb = GOLD, shiftAt = 0, holdUntil = 0, cycle = 0;
     let dirty = true, visible = true, raf = 0, last = 0, prev = 0, slow = 0, frames = 0;
     // A weak GPU drops the resolution until it keeps up.
@@ -111,11 +113,23 @@ export default function Stone() {
       prev = now;
       last = now;
 
-      if (!still && !drag) {
-        yaw += spin * dt;
-        spin += (TURN - spin) * Math.min(1, dt * 0.8); // a flung stone settles back to its slow turn
-        pitchOff *= 1 - Math.min(1, dt * 0.25);
-      }
+      // The stone is heavy. A hand only leans on it: it is slow to answer,
+      // slower to stop, and a push that ends stops pushing at once.
+      const before = spin;
+      if (drag) {
+        push *= Math.exp(-dt * 5);
+        spin += (push - spin) * Math.min(1, dt * 0.7);
+      } else spin += ((still ? 0 : TURN) - spin) * Math.min(1, dt * 0.16);
+      pitchOff += ((drag ? tilt : 0) - pitchOff) * Math.min(1, dt * (drag ? 0.6 : 0.12));
+      yaw += spin * dt;
+      // How hard it is being worked: the stone trembles and sheds grit with it.
+      const work = dt ? Math.min(1, (Math.abs(spin - before) / dt) * 1.6 + Math.abs(push - spin) * 0.6) : 0;
+      strain += (work - strain) * Math.min(1, dt * 3);
+      shared.strain = strain;
+      const shake = strain > 0.02 ? strain * 1.4 : 0;
+      c.parentElement!.style.setProperty("--sx", `${((Math.random() - 0.5) * shake).toFixed(2)}px`);
+      c.parentElement!.style.setProperty("--sy", `${((Math.random() - 0.5) * shake).toFixed(2)}px`);
+      if (Math.abs(spin) > 1e-4 || Math.abs(pitchOff) > 1e-4 || drag) dirty = true;
       if (!still) {
         if (now > holdUntil && now - shiftAt > 11000) { cycle = (cycle + 1) % CYCLE.length; shift(CYCLE[cycle], now); }
         dirty = true;
@@ -131,7 +145,7 @@ export default function Stone() {
       if (!dirty) return;
       dirty = false;
 
-      const pitch = Math.max(PITCH_MIN, Math.min(PITCH_MAX, PITCH + (still ? 0 : Math.sin(now / 9000) * 0.06) + pitchOff));
+      const pitch = Math.max(PITCH_MIN, Math.min(PITCH_MAX, PITCH + (still ? 0 : Math.sin(now / 14000) * 0.03) + pitchOff));
       view.yaw = yaw;
       view.pitch = pitch;
       const breath = still ? 0 : (Math.sin(now / 2400) + 1) * 0.04;
@@ -157,7 +171,7 @@ export default function Stone() {
     const down = (e: PointerEvent) => {
       if (drag) return; // a second finger
       finger = e.pointerId;
-      drag = true; moved = 0; lx = e.clientX; ly = e.clientY; lt = e.timeStamp;
+      drag = true; push = spin; tilt = pitchOff; moved = 0; lx = e.clientX; ly = e.clientY; lt = e.timeStamp;
       try { c.setPointerCapture(e.pointerId); } catch {} // a pointer already gone
     };
     const move = (e: PointerEvent) => {
@@ -165,9 +179,9 @@ export default function Stone() {
       if (drag) {
         const dx = e.clientX - lx, dy = e.clientY - ly, dt = Math.max(1, e.timeStamp - lt) / 1000;
         moved += Math.abs(dx) + Math.abs(dy);
-        yaw -= dx * 0.008;
-        spin = Math.max(-6, Math.min(6, (-dx * 0.008) / dt));
-        pitchOff = Math.max(PITCH_MIN - PITCH, Math.min(PITCH_MAX - PITCH, pitchOff + dy * 0.006));
+        // However fast the hand, the stone will not be hurried past this.
+        push = Math.max(-0.7, Math.min(0.7, push + ((-dx * 0.0012) / dt) * 0.25));
+        tilt = Math.max(PITCH_MIN - PITCH, Math.min(PITCH_MAX - PITCH, tilt + dy * 0.0016));
         lx = e.clientX; ly = e.clientY; lt = e.timeStamp;
         dirty = true;
       }
@@ -179,11 +193,8 @@ export default function Stone() {
     const up = (e: PointerEvent) => {
       if (!drag || e.pointerId !== finger) return;
       drag = false;
-      // Held still before letting go: no fling.
-      if (e.type === "pointercancel" || e.timeStamp - lt > 80) spin = TURN;
-      if (e.type === "pointercancel") return;
-      if (moved > 6) { if (Math.abs(spin) < TURN) spin = TURN; return; }
-      spin = TURN;
+      // Let go, it keeps what momentum it has and gives it up slowly.
+      if (e.type === "pointercancel" || moved > 6) return;
       const f = at(e);
       const r = RUNES.find((r) => r.face === f);
       if (!r) return;

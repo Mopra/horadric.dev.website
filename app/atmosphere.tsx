@@ -29,9 +29,9 @@ const FUTHARK: Pt[][][] = [
 // The app's three depths, a little bigger for a whole page, and how far
 // each follows the pointer, in pixels.
 type Depth = { count: number; size: Pt; speed: Pt; alpha: Pt; sway: number; stroke: number; sunk: number; follow: number };
-const FAR: Depth = { count: 46, size: [6, 10], speed: [3, 7], alpha: [0.14, 0.24], sway: 6, stroke: 0.16, sunk: 0.45, follow: 6 };
-const MID: Depth = { count: 18, size: [14, 26], speed: [9, 20], alpha: [0.16, 0.28], sway: 18, stroke: 0.11, sunk: 0.15, follow: 16 };
-const NEAR: Depth = { count: 5, size: [60, 110], speed: [26, 42], alpha: [0.07, 0.12], sway: 34, stroke: 0.06, sunk: 0, follow: 46 };
+const FAR: Depth = { count: 46, size: [6, 10], speed: [3, 7], alpha: [0.09, 0.16], sway: 6, stroke: 0.16, sunk: 0.45, follow: 6 };
+const MID: Depth = { count: 18, size: [14, 26], speed: [9, 20], alpha: [0.1, 0.18], sway: 18, stroke: 0.11, sunk: 0.15, follow: 16 };
+const NEAR: Depth = { count: 5, size: [60, 110], speed: [26, 42], alpha: [0.05, 0.09], sway: 34, stroke: 0.06, sunk: 0, follow: 46 };
 
 type Ember = { u: number[] };
 const seeded = (n: number, salt: number): Ember[] =>
@@ -127,7 +127,44 @@ export default function Atmosphere() {
         c.height = Math.round(h * dpr);
       }
     };
-    let raf = 0, n = 0;
+    // Grit shaken off the stone while it is worked, falling into the dark.
+    type Grain = { x: number; y: number; vx: number; vy: number; life: number; r: number };
+    let grit: Grain[] = [];
+    const stoneEl = hero.querySelector(".stone");
+    const shed = (dt: number) => {
+      const s = shared.strain;
+      if (stoneEl && s > 0.05 && grit.length < 400) {
+        const b = stoneEl.getBoundingClientRect(), hb = hero.getBoundingClientRect();
+        const cx = b.left - hb.left + b.width / 2, base = b.top - hb.top + b.height * 0.8;
+        for (let i = 0; i < s * 6; i++) {
+          grit.push({
+            x: cx + (Math.random() - 0.5) * b.width * 0.5,
+            y: base + (Math.random() - 0.3) * b.height * 0.1,
+            vx: (Math.random() - 0.5) * 8,
+            vy: Math.random() * 20,
+            life: 1,
+            r: 0.8 + Math.random() * 1.8,
+          });
+        }
+      }
+      for (const g of grit) {
+        g.vy += 140 * dt;
+        g.x += g.vx * dt;
+        g.y += g.vy * dt;
+        g.life -= dt * 0.7;
+      }
+      grit = grit.filter((g) => g.life > 0 && g.y < h + 10);
+    };
+    const drawGrit = (c: HTMLCanvasElement) => {
+      const g = c.getContext("2d")!;
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      for (const p of grit) {
+        g.fillStyle = `rgba(170,165,160,${(p.life * 0.75).toFixed(3)})`;
+        g.fillRect(p.x, p.y, p.r, p.r);
+      }
+    };
+
+    let raf = 0, n = 0, then = 0;
     size();
     const ro = new ResizeObserver(() => {
       size();
@@ -212,6 +249,9 @@ export default function Atmosphere() {
       // The smoke moves slowly: every other frame is enough.
       if (n++ % 2 === 0 || still) for (const s of smokes) s?.draw(t);
       for (const [c, d, embers, sparks] of depths) runes(c, d, embers, sparks, t);
+      shed(then ? Math.min(0.1, (now - then) / 1000) : 0);
+      then = now;
+      drawGrit(mid.current!);
       hero.style.setProperty("--px", shared.px.toFixed(4));
       hero.style.setProperty("--py", shared.py.toFixed(4));
     };
