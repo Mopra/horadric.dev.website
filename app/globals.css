@@ -187,7 +187,10 @@ html { scroll-behavior: smooth; }
   color: var(--dim); cursor: pointer; font: inherit; letter-spacing: inherit; text-align: left;
   transition: border-color .2s;
 }
-.copy code { font-family: inherit; color: var(--text); overflow-x: auto; white-space: nowrap; }
+.copy code { font-family: inherit; color: var(--text); overflow-x: auto; white-space: nowrap; min-width: 0; }
+/* Grid and flex items may shrink below their content, or a long command
+   pushes the page wider than a phone. */
+.os > *, .os ol, .os li { min-width: 0; }
 .copy span { flex: none; }
 .copy:hover { border-color: var(--dim); }
 .copy:hover span { color: var(--text); }
@@ -207,6 +210,8 @@ html { scroll-behavior: smooth; }
   .needs { position: static; margin-top: 14px; padding: 0 16px; text-align: center; }
   .corner { position: static; margin-top: 10px; gap: 8px 18px; justify-content: center; flex-wrap: wrap; padding: 0 16px; }
   .os { grid-template-columns: 1fr; gap: 12px; }
+  .copy { padding: 10px 12px; gap: 10px; }
+  .copy code { font-size: 12px; white-space: normal; overflow-wrap: break-word; } /* at the spaces; mid word only if a word cannot fit */
   .os:has(li:only-child) h2 { padding-top: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
