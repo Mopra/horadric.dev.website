@@ -1,8 +1,8 @@
 // The rune stone, ray marched. Ported from the app's own icon source,
 // horadric.dev/crates/horadric-ui/assets/icon/stone.html, with its sliders fixed at
 // the values the icon is baked with. Added here: time, so the cuts shimmer, and
-// `hot`, the face under the pointer, whose rune catches fire as `ignite`
-// rises from 0 to 1.
+// `ignite`, how far each face's rune has caught fire, from 0 to 1: each
+// face burns up and dies down on its own, so moving between runes crossfades.
 
 export const VS = `#version 300 es
 in vec2 pos; void main() { gl_Position = vec4(pos, 0, 1); }`;
@@ -11,7 +11,8 @@ export const FS = `#version 300 es
 precision highp float;
 uniform vec2 res;
 uniform vec3 lightCol;
-uniform float yaw, pitch, glowK, hot, ignite, time;
+uniform float yaw, pitch, glowK, time;
+uniform float ignite[6];
 // Always 0, but the compiler can't know it. Every loop starts from it, so
 // Direct3D's compiler (behind Chrome and Edge on Windows) keeps them loops
 // instead of unrolling each one into a copy of map() per step: unrolled,
@@ -64,7 +65,7 @@ float runeD(vec3 p) {
   return glyph(uv / s, g) * s;
 }
 const float W = .042;
-float heat(vec3 p) { return float(faceOf(p)) == hot ? ignite : 0.; }
+float heat(vec3 p) { return ignite[faceOf(p)]; }
 // Flame noise: rising in the world, whichever way the face is turned.
 // Stretched upward, so it reads as tongues and not as a boil.
 // Slow: the fire of an old spell, not a blaze.

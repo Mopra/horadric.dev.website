@@ -124,14 +124,14 @@ export default function Stone() {
       const L = (n: string) => gl.getUniformLocation(lens, n);
       const lu = { col: L("col"), dep: L("dep"), res: L("res"), maxR: L("maxR") };
       const U = (n: string) => gl.getUniformLocation(prog, n);
-      const u = { res: U("res"), light: U("lightCol"), yaw: U("yaw"), pitch: U("pitch"), glow: U("glowK"), hot: U("hot"), ignite: U("ignite"), time: U("time") };
+      const u = { res: U("res"), light: U("lightCol"), yaw: U("yaw"), pitch: U("pitch"), glow: U("glowK"), ignite: U("ignite"), time: U("time") };
 
       const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
       let yaw = 0.9, spin = still ? 0 : TURN, pitchOff = 0, hot = -1, near = 0;
       // A hand on the stone: how hard it pushes the turn, and how far it means to tip it.
       let push = 0, tilt = 0, strain = 0;
-      // The rune under the pointer catches slowly and dies down slowly.
-      let fire = -1, ignite = 0;
+      // Each rune catches slowly under the pointer and dies down slowly after it.
+      const ignite = new Float32Array(6);
       let light: Rgb = GOLD, from: Rgb = GOLD, to: Rgb = GOLD, shiftAt = 0, holdUntil = 0, cycle = 0;
       let dirty = true, visible = true, raf = 0, last = 0, prev = 0, slow = 0, frames = 0;
       // A weak GPU drops the resolution until it keeps up.
@@ -180,11 +180,12 @@ export default function Stone() {
         c.parentElement!.style.setProperty("--sx", `${((Math.random() - 0.5) * shake).toFixed(2)}px`);
         c.parentElement!.style.setProperty("--sy", `${((Math.random() - 0.5) * shake).toFixed(2)}px`);
         if (Math.abs(spin) > 1e-4 || Math.abs(pitchOff) > 1e-4 || drag) dirty = true;
-        if (hot >= 0 && hot !== fire) { fire = hot; ignite = 0; }
-        const kindle = hot >= 0 && hot === fire ? 1 : 0;
-        const was = ignite;
-        ignite += (kindle - ignite) * Math.min(1, dt * (kindle ? 0.7 : 0.55));
-        if (Math.abs(ignite - was) > 1e-4 || ignite > 0.01) dirty = true;
+        for (let f = 0; f < 6; f++) {
+          const kindle = f === hot ? 1 : 0;
+          const was = ignite[f];
+          ignite[f] += (kindle - was) * Math.min(1, dt * (kindle ? 0.7 : 0.55));
+          if (Math.abs(ignite[f] - was) > 1e-4 || ignite[f] > 0.01) dirty = true;
+        }
         if (!still) {
           if (now > holdUntil && now - shiftAt > 11000) { cycle = (cycle + 1) % CYCLE.length; shift(CYCLE[cycle], now); }
           dirty = true;
@@ -213,8 +214,7 @@ export default function Stone() {
         gl.uniform1f(u.yaw, yaw);
         gl.uniform1f(u.pitch, pitch);
         gl.uniform1f(u.glow, 0.04 + breath + near * 0.04);
-        gl.uniform1f(u.hot, fire);
-        gl.uniform1f(u.ignite, ignite);
+        gl.uniform1fv(u.ignite, ignite);
         gl.uniform1f(u.time, still ? 0 : now / 1000);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         // Then through the lens to the canvas.
