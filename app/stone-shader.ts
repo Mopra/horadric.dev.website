@@ -1,7 +1,8 @@
 // The rune stone, ray marched. Ported from the app's own icon source,
 // horadric.dev/crates/horadric-ui/assets/icon/stone.html, with its sliders fixed at
 // the values the icon is baked with. Added here: time, so the cuts shimmer, and
-// `hot`, the face under the pointer, whose rune burns brighter.
+// `hot`, the face under the pointer, whose rune catches fire as `ignite`
+// rises from 0 to 1.
 
 export const VS = `#version 300 es
 in vec2 pos; void main() { gl_Position = vec4(pos, 0, 1); }`;
@@ -10,7 +11,7 @@ export const FS = `#version 300 es
 precision highp float;
 uniform vec2 res;
 uniform vec3 lightCol;
-uniform float yaw, pitch, glowK, hot, time;
+uniform float yaw, pitch, glowK, hot, ignite, time;
 const float LENS = .25; // smaller is closer; stone.tsx picks with the same lens
 out vec4 frag;
 
@@ -56,7 +57,19 @@ float runeD(vec3 p) {
   return glyph(uv / s, g) * s;
 }
 const float W = .042;
-float heat(vec3 p) { return float(faceOf(p)) == hot ? 1. : 0.; }
+float heat(vec3 p) { return float(faceOf(p)) == hot ? ignite : 0.; }
+// Flame noise: rising in the world, whichever way the face is turned.
+// Stretched upward, so it reads as tongues and not as a boil.
+// Slow: the fire of an old spell, not a blaze.
+float flame(vec3 p) {
+  vec3 q = vec3(p.x * 6., p.y * 2.6 - time * .6, p.z * 6.) + seed;
+  return vnoise(q) * .6 + vnoise(q * 2.2 + vec3(0., -time * .45, 0.)) * .4;
+}
+// The veil behind the tongues: coarser, slower still.
+float veil(vec3 p) {
+  vec3 q = vec3(p.x * 2.6, p.y * 1.4 - time * .28, p.z * 2.6) + seed * 1.7;
+  return vnoise(q) * .65 + vnoise(q * 2.1 + vec3(0., -time * .2, 0.)) * .35;
+}
 
 float map(vec3 p) {
   vec3 q = abs(p) - vec3(.8);
@@ -104,7 +117,11 @@ void main() {
   for (int i = 0; i < 400; i++) {
     vec3 p = ro + rd * t;
     float d = map(p);
-    if (d < .06) glowAcc += exp(-runeD(p) * 28.) * .012 * (1. + heat(p) * 1.6);
+    if (d < .06) {
+      float rd0 = runeD(p), hp = heat(p);
+      // A burning rune's halo is ragged and flickers, never a smooth bloom.
+      glowAcc += exp(-rd0 * 22.) * .012 * (1. + hp * (veil(p) * .9 - .2));
+    }
     if (d < .0006) { hit = true; break; }
     t += d * (runeD(p) < .1 ? .22 : .6);
     if (t > 9.) break;
@@ -116,7 +133,8 @@ void main() {
     float ao = occlusion(p, n);
     float sh = shadow(p + n * .004, key);
     float r = runeD(p);
-    float g = glowK + heat(p) * .9;
+    float hp = heat(p);
+    float g = glowK + hp * .15;
     float inCut = 1. - smoothstep(W * .45, W, r);
     float tone = fbm((p + seed) * 7.);
     vec3 alb = vec3(.016, .016, .019) * (.6 + .8 * tone);
@@ -124,14 +142,41 @@ void main() {
     float rimL = pow(max(dot(n, rim), 0.), 2.);
     vec3 h = normalize(key - rd);
     float spec = pow(max(dot(n, h), 0.), 28.) * .06;
-    col = alb * (vec3(1., .96, .9) * 3.9 * dif * sh + vec3(.55, .65, .9) * 2.1 * rimL * ao + vec3(.5, .55, .7) * .22 * ao);
+    // Darker than the icon's lighting: a stone in a dark room, lit low.
+    col = alb * (vec3(1., .96, .9) * 2.3 * dif * sh + vec3(.55, .65, .9) * 1.2 * rimL * ao + vec3(.5, .55, .7) * .12 * ao);
     col += vec3(1., .96, .9) * spec * sh * (1. - inCut);
-    col += L * alb * 30. * exp(-r * 16.) * ao * g;
+    float fl = flame(p);
+    col += L * alb * 30. * exp(-r * 10.) * ao * (g + hp * fl * .25);
     // The cut: hot along the middle, and the heat crawls slowly along it.
     float flick = .65 + .7 * vnoise(p * 9. + seed + vec3(0., time * .7, time * .3));
     float core = 1. - smoothstep(0., W * .55, r);
     col += L * (inCut * 1.4 + core * core * 4.5) * flick * (.4 + g);
     col = mix(col, vec3(1., .93, .8) * L * 2.2, core * core * core * .2 * g);
+    // Fire: tongues licking up out of the cut, ragged where the noise
+    // reaches far, white hot at the root, deep and red at the tips.
+    if (hp > 0.) {
+      // Fire rises: a point burns if the cut lies close below it, so the
+      // flames stand up off the rune instead of ringing it.
+      // Looked for at two heights picked by a fine rising noise, so the
+      // fire comes apart into wisps instead of copies of the rune.
+      float below = 1e3;
+      for (int i = 0; i < 2; i++) {
+        float hz = vnoise(vec3(p.x * 34., p.y * 9. - time * .7, p.z * 34.) + float(i) * 17.3);
+        float k = W * (.8 + 5.5 * hz * hz);
+        below = min(below, runeD(p - vec3(0., k, 0.)) + k * .3);
+      }
+      float dF = min(r, below) - (fl - .5) * W * 3.;
+      float f = pow(clamp(1. - (dF - W * .3) / (W * 2.2), 0., 1.), 2.4);
+      // Behind the tongues, a wide dim veil, so the fire has depth.
+      float vl = veil(p);
+      float dV = min(r, below) - (vl - .5) * W * 6.;
+      float v = pow(clamp(1. - (dV - W * .2) / (W * 4.), 0., 1.), 2.);
+      float breathe = .8 + .2 * sin(time * .9 + fl * 3.);
+      vec3 ember = L * vec3(.8, .42, .32) * .45;
+      vec3 tip = L * vec3(1., .4, .2) * .5, body = L * .9, root = L * 1.25 + vec3(.06, .05, .03);
+      vec3 fire = f < .5 ? mix(tip, body, f * 2.) : mix(body, root, f * 2. - 1.);
+      col += (ember * v * .3 + fire * f * .45) * breathe * hp * (1. - inCut * .8);
+    }
     alpha = 1.;
   }
   col += L * glowAcc * (.35 + glowK) * .8;

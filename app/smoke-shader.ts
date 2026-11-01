@@ -51,7 +51,8 @@ void main() {
     float low = smoothstep(-.05, -.5, uv.y);
     float bank = exp(-pow((uv.y + .27) * 3.4, 2.)) * exp(-uv.x * uv.x * 1.4);
     float a = (.25 + .75 * d) * (.04 + .55 * low + .7 * bank);
-    vec3 col = mix(vec3(.15, .155, .175), light * .35, .15 + .3 * bank);
-    frag = vec4(col, clamp(a, 0., 1.) * .62);
+    // Dark fog: it veils the stone's foot rather than lighting it.
+    vec3 col = mix(vec3(.05, .052, .06), light * .12, .1 + .25 * bank);
+    frag = vec4(col, clamp(a, 0., 1.) * .7);
   }
 }`;
