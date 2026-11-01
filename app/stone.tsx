@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { RUNES, type Rgb, type Rune } from "./runes";
+import { shared } from "./light";
 import { FS, VS } from "./stone-shader";
 
 const GOLD: Rgb = [1, 0.62, 0.2];
@@ -123,6 +124,7 @@ export default function Stone() {
       const next = mix(from, to, ease(k));
       if (next.some((v, i) => v !== light[i])) {
         light = next;
+        shared.light = light;
         dirty = true;
         c.parentElement!.style.setProperty("--light", `rgb(${light.map((v) => Math.round(v * 255)).join(",")})`);
       }
@@ -186,6 +188,7 @@ export default function Stone() {
       const r = RUNES.find((r) => r.face === f);
       if (!r) return;
       setRune(r);
+      shared.heat = 1;
       shift(r.light, performance.now());
       holdUntil = performance.now() + 14000;
     };

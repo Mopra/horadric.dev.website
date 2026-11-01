@@ -1,5 +1,6 @@
 import Copy from "./copy";
 import { RUNES } from "./runes";
+import Atmosphere from "./atmosphere";
 import Stone from "./stone";
 
 // Rebuild the page at most once an hour, so the download count stays fresh
@@ -33,6 +34,7 @@ export default async function Home() {
   return (
     <>
       <section className="hero">
+        <Atmosphere />
         <h1 className="name">horadric</h1>
         <Stone />
         {/* What the runes say, for readers who cannot turn the stone and for search engines. */}
