@@ -181,7 +181,7 @@ export default function Atmosphere() {
       }
     };
 
-    let raf = 0, n = 0, then = 0;
+    let raf = 0, n = 0, then = 0, vx = 0, vy = 0;
     size();
     const ro = new ResizeObserver(() => {
       size();
@@ -260,13 +260,19 @@ export default function Atmosphere() {
       raf = still ? 0 : requestAnimationFrame(frame);
       if (!visible || document.hidden) return;
       const t = still ? 40 : (now - t0) / 1000;
-      shared.px += (tx - shared.px) * 0.04;
-      shared.py += (ty - shared.py) * 0.04;
+      // The world follows the pointer on a slow, heavy spring: it lags,
+      // gathers way, and settles without a bounce, at any frame rate.
+      const dt = then ? Math.min(0.1, (now - then) / 1000) : 0;
+      const stiff = 0.9, damp = 2 * Math.sqrt(stiff);
+      vx += ((tx - shared.px) * stiff - vx * damp) * dt;
+      vy += ((ty - shared.py) * stiff - vy * damp) * dt;
+      shared.px += vx * dt;
+      shared.py += vy * dt;
       shared.heat *= 0.994;
       // The smoke moves slowly: every other frame is enough.
       if (n++ % 2 === 0 || still) for (const s of smokes) s?.draw(t);
       for (const [c, d, embers, sparks] of depths) runes(c, d, embers, sparks, t);
-      shed(then ? Math.min(0.1, (now - then) / 1000) : 0);
+      shed(dt);
       then = now;
       drawDust(mid.current!);
       hero.style.setProperty("--px", shared.px.toFixed(4));
