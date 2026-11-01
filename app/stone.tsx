@@ -147,7 +147,7 @@ export default function Stone() {
         light = next;
         shared.light = light;
         dirty = true;
-        c.parentElement!.style.setProperty("--light", `rgb(${light.map((v) => Math.round(v * 255)).join(",")})`);
+        (c.closest(".hero") as HTMLElement ?? c.parentElement!).style.setProperty("--light", `rgb(${light.map((v) => Math.round(v * 255)).join(",")})`);
       }
       if (!dirty) return;
       dirty = false;

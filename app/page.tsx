@@ -45,6 +45,10 @@ export default async function Home() {
             </li>
           ))}
         </ul>
+        <a className="down" href="#install" aria-label="Scroll down to install">
+          install
+          <span />
+        </a>
         <p className="needs">free, open source. needs a claude subscription</p>
         <nav className="corner">
           <a href="https://github.com/Mopra/horadric.dev">source</a>

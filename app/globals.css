@@ -42,7 +42,36 @@ a:hover { color: var(--text); }
   0% { transform: translate(0, 0); } 20% { transform: translate(-7%, 4%); } 40% { transform: translate(5%, -6%); }
   60% { transform: translate(-3%, 8%); } 80% { transform: translate(8%, 2%); } 100% { transform: translate(0, 0); }
 }
-.name, .corner, .needs, .speaks { z-index: 3; }
+.name, .corner, .needs, .speaks, .down { z-index: 3; }
+
+/* The way down: a word and a thread, a faint light sinking along it. It
+   fades once the page is scrolled. */
+.down {
+  position: absolute; bottom: 22px; left: 50%; translate: -50% 0;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  color: var(--dim); letter-spacing: .3em; padding-left: .3em;
+  opacity: 0; animation: dawn 3s ease-out 4s forwards;
+}
+.down:hover { color: var(--text); }
+.down span {
+  position: relative; width: 1px; height: 44px; overflow: hidden;
+  background: linear-gradient(to bottom, rgba(91,95,104,.5), transparent);
+}
+.down span::after {
+  content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%;
+  background: linear-gradient(to bottom, transparent, var(--light, #ffb224), transparent);
+  animation: sink 3.2s cubic-bezier(.5, 0, .5, 1) infinite;
+}
+@keyframes sink { to { top: 100%; } }
+@supports (animation-timeline: scroll()) {
+  .down {
+    animation: dawn 3s ease-out 4s forwards, leave linear forwards;
+    animation-timeline: auto, scroll();
+    animation-range: normal, 0 30vh;
+  }
+}
+@keyframes leave { to { opacity: 0; } } /* from whatever the dawn left */
+html { scroll-behavior: smooth; }
 .speaks { position: relative; }
 
 /* The stone: the baked picture under the live one, until the live one draws. */
@@ -121,13 +150,16 @@ a:hover { color: var(--text); }
 @media (max-width: 520px) {
   .corner { gap: 18px; right: 0; left: 0; justify-content: center; }
   .name { left: 0; right: 0; text-align: center; }
+  .down { bottom: 92px; }
+  .down span { height: 28px; }
   .stone { width: 96vw; }
   .needs { left: 0; right: 0; bottom: 56px; text-align: center; }
   .os { grid-template-columns: 1fr; gap: 12px; }
   .os:has(li:only-child) h2 { padding-top: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .speaks span, .grain { animation: none; }
+  .speaks span, .grain, .down span::after { animation: none; }
+  .down { animation-duration: 0s; }
   .air .smoke, .air .wisps { animation-duration: 0s; }
 }
 
