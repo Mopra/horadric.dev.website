@@ -18,7 +18,7 @@ export default async function Image() {
         <div style={{ display: "flex", flexDirection: "column", color: "#e8e9ed", fontSize: 64, letterSpacing: 12 }}>
           <div>horadric</div>
           <div style={{ fontSize: 28, letterSpacing: 1, color: "#5b5f68", marginTop: 20, maxWidth: 480 }}>
-            Every Claude Code session, on every machine you own.
+            An agentic development environment for Claude Code.
           </div>
         </div>
       </div>

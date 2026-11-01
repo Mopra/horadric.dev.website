@@ -6,16 +6,16 @@ import "./globals.css";
 const mono = Geist_Mono({ subsets: ["latin"], weight: ["300", "400"] });
 
 const description =
-  "Horadric is a free, open source app for Windows and macOS that shows every Claude Code session as a tile on your desktop, and the one that needs you lights up. Talk to Claude in the Folio, join every machine you own in the Brotherhood, and follow it all from your phone through the Town Portal.";
+  "Horadric is a free, open source agentic development environment (ADE) for Claude Code, on Windows and macOS. Every session is a tile on your desktop, and the one that needs you lights up. Talk to Claude in the Folio, join every machine you own in the Brotherhood, and follow it all from your phone through the Town Portal.";
 
 // The page is a stone and almost no text, so the title and these tags tell search engines what it is.
 export const metadata: Metadata = {
   metadataBase: new URL("https://horadric.dev"),
-  title: "Horadric: every Claude Code session, on every machine you own",
+  title: "Horadric: an agentic development environment for Claude Code",
   description,
   alternates: { canonical: "/" },
-  openGraph: { title: "Horadric: every Claude Code session, on every machine you own", description, url: "/", siteName: "Horadric", type: "website" },
-  twitter: { card: "summary_large_image", title: "Horadric: every Claude Code session, on every machine you own", description },
+  openGraph: { title: "Horadric: an agentic development environment for Claude Code", description, url: "/", siteName: "Horadric", type: "website" },
+  twitter: { card: "summary_large_image", title: "Horadric: an agentic development environment for Claude Code", description },
 };
 
 const app = {

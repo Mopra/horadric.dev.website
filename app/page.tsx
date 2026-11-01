@@ -35,7 +35,10 @@ export default async function Home() {
     <>
       <section className="hero">
         <Atmosphere />
-        <h1 className="name">horadric</h1>
+        <header className="name">
+          <h1>horadric</h1>
+          <p>an agentic development environment for claude code</p>
+        </header>
         <Stone />
         {/* What the runes say, for readers who cannot turn the stone and for search engines. */}
         <ul className="told">
