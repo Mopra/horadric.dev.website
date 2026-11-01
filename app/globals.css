@@ -162,14 +162,19 @@ html { scroll-behavior: smooth; }
 .copy:hover span { color: var(--text); }
 
 
+/* On a phone the page flows down a column instead of pinning its edges:
+   a rune's longer words push the way down and the links below them,
+   never under them. */
 @media (max-width: 520px) {
-  .corner { gap: 18px; right: 0; left: 0; justify-content: center; }
+  .hero { justify-content: flex-start; padding: 64px 0 22px; }
   .name { left: 0; right: 0; text-align: center; }
+  .stone { width: 96vw; margin-top: 0; }
+  .speaks { margin-top: 0; }
   .speaks .what { white-space: normal; }
-  .down { bottom: 92px; }
+  .down { position: static; translate: none; margin-top: auto; padding-top: 20px; }
   .down span { height: 28px; }
-  .stone { width: 96vw; }
-  .needs { left: 0; right: 0; bottom: 56px; text-align: center; }
+  .needs { position: static; margin-top: 14px; padding: 0 16px; text-align: center; }
+  .corner { position: static; margin-top: 10px; gap: 18px; justify-content: center; }
   .os { grid-template-columns: 1fr; gap: 12px; }
   .os:has(li:only-child) h2 { padding-top: 0; }
 }

@@ -55,6 +55,7 @@ export default function Atmosphere() {
   useEffect(() => {
     const hero = back.current!.parentElement!.parentElement!;
     const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const touch = matchMedia("(hover: none)").matches;
 
     // Smoke: one small GL program per canvas, drawn at a third of the size
     // and stretched, since smoke has no edges to lose.
@@ -115,7 +116,7 @@ export default function Atmosphere() {
     const size = () => {
       w = hero.clientWidth;
       h = hero.clientHeight;
-      dpr = Math.min(devicePixelRatio, 2);
+      dpr = Math.min(devicePixelRatio, touch ? 1.5 : 2); // faint runes need no more on a phone
       // A bigger page gets more runes, so the field reads the same.
       count = Math.max(0.5, Math.min(1.8, (w * h) / (1280 * 800)));
       for (const c of [back.current!, front.current!]) {

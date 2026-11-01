@@ -18,6 +18,7 @@ const LENS = 0.25; // as in the shader
 const HALF = 0.94; // the stone's half width, for picking a face
 const FRAME_MS = 33; // the stone turns slowly; thirty frames a second is plenty
 const MAX_PX = 1080; // above the drawn size where the GPU allows: smoother edges
+const TOUCH_PX = 600;
 const MIN_PX = 280;
 
 const mix = (a: Rgb, b: Rgb, k: number): Rgb => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
@@ -132,6 +133,9 @@ export default function Stone() {
       let yaw = 0.9, spin = still ? 0 : TURN, pitchOff = 0, hot = -1, near = 0;
       // A hand on the stone: how hard it pushes the turn, and how far it means to tip it.
       let push = 0, tilt = 0, strain = 0;
+      // Touch has no hover: a tapped rune burns for a while instead.
+      const touch = matchMedia("(hover: none)").matches;
+      let tapUntil = 0;
       // Each rune catches slowly under the pointer and dies down slowly after it.
       const ignite = new Float32Array(6);
       let light: Rgb = GOLD, from: Rgb = GOLD, to: Rgb = GOLD, shiftAt = 0, holdUntil = 0, cycle = 0;
@@ -141,7 +145,9 @@ export default function Stone() {
 
       const size = () => {
         const css = c.clientWidth || 1;
-        const px = Math.round(Math.max(MIN_PX, Math.min(MAX_PX, css * Math.min(devicePixelRatio, 2) * 1.4) * scale));
+        // A phone's GPU is small and its screen dense: draw it near its
+        // shown size there, and above it only where a mouse says desktop.
+        const px = Math.round(Math.max(MIN_PX, (touch ? Math.min(TOUCH_PX, css * Math.min(devicePixelRatio, 1.5)) : Math.min(MAX_PX, css * Math.min(devicePixelRatio, 2) * 1.4)) * scale));
         if (c.width !== px) { c.width = c.height = px; dirty = true; }
       };
       const ro = new ResizeObserver(size);
@@ -182,6 +188,7 @@ export default function Stone() {
         c.parentElement!.style.setProperty("--sx", `${((Math.random() - 0.5) * shake).toFixed(2)}px`);
         c.parentElement!.style.setProperty("--sy", `${((Math.random() - 0.5) * shake).toFixed(2)}px`);
         if (Math.abs(spin) > 1e-4 || Math.abs(pitchOff) > 1e-4 || drag) dirty = true;
+        if (tapUntil && now > tapUntil) { tapUntil = 0; hot = -1; }
         for (let f = 0; f < 6; f++) {
           const kindle = f === hot ? 1 : 0;
           const was = ignite[f];
@@ -272,11 +279,13 @@ export default function Stone() {
         const r = RUNES.find((r) => r.face === f);
         if (!r) return;
         setRune(r);
+        if (e.pointerType !== "mouse") { hot = f; tapUntil = performance.now() + 6000; }
         shared.heat = 1;
         shift(r.light, performance.now());
         holdUntil = performance.now() + 14000;
       };
-      const leave = () => { if (!drag) { hot = -1; near = 0; dirty = true; } };
+      // A finger lifting leaves too; a tapped rune keeps burning through that.
+      const leave = () => { if (!drag && !tapUntil) { hot = -1; near = 0; dirty = true; } };
       c.addEventListener("pointerdown", down);
       c.addEventListener("pointermove", move);
       c.addEventListener("pointerup", up);
