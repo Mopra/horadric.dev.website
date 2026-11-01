@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { RUNES, type Rgb, type Rune } from "./runes";
-import { shared } from "./light";
+import { filming, shared } from "./light";
 import { FS, LENS_FS, VS } from "./stone-shader";
 
 const GOLD: Rgb = [1, 0.62, 0.2];
@@ -239,10 +239,19 @@ export default function Stone() {
           dirty = true;
           (c.closest(".hero") as HTMLElement ?? c.parentElement!).style.setProperty("--light", `rgb(${light.map((v) => Math.round(v * 255)).join(",")})`);
         }
+        // Filming (see app/film): the scene is scripted, frame by frame.
+        const scene = filming()?.(now / 1000);
+        if (scene) {
+          yaw = scene.yaw;
+          light = scene.light;
+          shared.light = light;
+          ignite.set(scene.ignite);
+          dirty = true;
+        }
         if (!dirty) return;
         dirty = false;
 
-        const pitch = Math.max(PITCH_MIN, Math.min(PITCH_MAX, PITCH + (still ? 0 : Math.sin(now / 14000) * 0.03) + pitchOff));
+        const pitch = scene ? scene.pitch : Math.max(PITCH_MIN, Math.min(PITCH_MAX, PITCH + (still ? 0 : Math.sin(now / 14000) * 0.03) + pitchOff));
         view.yaw = yaw;
         view.pitch = pitch;
         const breath = still ? 0 : (Math.sin(now / 2400) + 1) * 0.04;

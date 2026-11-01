@@ -11,3 +11,11 @@ export const shared: { light: Rgb; heat: number; strain: number; px: number; py:
   px: 0,
   py: 0,
 };
+
+// Filming: the page at /film loads the site with ?film, where a stepped
+// clock stands in for the real one (see layout.tsx) and this script, given
+// the time in seconds, sets what the stone and the air would otherwise
+// choose for themselves. Unset on the live site.
+export type Scene = { yaw: number; pitch: number; light: Rgb; ignite: number[]; px: number; py: number };
+export const filming = (): ((t: number) => Scene) | undefined =>
+  typeof window === "undefined" ? undefined : (window as unknown as { __film?: { script?: (t: number) => Scene } }).__film?.script;

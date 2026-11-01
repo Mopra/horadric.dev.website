@@ -34,11 +34,21 @@ const app = {
   sameAs: ["https://github.com/Mopra/horadric.dev"],
 };
 
+const FILM_CLOCK = `if (/[?&]film(=|&|$)/.test(location.search)) {
+  var now = 0, queue = [];
+  performance.now = function () { return now; };
+  window.requestAnimationFrame = function (cb) { queue.push(cb); return queue.length; };
+  window.cancelAnimationFrame = function () {};
+  window.__film = { script: null, step: function (ms) { now = ms; var q = queue; queue = []; q.forEach(function (cb) { cb(now); }); } };
+}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={mono.className}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(app) }} />
+        {/* Filming (app/film): with ?film, a stepped clock stands in for the real one before anything else runs. */}
+        <script dangerouslySetInnerHTML={{ __html: FILM_CLOCK }} />
         {/* Without script the stone never wakes, so the veil must not stand. */}
         <noscript>
           <style>{".veil{display:none}"}</style>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { shared } from "./light";
+import { filming, shared } from "./light";
 import { SMOKE_FS, SMOKE_VS } from "./smoke-shader";
 
 // The air around the stone, back to front: smoke, far runes, near runes,
@@ -275,8 +275,11 @@ export default function Atmosphere() {
       shared.px += vx * dt;
       shared.py += vy * dt;
       shared.heat *= 0.994;
-      // The smoke moves slowly: every other frame is enough.
-      if (n++ % 2 === 0 || still) for (const s of smokes) s?.draw(t);
+      const scene = filming()?.(now / 1000);
+      if (scene) { shared.px = scene.px; shared.py = scene.py; }
+      // The smoke moves slowly: every other frame is enough, but a film
+      // wants every frame.
+      if (n++ % 2 === 0 || still || scene) for (const s of smokes) s?.draw(t);
       for (const [c, d, embers, sparks] of depths) runes(c, d, embers, sparks, t);
       shed(dt);
       then = now;
