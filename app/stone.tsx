@@ -19,6 +19,16 @@ const HALF = 0.94; // the stone's half width, for picking a face
 const FRAME_MS = 33; // the stone turns slowly; thirty frames a second is plenty
 const MAX_PX = 1080; // above the drawn size where the GPU allows: smoother edges
 const TOUCH_PX = 600;
+const VEIL_MIN = 1800;
+const VEIL_MAX = 12000;
+// The rune drawn on the veil: the stone's own, from the right face, in the
+// shader's glyph space (y up), as strokes.
+const VEIL_RUNE: [number, number, number, number][] = [
+  [0, -1, 0, 1],
+  [0, 0.2, -0.62, 0.82],
+  [0, 0.2, 0.62, 0.82],
+  [-0.42, -0.5, 0.42, -0.5],
+];
 const MIN_PX = 280;
 
 const mix = (a: Rgb, b: Rgb, k: number): Rgb => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
@@ -54,6 +64,25 @@ export default function Stone() {
   const [live, setLive] = useState(false);
   // No live stone is coming (no WebGL2, or it failed): the baked one rests.
   const [asleep, setAsleep] = useState(false);
+  // The veil over the page while the stone wakes. It stays a little while
+  // even on a fast machine, so the reveal is never a flash, and lifts on its
+  // own if the stone is very slow.
+  const [veiled, setVeiled] = useState(true);
+  const born = useRef(0);
+  // Nothing to scroll to behind the veil.
+  useEffect(() => {
+    document.documentElement.style.overflow = veiled ? "hidden" : "";
+    return () => { document.documentElement.style.overflow = ""; };
+  }, [veiled]);
+  useEffect(() => {
+    if (!born.current) born.current = performance.now();
+    if (!live && !asleep) {
+      const t = setTimeout(() => setVeiled(false), VEIL_MAX - (performance.now() - born.current));
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setVeiled(false), Math.max(0, VEIL_MIN - (performance.now() - born.current)));
+    return () => clearTimeout(t);
+  }, [live, asleep]);
   const [rune, setRune] = useState<Rune | null>(null);
 
   useEffect(() => {
@@ -328,6 +357,14 @@ export default function Stone() {
   const tint = rune ? `rgb(${rune.light.map((v) => Math.round(v * 255)).join(",")})` : undefined;
   return (
     <>
+      <div className={veiled ? "veil" : "veil lifted"} aria-hidden="true">
+        <svg viewBox="-1.2 -1.3 2.4 2.6">
+          {VEIL_RUNE.map(([x1, y1, x2, y2], i) => (
+            <line key={i} x1={x1} y1={-y1} x2={x2} y2={-y2} pathLength={1} style={{ animationDelay: `${0.3 + i * 0.45}s` }} />
+          ))}
+        </svg>
+        <p>the stone wakes</p>
+      </div>
       <div className={live ? "stone live" : asleep ? "stone asleep" : "stone"}>
         {/* The baked stone shows until the live one has drawn, and stays where WebGL2 is missing. */}
         <img src="/stone.png" alt="" aria-hidden="true" />

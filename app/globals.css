@@ -67,6 +67,35 @@ a:hover { color: var(--text); }
 html { scroll-behavior: smooth; }
 .speaks { position: relative; }
 
+/* The veil over the page while the stone wakes: one rune of the stone,
+   drawn stroke by stroke in a thread of fire, breathing, then swelling and
+   dissolving as the dark lifts off the scene. */
+.veil {
+  position: fixed; inset: 0; z-index: 10; background: #000;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+  transition: opacity 1.6s ease-in-out, visibility 0s 1.6s;
+}
+.veil svg {
+  width: 112px; overflow: visible;
+  filter: drop-shadow(0 0 4px rgba(255, 158, 51, .9)) drop-shadow(0 0 18px rgba(255, 120, 30, .45));
+  animation: kindle 3.2s ease-in-out 2.2s infinite;
+  transition: transform 1.6s ease-in, filter 1.6s ease-in, opacity 1.6s ease-in;
+}
+.veil line {
+  stroke: #ffb35a; stroke-width: .07; stroke-linecap: round;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: etch .7s ease-out forwards;
+}
+.veil p {
+  color: var(--dim); letter-spacing: .35em; padding-left: .35em;
+  opacity: 0; animation: dawn 1.4s ease-out 1.2s forwards;
+}
+.veil p { transition: opacity .8s; }
+@keyframes etch { to { stroke-dashoffset: 0; } }
+@keyframes kindle { 50% { opacity: .55; } }
+.veil.lifted { opacity: 0; visibility: hidden; pointer-events: none; }
+.veil.lifted svg { transform: scale(2.6); filter: blur(10px) drop-shadow(0 0 30px rgba(255, 120, 30, .6)); opacity: 0; animation: none; }
+
 /* The stone: the baked picture under the live one, until the live one draws. */
 .stone {
   position: relative; z-index: 1; width: min(84vmin, 720px); aspect-ratio: 1;
@@ -179,7 +208,9 @@ html { scroll-behavior: smooth; }
   .os:has(li:only-child) h2 { padding-top: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .speaks span, .grain, .down span::after, .stone img, .stone .waking span { animation: none; }
+  .speaks span, .grain, .down span::after, .stone img, .stone .waking span, .veil svg { animation: none; }
+  .veil line { animation-duration: 0s; }
+  .veil.lifted svg { transform: none; }
   .down { animation-duration: 0s; }
   .air .smoke, .air .wisps { animation-duration: 0s; }
 }

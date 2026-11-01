@@ -39,6 +39,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={mono.className}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(app) }} />
+        {/* Without script the stone never wakes, so the veil must not stand. */}
+        <noscript>
+          <style>{".veil{display:none}"}</style>
+        </noscript>
         {children}
       </body>
       <GoogleAnalytics gaId="G-3FGXPB5W63" />
