@@ -27,7 +27,7 @@ a:hover { color: var(--text); }
    runes, in front of it the nearest runes, wisps and grain. */
 .air { position: absolute; inset: 0; pointer-events: none; }
 .air.back { z-index: 0; mask-image: linear-gradient(to bottom, #000 75%, transparent); }
-.air.front { z-index: 2; }
+.air.front { z-index: 2; mask-image: linear-gradient(to bottom, #000 80%, transparent); }
 .air canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .air .smoke, .air .wisps { opacity: 0; animation: dawn 4s ease-out .3s forwards; }
 .air .far { filter: blur(1.2px); }
@@ -174,7 +174,7 @@ html { scroll-behavior: smooth; }
   .down { position: static; translate: none; margin-top: auto; padding-top: 20px; }
   .down span { height: 28px; }
   .needs { position: static; margin-top: 14px; padding: 0 16px; text-align: center; }
-  .corner { position: static; margin-top: 10px; gap: 18px; justify-content: center; }
+  .corner { position: static; margin-top: 10px; gap: 8px 18px; justify-content: center; flex-wrap: wrap; padding: 0 16px; }
   .os { grid-template-columns: 1fr; gap: 12px; }
   .os:has(li:only-child) h2 { padding-top: 0; }
 }

@@ -25,7 +25,7 @@ const app = {
   url: "https://horadric.dev",
   description,
   applicationCategory: "DeveloperApplication",
-  operatingSystem: "Windows 10, Windows 11, macOS 11 or later",
+  operatingSystem: "Windows 10, Windows 11, macOS 11 or later, Linux x86_64 (as a node)",
   softwareRequirements: "A Claude subscription",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   downloadUrl: "https://github.com/Mopra/horadric.dev/releases/latest",

@@ -61,6 +61,9 @@ export default async function Home() {
           <a className="get" href="#mac">
             for mac
           </a>
+          <a className="get" href="#linux">
+            linux
+          </a>
         </nav>
       </section>
       <section className="install" id="install" aria-label="How to install Horadric">
@@ -69,6 +72,18 @@ export default async function Home() {
           <ol>
             <li>
               <Copy text="curl -fsSL https://horadric.dev/install.sh | sh" label="Copy the install command for macOS" />
+            </li>
+          </ol>
+        </div>
+        <div className="os" id="linux">
+          <h2>linux</h2>
+          <ol>
+            <li>
+              <Copy text="curl -fsSL https://horadric.dev/install.sh | sh" label="Copy the install command for a Linux node" />
+              <p className="aside">
+                a node: no screen, x86_64. it runs claude sessions on a server and joins your brotherhood, so they show
+                on your other machines.
+              </p>
             </li>
           </ol>
         </div>
