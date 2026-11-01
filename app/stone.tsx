@@ -20,6 +20,7 @@ const FRAME_MS = 33; // the stone turns slowly; thirty frames a second is plenty
 const MAX_PX = 1080; // above the drawn size where the GPU allows: smoother edges
 const TOUCH_PX = 600;
 const VEIL_MIN = 1800;
+const VEIL_SETTLE = 700;
 const VEIL_MAX = 12000;
 // The rune drawn on the veil: the stone's own, from the right face, in the
 // shader's glyph space (y up), as strokes.
@@ -80,7 +81,9 @@ export default function Stone() {
       const t = setTimeout(() => setVeiled(false), VEIL_MAX - (performance.now() - born.current));
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setVeiled(false), Math.max(0, VEIL_MIN - (performance.now() - born.current)));
+    // A moment after the stone is live, so its first, heaviest frames are
+    // behind it and the fade runs smooth.
+    const t = setTimeout(() => setVeiled(false), Math.max(VEIL_SETTLE, VEIL_MIN - (performance.now() - born.current)));
     return () => clearTimeout(t);
   }, [live, asleep]);
   const [rune, setRune] = useState<Rune | null>(null);
