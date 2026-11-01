@@ -12,6 +12,11 @@ precision highp float;
 uniform vec2 res;
 uniform vec3 lightCol;
 uniform float yaw, pitch, glowK, hot, ignite, time;
+// Always 0, but the compiler can't know it. Every loop starts from it, so
+// Direct3D's compiler (behind Chrome and Edge on Windows) keeps them loops
+// instead of unrolling each one into a copy of map() per step: unrolled,
+// this shader took twenty seconds to compile.
+uniform int zero;
 const float LENS = .25; // smaller is closer; stone.tsx picks with the same lens
 layout(location = 0) out vec4 frag;
 // How far each pixel's stone is, for the lens pass: 0 nearest, 1 empty.
@@ -27,8 +32,8 @@ float vnoise(vec3 x) {
   return mix(mix(mix(h31(i), h31(i + vec3(1,0,0)), f.x), mix(h31(i + vec3(0,1,0)), h31(i + vec3(1,1,0)), f.x), f.y),
              mix(mix(h31(i + vec3(0,0,1)), h31(i + vec3(1,0,1)), f.x), mix(h31(i + vec3(0,1,1)), h31(i + vec3(1,1,1)), f.x), f.y), f.z);
 }
-float fbm(vec3 p) { float a = .5, s = 0.; for (int i = 0; i < 5; i++) { s += a * vnoise(p); p = p * 2.03 + vec3(1.7, 9.2, 3.1); a *= .5; } return s; }
-float ridged(vec3 p) { float a = .5, s = 0.; for (int i = 0; i < 4; i++) { float n = 1. - abs(vnoise(p) * 2. - 1.); s += a * n * n; p = p * 2.1 + 3.3; a *= .5; } return s; }
+float fbm(vec3 p) { float a = .5, s = 0.; for (int i = zero; i < 5; i++) { s += a * vnoise(p); p = p * 2.03 + vec3(1.7, 9.2, 3.1); a *= .5; } return s; }
+float ridged(vec3 p) { float a = .5, s = 0.; for (int i = zero; i < 4; i++) { float n = 1. - abs(vnoise(p) * 2. - 1.); s += a * n * n; p = p * 2.1 + 3.3; a *= .5; } return s; }
 
 float seg(vec2 p, vec2 a, vec2 b) { vec2 pa = p - a, ba = b - a; float h = clamp(dot(pa, ba) / dot(ba, ba), 0., 1.); return length(pa - ba * h); }
 float glyph(vec2 p, int g) {
@@ -88,18 +93,25 @@ float map(vec3 p) {
   d += (1. - smoothstep(W * .5, W, runeD(p))) * .085;
   return d;
 }
+// The tetrahedron normal, as a loop so map() is compiled once here, not four
+// times. The step is a little wider than a pixel's grain, so the finest
+// bumps don't shimmer.
 vec3 normalAt(vec3 p) {
-  const vec2 k = vec2(1, -1); float e = .0024; // a little wider than a pixel's grain, so the finest bumps don't shimmer
-  return normalize(k.xyy * map(p + k.xyy * e) + k.yyx * map(p + k.yyx * e) + k.yxy * map(p + k.yxy * e) + k.xxx * map(p + k.xxx * e));
+  vec3 n = vec3(0);
+  for (int i = zero; i < 4; i++) {
+    vec3 e = .5773 * (2. * vec3(float(((i + 3) >> 1) & 1), float((i >> 1) & 1), float(i & 1)) - 1.);
+    n += e * map(p + e * .0024);
+  }
+  return normalize(n);
 }
 float shadow(vec3 ro, vec3 rd) {
   float r = 1., t = .02;
-  for (int i = 0; i < 48; i++) { float h = map(ro + rd * t); r = min(r, 7. * h / t); t += clamp(h, .01, .15); if (r < .002 || t > 4.) break; }
+  for (int i = zero; i < 48; i++) { float h = map(ro + rd * t); r = min(r, 7. * h / t); t += clamp(h, .01, .15); if (r < .002 || t > 4.) break; }
   return clamp(r, 0., 1.);
 }
 float occlusion(vec3 p, vec3 n) {
   float o = 0., w = 1.;
-  for (int i = 1; i <= 5; i++) { float h = .025 * float(i); o += w * (h - map(p + n * h)); w *= .6; }
+  for (int i = zero + 1; i <= 5; i++) { float h = .025 * float(i); o += w * (h - map(p + n * h)); w *= .6; }
   return clamp(1. - 6.5 * o, 0., 1.);
 }
 vec3 aces(vec3 x) { return clamp((x * (2.51 * x + .03)) / (x * (2.43 * x + .59) + .14), 0., 1.); }
@@ -116,7 +128,7 @@ void main() {
   float t = 4.;
   bool hit = false;
   float glowAcc = 0.;
-  for (int i = 0; i < 400; i++) {
+  for (int i = zero; i < 400; i++) {
     vec3 p = ro + rd * t;
     float d = map(p);
     if (d < .06) {
@@ -173,7 +185,7 @@ void main() {
       // Looked for at two heights picked by a fine rising noise, so the
       // fire comes apart into wisps instead of copies of the rune.
       float below = 1e3;
-      for (int i = 0; i < 2; i++) {
+      for (int i = zero; i < 2; i++) {
         float hz = vnoise(vec3(p.x * 34., p.y * 9. - time * .7, p.z * 34.) + float(i) * 17.3);
         float k = W * (.8 + 5.5 * hz * hz);
         below = min(below, runeD(p - vec3(0., k, 0.)) + k * .3);
