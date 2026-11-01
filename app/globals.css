@@ -74,7 +74,6 @@ a:hover { color: var(--text); }
 .speaks span { display: block; animation: rise 1.6s ease-out both; }
 .speaks b { display: block; font-weight: 400; letter-spacing: .3em; margin-bottom: 8px; }
 .speaks i { display: block; font-style: normal; opacity: .55; margin-top: 6px; }
-.speaks .hint { color: var(--dim); opacity: .7; animation-delay: 2.5s; animation-duration: 3s; }
 @keyframes rise { from { opacity: 0; filter: blur(6px); transform: translateY(6px); } }
 .told {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
