@@ -198,6 +198,11 @@ export default function Atmosphere() {
       ty = (e.clientY / innerHeight) * 2 - 1;
     };
     addEventListener("pointermove", point);
+    // The way down fades as the page is scrolled toward it.
+    const down = hero.querySelector<HTMLElement>(".down");
+    const scrolled = () => down?.style.setProperty("--stay", Math.max(0, 1 - scrollY / (innerHeight * 0.3)).toFixed(3));
+    addEventListener("scroll", scrolled, { passive: true });
+    scrolled();
 
     const runes = (c: HTMLCanvasElement, d: Depth, embers: Ember[], sparks: number, t: number) => {
       const g = c.getContext("2d")!;
@@ -283,6 +288,7 @@ export default function Atmosphere() {
     return () => {
       cancelAnimationFrame(raf);
       removeEventListener("pointermove", point);
+      removeEventListener("scroll", scrolled);
       ro.disconnect();
       io.disconnect();
       for (const s of smokes) s?.free();
