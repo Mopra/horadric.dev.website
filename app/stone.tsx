@@ -192,7 +192,7 @@ export default function Stone() {
       const frame = (now: number) => {
         raf = requestAnimationFrame(frame);
         if (!visible || document.hidden) { prev = 0; return; }
-        if (now - last < FRAME_MS) return;
+        if (now - last < FRAME_MS && !filming()) return; // a film draws every frame it steps
         const dt = Math.min(0.1, prev ? (now - prev) / 1000 : 0);
         // Frames that come far slower than asked mean the GPU is struggling.
         if (prev && now - prev > 70) slow++;

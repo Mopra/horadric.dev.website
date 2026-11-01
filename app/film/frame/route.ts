@@ -41,6 +41,8 @@ export async function POST(req: Request) {
   }
 
   const i = Number(url.searchParams.get("i"));
-  await writeFile(join(dir, `${String(i).padStart(5, "0")}.png`), Buffer.from(await req.arrayBuffer()));
+  // A data URL of the PNG.
+  const png = Buffer.from((await req.text()).replace(/^data:image\/png;base64,/, ""), "base64");
+  await writeFile(join(dir, `${String(i).padStart(5, "0")}.png`), png);
   return new Response("ok");
 }

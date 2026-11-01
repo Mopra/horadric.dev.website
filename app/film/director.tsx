@@ -72,23 +72,30 @@ export default function Director() {
     frame.src = "/?film";
     holder.current!.replaceChildren(frame);
     await new Promise((r) => (frame.onload = r));
-    const win = frame.contentWindow as Window & { __film: Film };
-    const doc = frame.contentDocument!;
     // The stone and the air read the clock from when the page loaded; the
     // film counts from when the stone is awake. One script, one time.
     let start = 0;
-    win.__film.script = (abs) => script(abs - start);
-    doc.querySelector(".veil")?.remove();
+    let win = frame.contentWindow as Window & { __film?: Film };
+    let doc = frame.contentDocument!;
+    // The dev server may reload the frame after it loads, so the page is
+    // taken afresh until the stone is awake in it.
+    const bind = () => {
+      win = frame.contentWindow as Window & { __film?: Film };
+      doc = frame.contentDocument!;
+      if (win.__film && !win.__film.script) win.__film.script = (abs) => script(abs - start);
+      doc.querySelector(".veil")?.remove();
+    };
 
     // Wake the stone: step the clock until it is drawn, giving its shader
     // real time to compile in between.
     let ms = 0;
     setStatus("waking the stone");
-    while (!doc.querySelector(".stone.live")) {
-      win.__film.step((ms += 1000 / FPS));
+    for (bind(); !doc.querySelector(".stone.live"); bind()) {
+      win.__film?.step((ms += 1000 / FPS));
       await wait(20);
     }
-    for (let i = 0; i < FPS; i++) win.__film.step((ms += 1000 / FPS));
+    const film = win.__film!;
+    for (let i = 0; i < FPS; i++) film.step((ms += 1000 / FPS));
     start = ms / 1000;
 
     const out = doc.createElement("canvas");
@@ -196,11 +203,18 @@ export default function Director() {
       g.textBaseline = "bottom";
       g.fillStyle = "#5b5f68";
       g.fillText("horadric.dev", W / 2, H - 32 * S);
+      flush(g);
     };
 
+    // Chrome draws one canvas into another lazily, when the picture is
+    // next needed. The stone and the air change with the next step, so
+    // each copy must be made now: reading a pixel back forces it.
+    const flush = (ctx: CanvasRenderingContext2D) => void ctx.getImageData(0, 0, 1, 1);
+
     const send = async (i: number, c: HTMLCanvasElement) => {
-      const blob = await new Promise<Blob>((r) => c.toBlob((b) => r(b!), "image/png"));
-      await fetch(`/film/frame?name=${name}&i=${i}`, { method: "POST", body: blob });
+      // toDataURL, not toBlob: toBlob waits for idle time, which a page in
+      // a pane out of sight may never get.
+      await fetch(`/film/frame?name=${name}&i=${i}`, { method: "POST", body: c.toDataURL("image/png") });
     };
 
     await fetch(`/film/frame?name=${name}&start`, { method: "POST" });
@@ -209,21 +223,26 @@ export default function Director() {
     // The loop itself; its first frames are kept to crossfade into.
     for (let i = 0; i < N; i++) {
       const t = i / FPS;
-      win.__film.step((start + t) * 1000);
+      film.step((start + t) * 1000);
       draw(t);
       if (i < K) {
         const keep = doc.createElement("canvas");
         keep.width = W;
         keep.height = H;
-        keep.getContext("2d")!.drawImage(out, 0, 0);
+        const kg = keep.getContext("2d")!;
+        kg.drawImage(out, 0, 0);
+        flush(kg);
         head.push(keep);
+        // The stone's WebGL canvas gives up a new picture only once the page
+        // has yielded, so these frames, which are not sent, must yield too.
+        await wait(0);
       } else await send(i, out);
       setStatus(`${name}: frame ${i + 1} of ${N}`);
     }
     // Past the end, the loop runs on into its start: blend the two.
     for (let i = 0; i < K; i++) {
       const t = (N + i) / FPS;
-      win.__film.step((start + t) * 1000);
+      film.step((start + t) * 1000);
       draw(t);
       const w = (i + 0.5) / K;
       g.globalAlpha = w;
