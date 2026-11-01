@@ -6,7 +6,9 @@ import { shared } from "./light";
 import { FS, LENS_FS, VS } from "./stone-shader";
 
 const GOLD: Rgb = [1, 0.62, 0.2];
-const CYCLE: Rgb[] = [GOLD, ...RUNES.map((r) => r.light)];
+// A deep blood red the stone passes through too, as the old dark does.
+const BLOOD: Rgb = [0.9, 0.06, 0.05];
+const CYCLE: Rgb[] = [GOLD, BLOOD, ...RUNES.map((r) => r.light)];
 
 const TURN = (Math.PI * 2) / 140; // one turn every two minutes and more
 const PITCH = (25 * Math.PI) / 180;

@@ -110,7 +110,12 @@ html { scroll-behavior: smooth; }
 .speaks b { display: block; font-weight: 400; letter-spacing: .3em; margin-bottom: 8px; }
 .speaks i { display: block; font-style: normal; opacity: .55; margin-top: 6px; }
 .speaks:has(.what) { max-width: none; }
-.speaks .what { letter-spacing: .12em; white-space: nowrap; animation: none; transition: opacity 2.4s ease-out .6s, filter 2.4s ease-out .6s; }
+.speaks .what {
+  letter-spacing: .12em; white-space: nowrap; animation: none; transition: opacity 2.4s ease-out .6s, filter 2.4s ease-out .6s;
+  /* In the stone's light, shifting as it shifts. */
+  color: color-mix(in srgb, var(--light, #ff9e33) 75%, #8a8e98);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--light, #ff9e33) 55%, transparent), 0 0 26px color-mix(in srgb, var(--light, #ff9e33) 25%, transparent);
+}
 /* Said only once the stone is awake, not over "the stone wakes". */
 .stone:not(.live):not(.asleep) + .speaks .what { opacity: 0; filter: blur(6px); transition: none; }
 @keyframes rise { from { opacity: 0; filter: blur(6px); transform: translateY(6px); } }
