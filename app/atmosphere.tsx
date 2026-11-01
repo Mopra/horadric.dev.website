@@ -127,40 +127,57 @@ export default function Atmosphere() {
         c.height = Math.round(h * dpr);
       }
     };
-    // Grit shaken off the stone while it is worked, falling into the dark.
-    type Grain = { x: number; y: number; vx: number; vy: number; life: number; r: number };
-    let grit: Grain[] = [];
+    // Dust worked loose from the stone's lower edges while it is pushed. It
+    // sinks slowly, drifts and dissolves into the fog: never a pour.
+    type Mote = { x: number; y: number; vx: number; vy: number; age: number; life: number; r: number; seed: number };
+    let dust: Mote[] = [];
+    let owed = 0;
     const stoneEl = hero.querySelector(".stone");
     const shed = (dt: number) => {
       const s = shared.strain;
-      if (stoneEl && s > 0.05 && grit.length < 400) {
+      if (stoneEl && s > 0.12) owed += (s - 0.12) * 40 * dt;
+      if (stoneEl && owed >= 1) {
         const b = stoneEl.getBoundingClientRect(), hb = hero.getBoundingClientRect();
-        const cx = b.left - hb.left + b.width / 2, base = b.top - hb.top + b.height * 0.8;
-        for (let i = 0; i < s * 6; i++) {
-          grit.push({
-            x: cx + (Math.random() - 0.5) * b.width * 0.5,
-            y: base + (Math.random() - 0.3) * b.height * 0.1,
-            vx: (Math.random() - 0.5) * 8,
-            vy: Math.random() * 20,
-            life: 1,
-            r: 0.8 + Math.random() * 1.8,
+        const cx = b.left - hb.left + b.width / 2, top = b.top - hb.top;
+        for (; owed >= 1 && dust.length < 140; owed--) {
+          // Along the stone's underside: lowest in the middle, rising to its sides.
+          const u = Math.random() * 2 - 1;
+          dust.push({
+            x: cx + u * b.width * 0.3,
+            y: top + b.height * (0.8 - Math.abs(u) * 0.1),
+            vx: u * 6 + (Math.random() - 0.5) * 4,
+            vy: 2 + Math.random() * 4,
+            age: 0,
+            life: 2.5 + Math.random() * 2.5,
+            r: 0.6 + Math.random() * 1.4,
+            seed: Math.random() * 100,
           });
         }
+        owed = Math.min(owed, 1);
       }
-      for (const g of grit) {
-        g.vy += 140 * dt;
-        g.x += g.vx * dt;
-        g.y += g.vy * dt;
-        g.life -= dt * 0.7;
+      for (const m of dust) {
+        m.age += dt;
+        m.vy += (14 - m.vy) * Math.min(1, dt * 0.8); // sinking through thick air, not falling
+        m.vx *= 1 - Math.min(1, dt * 0.6);
+        m.x += (m.vx + Math.sin(m.age * 1.3 + m.seed) * 5) * dt;
+        m.y += m.vy * dt;
       }
-      grit = grit.filter((g) => g.life > 0 && g.y < h + 10);
+      dust = dust.filter((m) => m.age < m.life);
     };
-    const drawGrit = (c: HTMLCanvasElement) => {
+    const drawDust = (c: HTMLCanvasElement) => {
       const g = c.getContext("2d")!;
       g.setTransform(dpr, 0, 0, dpr, 0, 0);
-      for (const p of grit) {
-        g.fillStyle = `rgba(170,165,160,${(p.life * 0.75).toFixed(3)})`;
-        g.fillRect(p.x, p.y, p.r, p.r);
+      const tone = [0.5, 0.49, 0.48].map((v, i) => v + (shared.light[i] - v) * 0.2);
+      for (const m of dust) {
+        const a = Math.sin((Math.PI * m.age) / m.life) * 0.4;
+        g.fillStyle = rgba(tone, a * 0.25);
+        g.beginPath();
+        g.arc(m.x, m.y, m.r * 2.4, 0, Math.PI * 2);
+        g.fill();
+        g.fillStyle = rgba(tone, a);
+        g.beginPath();
+        g.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        g.fill();
       }
     };
 
@@ -251,7 +268,7 @@ export default function Atmosphere() {
       for (const [c, d, embers, sparks] of depths) runes(c, d, embers, sparks, t);
       shed(then ? Math.min(0.1, (now - then) / 1000) : 0);
       then = now;
-      drawGrit(mid.current!);
+      drawDust(mid.current!);
       hero.style.setProperty("--px", shared.px.toFixed(4));
       hero.style.setProperty("--py", shared.py.toFixed(4));
     };
