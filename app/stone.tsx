@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { RUNES, type Rgb, type Rune } from "./runes";
 import { shared } from "./light";
-import { FS, VS } from "./stone-shader";
+import { FS, LENS_FS, VS } from "./stone-shader";
 
 const GOLD: Rgb = [1, 0.62, 0.2];
 const CYCLE: Rgb[] = [GOLD, ...RUNES.map((r) => r.light)];
@@ -15,7 +15,7 @@ const PITCH_MAX = (65 * Math.PI) / 180;
 const LENS = 0.25; // as in the shader
 const HALF = 0.94; // the stone's half width, for picking a face
 const FRAME_MS = 33; // the stone turns slowly; thirty frames a second is plenty
-const MAX_PX = 760;
+const MAX_PX = 1080; // above the drawn size where the GPU allows: smoother edges
 const MIN_PX = 280;
 
 const mix = (a: Rgb, b: Rgb, k: number): Rgb => [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
@@ -61,20 +61,52 @@ export default function Stone() {
       gl.compileShader(s);
       return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
     };
-    const vs = shader(gl.VERTEX_SHADER, VS), fs = shader(gl.FRAGMENT_SHADER, FS);
-    if (!vs || !fs) return;
-    const prog = gl.createProgram()!;
-    gl.attachShader(prog, vs);
-    gl.attachShader(prog, fs);
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    const vs = shader(gl.VERTEX_SHADER, VS), fs = shader(gl.FRAGMENT_SHADER, FS), lfs = shader(gl.FRAGMENT_SHADER, LENS_FS);
+    if (!vs || !fs || !lfs) return;
+    const link = (f: WebGLShader) => {
+      const p = gl.createProgram()!;
+      gl.attachShader(p, vs);
+      gl.attachShader(p, f);
+      gl.bindAttribLocation(p, 0, "pos");
+      gl.linkProgram(p);
+      return gl.getProgramParameter(p, gl.LINK_STATUS) ? p : null;
+    };
+    const prog = link(fs), lens = link(lfs);
+    if (!prog || !lens) return;
     gl.useProgram(prog);
     const buf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-    const loc = gl.getAttribLocation(prog, "pos");
-    gl.enableVertexAttribArray(loc);
-    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+    // The stone is drawn into two textures, its colour and its depth, and
+    // the lens draws them to the canvas.
+    const tex = () => {
+      const t = gl.createTexture()!;
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      return t;
+    };
+    const colTex = tex(), depTex = tex();
+    const fbo = gl.createFramebuffer();
+    let fboPx = 0;
+    const target = (px: number) => {
+      if (px === fboPx) return;
+      fboPx = px;
+      for (const t of [colTex, depTex]) {
+        gl.bindTexture(gl.TEXTURE_2D, t);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, px, px, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      }
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, colTex, 0);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, depTex, 0);
+      gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
+    };
+    const L = (n: string) => gl.getUniformLocation(lens, n);
+    const lu = { col: L("col"), dep: L("dep"), res: L("res"), maxR: L("maxR") };
     const U = (n: string) => gl.getUniformLocation(prog, n);
     const u = { res: U("res"), light: U("lightCol"), yaw: U("yaw"), pitch: U("pitch"), glow: U("glowK"), hot: U("hot"), ignite: U("ignite"), time: U("time") };
 
@@ -91,7 +123,7 @@ export default function Stone() {
 
     const size = () => {
       const css = c.clientWidth || 1;
-      const px = Math.round(Math.max(MIN_PX, Math.min(MAX_PX, css * Math.min(devicePixelRatio, 2)) * scale));
+      const px = Math.round(Math.max(MIN_PX, Math.min(MAX_PX, css * Math.min(devicePixelRatio, 2) * 1.4) * scale));
       if (c.width !== px) { c.width = c.height = px; dirty = true; }
     };
     const ro = new ResizeObserver(size);
@@ -156,6 +188,9 @@ export default function Stone() {
       view.yaw = yaw;
       view.pitch = pitch;
       const breath = still ? 0 : (Math.sin(now / 2400) + 1) * 0.04;
+      target(c.width);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+      gl.useProgram(prog);
       gl.viewport(0, 0, c.width, c.height);
       gl.uniform2f(u.res, c.width, c.height);
       gl.uniform3fv(u.light, light);
@@ -165,6 +200,18 @@ export default function Stone() {
       gl.uniform1f(u.hot, fire);
       gl.uniform1f(u.ignite, ignite);
       gl.uniform1f(u.time, still ? 0 : now / 1000);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      // Then through the lens to the canvas.
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.useProgram(lens);
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, colTex);
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, depTex);
+      gl.uniform1i(lu.col, 0);
+      gl.uniform1i(lu.dep, 1);
+      gl.uniform2f(lu.res, c.width, c.height);
+      gl.uniform1f(lu.maxR, c.width * 0.0055);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       if (frames === 1) setLive(true);
     };
@@ -227,9 +274,14 @@ export default function Stone() {
       cancelAnimationFrame(raf);
       c.removeEventListener("webglcontextlost", lost);
       gl.deleteProgram(prog);
+      gl.deleteProgram(lens);
       gl.deleteShader(vs);
       gl.deleteShader(fs);
+      gl.deleteShader(lfs);
       gl.deleteBuffer(buf);
+      gl.deleteTexture(colTex);
+      gl.deleteTexture(depTex);
+      gl.deleteFramebuffer(fbo);
       ro.disconnect();
       io.disconnect();
       c.removeEventListener("pointerdown", down);

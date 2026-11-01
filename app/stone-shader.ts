@@ -13,7 +13,9 @@ uniform vec2 res;
 uniform vec3 lightCol;
 uniform float yaw, pitch, glowK, hot, ignite, time;
 const float LENS = .25; // smaller is closer; stone.tsx picks with the same lens
-out vec4 frag;
+layout(location = 0) out vec4 frag;
+// How far each pixel's stone is, for the lens pass: 0 nearest, 1 empty.
+layout(location = 1) out vec4 depth;
 
 const float rough = 100. / 60.;
 const float chips = 40. / 55.;
@@ -87,18 +89,18 @@ float map(vec3 p) {
   return d;
 }
 vec3 normalAt(vec3 p) {
-  const vec2 k = vec2(1, -1); float e = .0015;
+  const vec2 k = vec2(1, -1); float e = .0024; // a little wider than a pixel's grain, so the finest bumps don't shimmer
   return normalize(k.xyy * map(p + k.xyy * e) + k.yyx * map(p + k.yyx * e) + k.yxy * map(p + k.yxy * e) + k.xxx * map(p + k.xxx * e));
 }
 float shadow(vec3 ro, vec3 rd) {
   float r = 1., t = .02;
-  for (int i = 0; i < 48; i++) { float h = map(ro + rd * t); r = min(r, 10. * h / t); t += clamp(h, .01, .15); if (r < .002 || t > 4.) break; }
+  for (int i = 0; i < 48; i++) { float h = map(ro + rd * t); r = min(r, 7. * h / t); t += clamp(h, .01, .15); if (r < .002 || t > 4.) break; }
   return clamp(r, 0., 1.);
 }
 float occlusion(vec3 p, vec3 n) {
   float o = 0., w = 1.;
   for (int i = 1; i <= 5; i++) { float h = .025 * float(i); o += w * (h - map(p + n * h)); w *= .6; }
-  return clamp(1. - 5. * o, 0., 1.);
+  return clamp(1. - 6.5 * o, 0., 1.);
 }
 vec3 aces(vec3 x) { return clamp((x * (2.51 * x + .03)) / (x * (2.43 * x + .59) + .14), 0., 1.); }
 
@@ -137,16 +139,27 @@ void main() {
     float g = glowK + hp * .15;
     float inCut = 1. - smoothstep(W * .45, W, r);
     float tone = fbm((p + seed) * 7.);
-    vec3 alb = vec3(.016, .016, .019) * (.6 + .8 * tone);
-    float dif = max(dot(n, key), 0.);
-    float rimL = pow(max(dot(n, rim), 0.), 2.);
-    vec3 h = normalize(key - rd);
-    float spec = pow(max(dot(n, h), 0.), 28.) * .06;
-    // Darker than the icon's lighting: a stone in a dark room, lit low.
-    col = alb * (vec3(1., .96, .9) * 2.3 * dif * sh + vec3(.55, .65, .9) * 1.2 * rimL * ao + vec3(.5, .55, .7) * .12 * ao);
-    col += vec3(1., .96, .9) * spec * sh * (1. - inCut);
+    // Basalt, darker than the icon's, with a faint mineral fleck.
+    vec3 alb = vec3(.011, .011, .013) * (.55 + .9 * tone);
+    float fleck = smoothstep(.74, .92, vnoise((p + seed) * 60.));
+    // A stone in a dark room: a low raking key so every crag throws its
+    // shadow, a cold thin rim only at the grazing edges to part it from the
+    // dark, almost nothing from below, and the runes' own warm light.
+    float nk = dot(n, key);
+    float dif = mix(max(nk, 0.), max((nk + .25) / 1.25, 0.), .3);
+    float graze = pow(1. - max(dot(n, -rd), 0.), 3.);
+    float rimL = graze * max(dot(n, rim), 0.);
+    float sky = .5 + .5 * n.y;
+    vec3 hv = normalize(key - rd);
+    float rough = mix(.3, .85, tone);
+    float spec = pow(max(dot(n, hv), 0.), mix(70., 14., rough)) * mix(.1, .025, rough);
+    col = alb * (vec3(1., .93, .84) * 1.8 * dif * sh
+               + vec3(.5, .6, .88) * 2.6 * rimL * ao
+               + vec3(.45, .5, .62) * .1 * sky * ao * ao);
+    col += vec3(1., .95, .88) * spec * (1. + fleck * 5.) * sh * (1. - inCut);
     float fl = flame(p);
-    col += L * alb * 30. * exp(-r * 10.) * ao * (g + hp * fl * .25);
+    // The runes light the stone around them: hot close by, then a wide soft spill.
+    col += L * alb * ao * (24. * exp(-r * 12.) + 5. * exp(-r * 3.)) * (g + .1 + hp * fl * .25);
     // The cut: hot along the middle, and the heat crawls slowly along it.
     float flick = .65 + .7 * vnoise(p * 9. + seed + vec3(0., time * .7, time * .3));
     float core = 1. - smoothstep(0., W * .55, r);
@@ -184,4 +197,36 @@ void main() {
   col = aces(col);
   col = pow(col, vec3(1. / 2.2));
   frag = vec4(col, alpha);
+  depth = vec4(hit ? clamp((t - 4.) / 5., 0., .99) : 1., 0., 0., 1.);
+}`;
+
+// The lens: the stone, drawn once with its depth, is blurred here only where
+// it lies far from the eye, as a camera focused on its near corner would.
+// A disk of taps, so bright specks in the blur open into soft discs.
+export const LENS_FS = `#version 300 es
+precision highp float;
+uniform sampler2D col, dep;
+uniform vec2 res;
+uniform float maxR;
+out vec4 o;
+
+// From 0 in focus to 1 fully soft, by distance along the ray.
+float coc(float d) { return d >= .999 ? .25 : smoothstep(.3, .66, d); }
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / res;
+  float r = coc(texture(dep, uv).r) * maxR;
+  if (r < .35) { o = texture(col, uv); return; }
+  vec4 acc = vec4(0); float ws = 0.;
+  for (int i = 0; i < 24; i++) {
+    float fi = float(i) + .5;
+    float a = fi * 2.39996;
+    vec2 off = vec2(cos(a), sin(a)) * sqrt(fi / 24.) * r / res;
+    vec4 c = texture(col, uv + off);
+    // A sharp near sample must not smear over the soft far ones behind it;
+    // bright ones weigh more, which is what makes bokeh.
+    float w = (.1 + coc(texture(dep, uv + off).r)) * (1. + 3. * dot(c.rgb, vec3(.3, .5, .2)));
+    acc += c * w; ws += w;
+  }
+  o = acc / ws;
 }`;
