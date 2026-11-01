@@ -49,12 +49,14 @@ function pick(x: number, y: number, yaw: number, pitch: number): number {
 export default function Stone() {
   const canvas = useRef<HTMLCanvasElement>(null);
   const [live, setLive] = useState(false);
+  // No live stone is coming (no WebGL2, or it failed): the baked one rests.
+  const [asleep, setAsleep] = useState(false);
   const [rune, setRune] = useState<Rune | null>(null);
 
   useEffect(() => {
     const c = canvas.current!;
     const gl = c.getContext("webgl2", { premultipliedAlpha: false, alpha: true, antialias: false });
-    if (!gl) return; // the baked stone stays
+    if (!gl) { setAsleep(true); return; } // the baked stone stays
     // Compiled in the background where the browser can, so the page stays
     // alive and the baked stone shows until the live one is ready.
     const shader = (type: number, src: string) => {
@@ -83,7 +85,7 @@ export default function Stone() {
     const wait = () => {
       const done = (q: WebGLProgram) => !ext || gl.getProgramParameter(q, ext.COMPLETION_STATUS_KHR);
       if (!done(prog) || !done(lens)) { poll = requestAnimationFrame(wait); return; }
-      if (!gl.getProgramParameter(prog, gl.LINK_STATUS) || !gl.getProgramParameter(lens, gl.LINK_STATUS)) return;
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS) || !gl.getProgramParameter(lens, gl.LINK_STATUS)) { setAsleep(true); return; }
       stop = begin();
     };
     const begin = () => {
@@ -279,7 +281,7 @@ export default function Stone() {
       c.addEventListener("pointercancel", up);
       c.addEventListener("pointerleave", leave);
       // A GPU reset blanks the canvas: show the baked stone again and stop drawing.
-      const lost = (e: Event) => { e.preventDefault(); cancelAnimationFrame(raf); raf = 0; setLive(false); };
+      const lost = (e: Event) => { e.preventDefault(); cancelAnimationFrame(raf); raf = 0; setLive(false); setAsleep(true); };
       c.addEventListener("webglcontextlost", lost);
       size();
       raf = requestAnimationFrame(frame);
@@ -315,9 +317,13 @@ export default function Stone() {
   const tint = rune ? `rgb(${rune.light.map((v) => Math.round(v * 255)).join(",")})` : undefined;
   return (
     <>
-      <div className={live ? "stone live" : "stone"}>
+      <div className={live ? "stone live" : asleep ? "stone asleep" : "stone"}>
         {/* The baked stone shows until the live one has drawn, and stays where WebGL2 is missing. */}
         <img src="/stone.png" alt="" aria-hidden="true" />
+        {/* While the live stone is compiled, the baked one breathes in the dark. */}
+        <p className="waking" aria-hidden="true">
+          <span>the stone wakes</span>
+        </p>
         <canvas ref={canvas} role="img" aria-label="The Horadric rune stone. Drag to turn it; touch a rune to hear it." />
       </div>
       <p className="speaks" aria-live="polite">
