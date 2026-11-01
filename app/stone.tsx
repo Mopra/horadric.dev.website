@@ -327,12 +327,15 @@ export default function Stone() {
         <canvas ref={canvas} role="img" aria-label="The Horadric rune stone. Drag to turn it; touch a rune to hear it." />
       </div>
       <p className="speaks" aria-live="polite">
-        {rune && (
+        {/* What the stone says until a rune is touched: what Horadric is. */}
+        {rune ? (
           <span key={rune.name}>
             <b style={{ color: tint }}>{rune.name}</b>
             {rune.line}
             {rune.note && <i>{rune.note}</i>}
           </span>
+        ) : (
+          <span className="what">an agentic development environment for claude code</span>
         )}
       </p>
     </>

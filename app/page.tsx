@@ -37,7 +37,6 @@ export default async function Home() {
         <Atmosphere />
         <header className="name">
           <h1>horadric</h1>
-          <p>an agentic development environment for claude code</p>
         </header>
         <Stone />
         {/* What the runes say, for readers who cannot turn the stone and for search engines. */}
