@@ -1,5 +1,6 @@
 import Copy from "./copy";
-import Field from "./field";
+import { RUNES } from "./runes";
+import Stone from "./stone";
 
 // Rebuild the page at most once an hour, so the download count stays fresh
 // without asking GitHub on every visit.
@@ -8,8 +9,7 @@ export const revalidate = 3600;
 // Below this many downloads the count would undersell the project, so it stays hidden.
 const SHOW_DOWNLOADS_FROM = 500;
 
-// Only the files people install from count, on either system: the same measure as
-// marketing/PLAYBOOK.md. The manifests are fetched by the auto-updater, not by people,
+// Only the files people install from count, on either system. The manifests are fetched by the auto-updater, not by people,
 // and horadricw.exe comes with horadric.exe.
 const INSTALL_FILES = new Set(["horadric.exe", "horadric-x64.zip", "Horadric-macos.tar.gz"]);
 async function downloads() {
@@ -33,8 +33,17 @@ export default async function Home() {
   return (
     <>
       <section className="hero">
-        <Field />
-        <p className="needs">needs a Claude, Codex or xAI subscription</p>
+        <h1 className="name">horadric</h1>
+        <Stone />
+        {/* What the runes say, for readers who cannot turn the stone and for search engines. */}
+        <ul className="told">
+          {RUNES.map((r) => (
+            <li key={r.name}>
+              {r.name}: {r.line}
+            </li>
+          ))}
+        </ul>
+        <p className="needs">free, open source. needs a claude subscription</p>
         <nav className="corner">
           <a href="https://github.com/Mopra/horadric.dev">source</a>
           {n >= SHOW_DOWNLOADS_FROM && <span>{n.toLocaleString("en-US")} downloads</span>}

@@ -6,16 +6,16 @@ import "./globals.css";
 const mono = Geist_Mono({ subsets: ["latin"], weight: ["300", "400"] });
 
 const description =
-  "Horadric is a free, open source app for Windows and macOS that shows every Claude Code, Codex and Grok Build session as a tile on your desktop. The one that needs you turns amber.";
+  "Horadric is a free, open source app for Windows and macOS that shows every Claude Code session as a tile on your desktop, and the one that needs you lights up. Talk to Claude in the Folio, join every machine you own in the Brotherhood, and follow it all from your phone through the Town Portal.";
 
-// The page shows almost no text, so the title and these tags tell search engines what it is.
+// The page is a stone and almost no text, so the title and these tags tell search engines what it is.
 export const metadata: Metadata = {
   metadataBase: new URL("https://horadric.dev"),
-  title: "Horadric: every Claude Code, Codex and Grok Build session on your desktop, Windows and Mac",
+  title: "Horadric: every Claude Code session, on every machine you own",
   description,
   alternates: { canonical: "/" },
-  openGraph: { title: "Horadric: every coding agent on your desktop", description, url: "/", siteName: "Horadric", type: "website" },
-  twitter: { card: "summary_large_image", title: "Horadric: every coding agent on your desktop", description },
+  openGraph: { title: "Horadric: every Claude Code session, on every machine you own", description, url: "/", siteName: "Horadric", type: "website" },
+  twitter: { card: "summary_large_image", title: "Horadric: every Claude Code session, on every machine you own", description },
 };
 
 const app = {
@@ -26,7 +26,7 @@ const app = {
   description,
   applicationCategory: "DeveloperApplication",
   operatingSystem: "Windows 10, Windows 11, macOS 11 or later",
-  softwareRequirements: "A Claude, Codex or xAI subscription",
+  softwareRequirements: "A Claude subscription",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   downloadUrl: "https://github.com/Mopra/horadric.dev/releases/latest",
   isAccessibleForFree: true,
