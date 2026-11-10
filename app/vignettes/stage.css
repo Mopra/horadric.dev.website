@@ -101,7 +101,7 @@
 .v-stage-ask p { font-size: .9em; line-height: 1.5; white-space: nowrap; color: var(--text); }
 .v-stage-ask p em { color: var(--wait); }
 .v-stage-ask .v-stage-for { color: #8a8e98; }
-.v-stage-keys { display: flex; gap: .4em; margin-top: .65em; }
+.v-stage-keys { display: flex; gap: .4em; margin-top: .3em; }
 .v-stage-keys span {
   flex: 1; padding: .5em 0; text-align: center; font-size: .85em; white-space: nowrap;
   color: #8a8e98; border: 1px solid #2a2d33; border-radius: .35em;

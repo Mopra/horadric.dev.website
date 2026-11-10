@@ -40,14 +40,14 @@ export default function Lore() {
         <p className="v-lore-name">the lore</p>
         <p className="v-lore-count">
           <b>
-            1,20
+            48,20
             <span className="v-lore-roll">
               <span className="v-lore-digits">
                 8<br />7<br />6<br />5<br />4
               </span>
             </span>
           </b>
-          <span className="v-lore-unit">sessions kept</span>
+          <span className="v-lore-unit">messages kept</span>
         </p>
 
         <div className="v-lore-slot">

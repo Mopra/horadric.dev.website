@@ -160,7 +160,7 @@
 @keyframes v-lore-digits {
   0%, 3% { transform: translateY(-80%); } 4.5%, 14% { transform: translateY(-60%); }
   15.5%, 60% { transform: translateY(-40%); } 61.5%, 72% { transform: translateY(-20%); }
-  73.5%, 97% { transform: none; animation-timing-function: steps(1, end); } 100% { transform: translateY(-80%); }
+  73.5%, 97% { transform: none; animation-timing-function: steps(1, start); } 100% { transform: translateY(-80%); }
 }
 @keyframes v-lore-roll { 0%, 95% { opacity: 1; } 97% { opacity: 0; } 100% { opacity: 1; } }
 
