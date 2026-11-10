@@ -1,0 +1,53 @@
+/* What Horadric is, in plain words: a lede, then one row a rune, words on one
+   side and a small moving picture of the app on the other. */
+.explain {
+  max-width: 1000px; margin: 0 auto; padding: 140px 24px 40px;
+  display: flex; flex-direction: column; gap: 150px;
+  scroll-margin-top: 0;
+}
+.lede { max-width: 620px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; gap: 20px; }
+.lede h2 { font: inherit; font-size: 22px; font-weight: 400; line-height: 1.35; letter-spacing: .04em; color: var(--text); }
+.lede p { font-size: 14px; color: #8a8e98; }
+
+.part { display: grid; grid-template-columns: 1fr 1.25fr; gap: 64px; align-items: center; }
+/* Every other row is mirrored, and the picture keeps the wider column. */
+.part:nth-of-type(even) { grid-template-columns: 1.25fr 1fr; }
+.part:nth-of-type(even) .says { order: 2; }
+.says { display: flex; flex-direction: column; gap: 14px; }
+.says .rune {
+  letter-spacing: .3em; color: var(--rune);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--rune) 45%, transparent);
+}
+.says h3 { font: inherit; font-size: 20px; font-weight: 400; line-height: 1.35; letter-spacing: .03em; color: var(--text); }
+.says p { font-size: 14px; color: #8a8e98; }
+.says .note { font-size: 12px; color: var(--dim); }
+
+/* The frame of a vignette: a dark pane lit faintly by its rune. What is drawn
+   inside sizes itself in em, and the em follows the frame's width, so one
+   drawing fits a desk and a phone. */
+.vignette {
+  position: relative; isolation: isolate; aspect-ratio: 4 / 3; overflow: hidden; container-type: inline-size;
+  background: #07080a; border: 1px solid #1a1d22; border-radius: 12px;
+  box-shadow: 0 0 80px -30px color-mix(in srgb, var(--rune) 55%, transparent);
+}
+.vignette::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--rune) 9%, transparent), transparent 60%);
+}
+.vignette > * { position: absolute; inset: 0; font-size: 2.5cqw; }
+/* Off screen, nothing inside moves. */
+.vignette:not([data-seen]) *, .vignette:not([data-seen]) *::before, .vignette:not([data-seen]) *::after {
+  animation-play-state: paused !important;
+}
+
+@media (max-width: 760px) {
+  .explain { gap: 96px; padding: 96px 16px 24px; }
+  .lede h2 { font-size: 19px; }
+  .part, .part:nth-of-type(even) { grid-template-columns: 1fr; gap: 28px; }
+  .part:nth-of-type(even) .says { order: 0; }
+  .says h3 { font-size: 18px; }
+}
+/* Still, each vignette shows its telling frame: the state its own css draws without animation. */
+@media (prefers-reduced-motion: reduce) {
+  .vignette *, .vignette *::before, .vignette *::after { animation: none !important; transition: none !important; }
+}

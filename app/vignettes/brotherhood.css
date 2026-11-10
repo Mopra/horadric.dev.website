@@ -1,0 +1,180 @@
+/* The brotherhood: laptop, desktop and server joined in a ring, one running
+   session handed round it. The frame is 40em by 30em, and everything is placed
+   on that grid. Unmoving, it shows the session mid way from laptop to desktop. */
+/* Isolated, so the layers inside never rise above the veil over the page. */
+.v-brotherhood { line-height: 1; color: var(--dim); isolation: isolate; }
+
+.v-brotherhood-links { position: absolute; inset: 0; width: 100%; height: 100%; }
+.v-brotherhood-links line { stroke: #262930; stroke-width: 1px; vector-effect: non-scaling-stroke; }
+.v-brotherhood-links .v-brotherhood-lit { stroke: var(--rune); stroke-width: 1.5px; opacity: 0; }
+.v-brotherhood-links .v-brotherhood-lit1 { opacity: 1; animation: v-brotherhood-lit1 12s linear infinite; }
+.v-brotherhood-links .v-brotherhood-lit2 { animation: v-brotherhood-lit2 12s linear infinite; }
+.v-brotherhood-links .v-brotherhood-lit3 { animation: v-brotherhood-lit3 12s linear infinite; }
+
+/* A machine. Its edge is a shadow, not a border, so the slots inside sit
+   exactly on the grid the roaming session lands on. */
+.v-brotherhood-box {
+  position: absolute; width: 12.2em; height: 7.6em; z-index: 1;
+  background: #0a0b0e; border-radius: .5em; box-shadow: 0 0 0 1px #2a2d33;
+}
+.v-brotherhood-laptop { left: 2.2em; top: 3em; }
+.v-brotherhood-desktop { left: 25.4em; top: 3em; }
+.v-brotherhood-server { left: 13.9em; top: 18.5em; }
+
+.v-brotherhood-bar {
+  height: 1em; padding: 0 .6em; display: flex; align-items: center; justify-content: flex-end; gap: .3em;
+  border-bottom: 1px solid #1a1d22;
+}
+.v-brotherhood-bar i { width: .3em; height: .3em; border-radius: 50%; background: #2a2d33; }
+/* The server has no screen: two lamps and a row of vents instead of window keys. */
+.v-brotherhood-rack { justify-content: flex-start; }
+.v-brotherhood-rack i { background: var(--done); opacity: .8; }
+.v-brotherhood-rack b {
+  margin-left: auto; width: 5em; height: .4em;
+  background: repeating-linear-gradient(90deg, #2a2d33 0 1px, transparent 1px .4em);
+}
+.v-brotherhood-slots { display: flex; gap: .6em; padding: .6em; }
+.v-brotherhood-slots > * { width: 5.2em; height: 5.4em; flex: none; }
+.v-brotherhood-gap { border: 1px dashed #22252b; border-radius: .35em; }
+
+.v-brotherhood-hinge {
+  position: absolute; left: 1.2em; top: 10.6em; width: 14.2em; height: .6em; margin-top: 1px;
+  border: 1px solid #2a2d33; border-radius: .1em .1em .5em .5em; background: #0a0b0e;
+}
+.v-brotherhood-neck {
+  position: absolute; left: 30.9em; top: 10.6em; width: 1.2em; height: 1.1em; margin-top: 1px;
+  border: solid #2a2d33; border-width: 0 1px;
+}
+.v-brotherhood-foot { position: absolute; left: 29.3em; top: 11.7em; width: 4.4em; border-top: 1px solid #2a2d33; }
+
+.v-brotherhood-name {
+  position: absolute; width: 12.2em; text-align: center; font-size: 1em; letter-spacing: .14em; color: #8a8e98;
+}
+.v-brotherhood-name::before {
+  content: ""; display: inline-block; width: .4em; height: .4em; margin-right: .6em; border-radius: 50%;
+  vertical-align: .12em; background: var(--rune); box-shadow: 0 0 .5em var(--rune);
+}
+.v-brotherhood-name1 { left: 2.2em; top: 12.7em; }
+.v-brotherhood-name2 { left: 25.4em; top: 12.7em; }
+.v-brotherhood-name3 { left: 13.9em; top: 27em; }
+
+/* A session tile. */
+.v-brotherhood-tile {
+  background: #0d0f13; border: 1px solid #2a2d33; border-radius: .35em; overflow: hidden;
+}
+.v-brotherhood-tile p {
+  display: flex; align-items: center; gap: .45em; padding: .55em .6em .5em;
+  font-size: .85em; color: #a4a8b2; border-bottom: 1px solid #1a1d22;
+}
+.v-brotherhood-tile p i { width: .5em; height: .5em; border-radius: 50%; background: var(--done); flex: none; }
+.v-brotherhood-tile span {
+  display: block; height: .3em; margin: .5em .6em 0; border-radius: .15em; background: #23262d;
+  transform-origin: left;
+}
+.v-brotherhood-tile span:nth-of-type(1) { width: 62%; }
+.v-brotherhood-tile span:nth-of-type(2) { width: 40%; }
+.v-brotherhood-tile span:nth-of-type(3) { width: 54%; }
+/* Working: a blue lamp that breathes and a last line still being written. */
+.v-brotherhood-work p i {
+  background: var(--work); box-shadow: 0 0 .6em var(--work);
+  animation: v-brotherhood-breathe 2s ease-in-out infinite;
+}
+.v-brotherhood-work span:nth-of-type(3) {
+  background: color-mix(in srgb, var(--work) 55%, #23262d);
+  animation: v-brotherhood-write 3s linear infinite;
+}
+.v-brotherhood-late p i, .v-brotherhood-late span { animation-delay: -.7s !important; }
+.v-brotherhood-later p i, .v-brotherhood-later span { animation-delay: -1.6s !important; }
+.v-brotherhood-done span:nth-of-type(3) { background: color-mix(in srgb, var(--done) 40%, #23262d); }
+
+/* The session that roams. It rests here mid way between laptop and desktop,
+   lifted and lit, and the keyframes move it from this spot. */
+.v-brotherhood-roamer {
+  position: absolute; left: 17.3em; top: 4.6em; width: 5.2em; height: 5.4em; z-index: 3;
+  transform: scale(1.07);
+  border-color: var(--rune);
+  box-shadow: 0 0 1.8em -.2em color-mix(in srgb, var(--rune) 70%, transparent);
+  animation: v-brotherhood-hop 12s linear infinite;
+}
+
+/* Its files. Each follows the same road a moment later, so they string out
+   behind it on the way and tuck under it where it lands. */
+.v-brotherhood-file {
+  position: absolute; left: 19.35em; top: 6.6em; width: 1.1em; height: 1.4em; z-index: 2;
+  background: #0d0f13; border: 1px solid var(--rune); border-radius: .12em .4em .12em .12em;
+  opacity: var(--o);
+  animation: v-brotherhood-trail 12s linear infinite backwards, v-brotherhood-carried 12s linear infinite backwards;
+}
+.v-brotherhood-file::after {
+  content: ""; position: absolute; left: 22%; right: 22%; top: 45%; height: 1px;
+  background: var(--rune); opacity: .7; box-shadow: 0 .25em 0 var(--rune);
+}
+.v-brotherhood-file1 { --o: .95; transform: translateX(-3.9em); animation-delay: .22s; }
+.v-brotherhood-file2 { --o: .7; transform: translateX(-5.5em); animation-delay: .36s; }
+.v-brotherhood-file3 { --o: .45; transform: translateX(-7.1em); animation-delay: .5s; }
+
+/* Rest on the laptop, lift, cross to the desktop, land. Then on to the
+   server, and home again, where the loop closes. */
+@keyframes v-brotherhood-hop {
+  0%, 10% { transform: translate(-8.7em, 0) scale(1); border-color: #2a2d33; box-shadow: 0 0 0 0 transparent; }
+  12.5% {
+    transform: translate(-8.7em, 0) scale(1.07); border-color: var(--rune);
+    box-shadow: 0 0 1.8em -.2em color-mix(in srgb, var(--rune) 70%, transparent);
+    animation-timing-function: cubic-bezier(.65, 0, .3, 1);
+  }
+  28% {
+    transform: translate(8.7em, 0) scale(1.07); border-color: var(--rune);
+    box-shadow: 0 0 1.8em -.2em color-mix(in srgb, var(--rune) 70%, transparent);
+  }
+  30.5%, 43.5% { transform: translate(8.7em, 0) scale(1); border-color: #2a2d33; box-shadow: 0 0 0 0 transparent; }
+  46% {
+    transform: translate(8.7em, 0) scale(1.07); border-color: var(--rune);
+    box-shadow: 0 0 1.8em -.2em color-mix(in srgb, var(--rune) 70%, transparent);
+    animation-timing-function: cubic-bezier(.65, 0, .3, 1);
+  }
+  61.5% {
+    transform: translate(3em, 15.5em) scale(1.07); border-color: var(--rune);
+    box-shadow: 0 0 1.8em -.2em color-mix(in srgb, var(--rune) 70%, transparent);
+  }
+  64%, 77% { transform: translate(3em, 15.5em) scale(1); border-color: #2a2d33; box-shadow: 0 0 0 0 transparent; }
+  79.5% {
+    transform: translate(3em, 15.5em) scale(1.07); border-color: var(--rune);
+    box-shadow: 0 0 1.8em -.2em color-mix(in srgb, var(--rune) 70%, transparent);
+    animation-timing-function: cubic-bezier(.65, 0, .3, 1);
+  }
+  95% {
+    transform: translate(-8.7em, 0) scale(1.07); border-color: var(--rune);
+    box-shadow: 0 0 1.8em -.2em color-mix(in srgb, var(--rune) 70%, transparent);
+  }
+  97.5%, 100% { transform: translate(-8.7em, 0) scale(1); border-color: #2a2d33; box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes v-brotherhood-trail {
+  0% { transform: translate(-8.7em, 0); }
+  12.5% { transform: translate(-8.7em, 0); animation-timing-function: cubic-bezier(.65, 0, .3, 1); }
+  28% { transform: translate(8.7em, 0); }
+  46% { transform: translate(8.7em, 0); animation-timing-function: cubic-bezier(.65, 0, .3, 1); }
+  61.5% { transform: translate(3em, 15.5em); }
+  79.5% { transform: translate(3em, 15.5em); animation-timing-function: cubic-bezier(.65, 0, .3, 1); }
+  95%, 100% { transform: translate(-8.7em, 0); }
+}
+/* Files show only on the road. At rest they are inside the session. */
+@keyframes v-brotherhood-carried {
+  0%, 12.5% { opacity: 0; }
+  14%, 29% { opacity: var(--o); }
+  31%, 46% { opacity: 0; }
+  47.5%, 62.5% { opacity: var(--o); }
+  64.5%, 79.5% { opacity: 0; }
+  81%, 96% { opacity: var(--o); }
+  98%, 100% { opacity: 0; }
+}
+/* Each link lights while the session is on it. */
+@keyframes v-brotherhood-lit1 { 0%, 10% { opacity: 0; } 13%, 28% { opacity: 1; } 31%, 100% { opacity: 0; } }
+@keyframes v-brotherhood-lit2 { 0%, 43.5% { opacity: 0; } 46.5%, 61.5% { opacity: 1; } 64.5%, 100% { opacity: 0; } }
+@keyframes v-brotherhood-lit3 { 0%, 77% { opacity: 0; } 80%, 95% { opacity: 1; } 98%, 100% { opacity: 0; } }
+
+/* Small pulses run 2s and 3s, which divide the 12s loop, so they stay in step. */
+@keyframes v-brotherhood-breathe { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+@keyframes v-brotherhood-write {
+  0% { transform: scaleX(.15); } 70% { transform: scaleX(1); } 90% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(.15); opacity: .3; }
+}

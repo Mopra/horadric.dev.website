@@ -1,0 +1,148 @@
+/* The lore: session one finds a fact and leaves a note on the shelf, session
+   two reads the note and skips the search. The frame is 40em by 30em, and
+   everything sits on that grid so the note can fly between known places.
+   Without animation this draws the last frame: the note kept and held. */
+.v-lore { color: #8a8e98; line-height: 1.6; letter-spacing: 0; white-space: nowrap; }
+.v-lore i { font-style: normal; }
+.v-lore em { font-style: normal; }
+.v-lore b { font-weight: inherit; }
+
+.v-lore-tile {
+  position: absolute; top: 2.25em; width: 18em; height: 15.5em;
+  background: #0a0b0e; border: 1px solid #1f2227; border-radius: .6em;
+}
+.v-lore-one { left: 1.5em; opacity: .42; animation: v-lore-one 12s infinite; }
+.v-lore-two { left: 20.5em; animation: v-lore-two 12s infinite; }
+
+.v-lore-bar {
+  height: 2.2em; padding: 0 .9em; display: flex; align-items: center; gap: .6em;
+  border-bottom: 1px solid #1a1d22; color: var(--text);
+}
+.v-lore-dot { width: .55em; height: .55em; border-radius: 50%; background: var(--dim); }
+.v-lore-one .v-lore-dot { animation: v-lore-dot1 12s infinite; }
+.v-lore-two .v-lore-dot { background: var(--done); animation: v-lore-dot2 12s infinite; }
+/* The two words of a tile's state share one place and trade it. */
+.v-lore-state { margin-left: auto; display: grid; font-size: .9em; }
+.v-lore-state em { grid-area: 1 / 1; text-align: right; }
+.v-lore-working { color: var(--work); opacity: 0; }
+.v-lore-ended { color: var(--dim); }
+.v-lore-done { color: var(--done); }
+.v-lore-one .v-lore-working { animation: v-lore-working1 12s infinite; }
+.v-lore-one .v-lore-ended { animation: v-lore-ended 12s infinite; }
+.v-lore-two .v-lore-working { animation: v-lore-working2 12s infinite; }
+.v-lore-two .v-lore-done { animation: v-lore-done 12s infinite; }
+
+.v-lore-body { padding: .6em 1em 0; }
+.v-lore-body p { height: 1.6em; }
+.v-lore-body p i {
+  display: inline-block; width: .45em; height: .45em; margin-right: .75em;
+  border-radius: 50%; background: var(--dim); vertical-align: .12em;
+}
+.v-lore-body .v-lore-ask { color: var(--text); }
+.v-lore-body .v-lore-tool { color: var(--rune); }
+.v-lore-body .v-lore-tool i { background: var(--rune); box-shadow: 0 0 .5em var(--rune); }
+.v-lore-body .v-lore-fin { color: var(--done); }
+.v-lore-body .v-lore-fin i { background: var(--done); }
+
+/* A note is the same card wherever it is. */
+.v-lore-note {
+  width: 11.5em; height: 3.8em; padding: 0 .7em; display: flex; align-items: center;
+  background: #0d0e11; border: 1px solid #2a2d33; border-radius: .4em;
+}
+.v-lore-note span { font-size: .9em; line-height: 1.45; }
+.v-lore-note b { color: var(--text); }
+.v-lore-body .v-lore-note { margin: .1em 0 .2em 1.2em; }
+.v-lore-held, .v-lore-kept {
+  border-color: color-mix(in srgb, var(--rune) 50%, #2a2d33);
+  box-shadow: 0 0 1.4em -.5em color-mix(in srgb, var(--rune) 70%, transparent);
+}
+.v-lore-held, .v-lore-kept, .v-lore-down, .v-lore-up { color: color-mix(in srgb, var(--rune) 75%, #8a8e98); }
+
+.v-lore-shelf {
+  position: absolute; left: 1.5em; top: 19em; width: 37em; height: 8.75em; padding: .65em 1em;
+  display: flex; justify-content: space-between; align-items: baseline;
+  background: #08090b; border: 1px solid #1a1d22; border-radius: .6em;
+}
+.v-lore-name { color: var(--rune); letter-spacing: .2em; }
+.v-lore-what { color: var(--dim); font-size: .9em; }
+.v-lore-left, .v-lore-kept, .v-lore-right, .v-lore-down, .v-lore-up { position: absolute; top: 22.4em; left: 14.25em; }
+.v-lore-left { left: 2em; }
+.v-lore-right { left: 26.5em; }
+.v-lore-old { color: var(--dim); border-color: #1f2227; }
+.v-lore-old span { display: flex; flex-direction: column; gap: .5em; width: 100%; }
+.v-lore-old i { height: .45em; width: 70%; border-radius: .2em; background: #1c1f24; }
+
+.v-lore-down, .v-lore-up {
+  opacity: 0; border-color: var(--rune);
+  box-shadow: 0 0 1.6em -.2em color-mix(in srgb, var(--rune) 60%, transparent);
+}
+/* In flight the card starts over its copy in a tile, so the offsets are the
+   tile copy's place minus the shelf's. */
+.v-lore-down { animation: v-lore-down 12s infinite; }
+.v-lore-up { transform: translate(8.45em, -14.05em); animation: v-lore-up 12s infinite; }
+
+.v-lore-a1 { animation: v-lore-a1 12s infinite; }
+.v-lore-a2 { animation: v-lore-a2 12s infinite; }
+.v-lore-a3 { animation: v-lore-a3 12s infinite; }
+.v-lore-a4 { animation: v-lore-a4 12s infinite; }
+.v-lore-a5 { animation: v-lore-a5 12s infinite; }
+.v-lore-written { animation: v-lore-written 12s infinite; }
+.v-lore-kept { animation: v-lore-kept 12s infinite; }
+.v-lore-b1 { animation: v-lore-b1 12s infinite; }
+.v-lore-b2 { animation: v-lore-b2 12s infinite; }
+.v-lore-held { animation: v-lore-held 12s infinite; }
+.v-lore-b3 { color: #b4b8c0; animation: v-lore-b3 12s infinite; }
+.v-lore-b4 { animation: v-lore-b4 12s infinite; }
+
+/* Session one is awake for the first half, then dims. It wakes again, empty,
+   as the loop turns over. */
+@keyframes v-lore-one { 0%, 41% { opacity: 1; } 46%, 95% { opacity: .42; } 100% { opacity: 1; } }
+@keyframes v-lore-two { 0%, 46% { opacity: .42; } 50%, 95% { opacity: 1; } 100% { opacity: .42; } }
+@keyframes v-lore-dot1 {
+  0%, 2% { background: var(--dim); } 4%, 41% { background: var(--work); box-shadow: 0 0 .6em var(--work); }
+  44%, 100% { background: var(--dim); box-shadow: none; }
+}
+@keyframes v-lore-dot2 {
+  0%, 48% { background: var(--dim); box-shadow: none; } 50%, 77% { background: var(--work); box-shadow: 0 0 .6em var(--work); }
+  79%, 92% { background: var(--done); box-shadow: none; } 95%, 100% { background: var(--dim); }
+}
+@keyframes v-lore-working1 { 0%, 2% { opacity: 0; } 4%, 41% { opacity: 1; } 43%, 100% { opacity: 0; } }
+@keyframes v-lore-ended { 0%, 43% { opacity: 0; } 45%, 92% { opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-working2 { 0%, 48% { opacity: 0; } 50%, 77% { opacity: 1; } 78%, 100% { opacity: 0; } }
+@keyframes v-lore-done { 0%, 78% { opacity: 0; } 79%, 92% { opacity: 1; } 95%, 100% { opacity: 0; } }
+
+/* Lines come one at a time, and all leave together before the loop turns. */
+@keyframes v-lore-a1 { 0%, 2% { opacity: 0; transform: translateY(.3em); } 4%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-a2 { 0%, 8% { opacity: 0; transform: translateY(.3em); } 10%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-a3 { 0%, 14% { opacity: 0; transform: translateY(.3em); } 16%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-a4 { 0%, 20% { opacity: 0; transform: translateY(.3em); } 22%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-a5 { 0%, 26% { opacity: 0; transform: translateY(.3em); } 28%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-written { 0%, 29% { opacity: 0; transform: translateY(.3em); } 31%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-b1 { 0%, 50% { opacity: 0; transform: translateY(.3em); } 52%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-b2 { 0%, 55% { opacity: 0; transform: translateY(.3em); } 57%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-held { 0%, 67% { opacity: 0; } 68%, 92% { opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-b3 { 0%, 72% { opacity: 0; transform: translateY(.3em); } 74%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+@keyframes v-lore-b4 { 0%, 78% { opacity: 0; transform: translateY(.3em); } 80%, 92% { opacity: 1; transform: none; } 95%, 100% { opacity: 0; } }
+
+/* The note leaves session one for the shelf, and later the shelf for session two. */
+@keyframes v-lore-down {
+  0%, 33% { opacity: 0; transform: translate(-10.55em, -9.25em); }
+  34% { opacity: 1; transform: translate(-10.55em, -9.25em); }
+  41% { opacity: 1; transform: none; }
+  43%, 100% { opacity: 0; transform: none; }
+}
+@keyframes v-lore-up {
+  0%, 59% { opacity: 0; transform: none; }
+  60% { opacity: 1; transform: none; }
+  67% { opacity: 1; transform: translate(8.45em, -14.05em); }
+  69%, 100% { opacity: 0; transform: translate(8.45em, -14.05em); }
+}
+/* On the shelf it flares as it lands, rests, and flares again when recalled. */
+@keyframes v-lore-kept {
+  0%, 40% { opacity: 0; }
+  41.5% { opacity: 1; border-color: var(--rune); box-shadow: 0 0 2em -.2em var(--rune); }
+  48%, 56% { opacity: 1; border-color: #2a2d33; box-shadow: none; }
+  59% { opacity: 1; border-color: var(--rune); box-shadow: 0 0 2em -.2em var(--rune); }
+  66%, 92% { opacity: 1; }
+  96%, 100% { opacity: 0; }
+}

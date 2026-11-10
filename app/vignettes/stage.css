@@ -1,0 +1,116 @@
+/* The stage in small: six sessions as tiles. One asks for you and turns amber,
+   the cursor answers it, another one finishes. Every loop is 12s or a whole
+   part of it, so all of it stays in step. Without animation the picture is
+   the telling one: one tile amber, one done. */
+.v-stage { display: flex; flex-direction: column; gap: .9em; padding: 1.4em; color: var(--dim); line-height: 1; }
+.v-stage-bar { display: flex; justify-content: space-between; align-items: center; height: 1.4em; padding: 0 .3em; font-size: .85em; letter-spacing: .08em; }
+.v-stage-bar span { display: flex; align-items: center; gap: .6em; }
+.v-stage-bar b { width: .5em; height: .5em; rotate: 45deg; background: var(--rune); opacity: .8; }
+
+.v-stage-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: .8em; }
+/* A tile's colour is its state: dot, label and the tinted lines all follow it. */
+.v-stage-tile {
+  position: relative; min-width: 0; min-height: 0; display: flex; flex-direction: column;
+  border: 1px solid #1f2228; border-radius: .5em; background: #0b0c0f; color: var(--work);
+}
+.v-stage-head { display: flex; align-items: center; gap: .5em; padding: .75em .7em .55em; }
+.v-stage-dot {
+  flex: none; width: .55em; height: .55em; border-radius: 50%; background: currentColor;
+  box-shadow: 0 0 .6em currentColor; animation: v-stage-breathe 1.5s ease-in-out infinite;
+}
+.v-stage-title { font-size: .9em; color: #b4b7bf; white-space: nowrap; overflow: hidden; }
+
+.v-stage-body { position: relative; flex: 1; min-height: 0; margin: 0 .7em; overflow: hidden; }
+.v-stage-lines { animation: v-stage-tick 6s steps(8) infinite; }
+.v-stage-lines i { display: block; height: 1.4em; border: solid transparent; border-width: .5em 0; background: #262930; background-clip: padding-box; border-radius: .7em; }
+.v-stage-lines i[data-kind="a"] { background-color: #3d414a; }
+.v-stage-lines i[data-kind="b"] { margin-left: 1em; }
+.v-stage-lines i[data-kind="c"] { background-color: color-mix(in srgb, currentColor 42%, #15171b); }
+
+.v-stage-foot { position: relative; flex: none; height: 2.3em; margin: 0 .7em; font-size: .8em; letter-spacing: .04em; }
+.v-stage-foot span { position: absolute; left: 0; top: 50%; translate: 0 -50%; white-space: nowrap; }
+
+/* The one that asks. Lit amber by default, so the still picture tells it too. */
+.v-stage-tile[data-role="ask"] { color: var(--wait); animation: v-stage-ask-colour 12s infinite; }
+.v-stage-lit { position: absolute; inset: -1px; border-radius: inherit; pointer-events: none; }
+[data-role="ask"] .v-stage-lit {
+  border: 1px solid var(--wait);
+  background: color-mix(in srgb, var(--wait) 9%, transparent);
+  box-shadow: 0 0 2.2em -.2em color-mix(in srgb, var(--wait) 65%, transparent), inset 0 0 1.4em -.4em color-mix(in srgb, var(--wait) 55%, transparent);
+  animation: v-stage-ask-on 12s infinite;
+}
+.v-stage-ring { position: absolute; inset: 0; border-radius: inherit; animation: v-stage-ring 1.5s ease-out infinite; }
+[data-role="ask"] .v-stage-lines { animation: v-stage-ask-tick 12s infinite; }
+[data-role="ask"] .v-stage-working { opacity: 0; animation: v-stage-ask-off 12s infinite; }
+.v-stage-foot .v-stage-needs {
+  padding: .32em .6em; border-radius: .3em; background: var(--wait); color: #1a1000;
+  font-size: 1.1em; font-weight: 500; animation: v-stage-ask-on 12s infinite;
+}
+/* The permission question, at the foot of the terminal. */
+.v-stage-ask {
+  position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: .35em;
+  padding-top: .5em; background: #0f0d09; border-top: 1px solid color-mix(in srgb, var(--wait) 40%, transparent);
+  font-size: .85em; color: var(--text); animation: v-stage-ask-on 12s infinite;
+}
+.v-stage-ask span { padding: .18em .3em; border-radius: .2em; white-space: nowrap; }
+.v-stage-yes { color: var(--wait); animation: v-stage-yes 12s infinite; }
+.v-stage-no { color: var(--dim); }
+
+/* The one that finishes. */
+.v-stage-tile[data-role="end"] { color: var(--done); animation: v-stage-end-colour 12s infinite; }
+[data-role="end"] .v-stage-lit {
+  border: 1px solid color-mix(in srgb, var(--done) 55%, transparent);
+  box-shadow: 0 0 1.6em -.5em color-mix(in srgb, var(--done) 50%, transparent);
+  animation: v-stage-end-on 12s infinite;
+}
+[data-role="end"] .v-stage-lines { animation: v-stage-end-tick 12s infinite; }
+/* Waiting or done, the dot holds still: only work breathes. */
+[data-role="ask"] .v-stage-dot { animation: v-stage-ask-breathe 12s infinite; }
+[data-role="end"] .v-stage-dot { animation: v-stage-end-breathe 12s infinite; }
+[data-role="end"] .v-stage-working { opacity: 0; animation: v-stage-end-off 12s infinite; }
+.v-stage-finished { animation: v-stage-end-on 12s infinite; }
+
+/* The hand that answers. It rests on the answer when nothing moves. */
+.v-stage-cursor {
+  position: absolute; left: 0; top: 0; width: 1.5em; height: 1.5em; overflow: visible;
+  fill: #f2f3f5; stroke: #000; stroke-width: 1; stroke-linejoin: round; transform-origin: 15% 10%;
+  translate: 21em 11.2em; filter: drop-shadow(0 .1em .2em #000); animation: v-stage-cursor 12s infinite;
+}
+
+@keyframes v-stage-breathe { 50% { opacity: .45; } }
+@keyframes v-stage-ask-breathe { 0%, 12%, 55%, 67.5%, 80%, 92.5%, 100% { opacity: 1; } 6%, 61.25%, 73.75%, 86.25%, 96.25% { opacity: .45; } }
+@keyframes v-stage-end-breathe { 0%, 12.5%, 25%, 37.5%, 50%, 62%, 100% { opacity: 1; } 6.25%, 18.75%, 31.25%, 43.75%, 56% { opacity: .45; } }
+@keyframes v-stage-tick { to { transform: translateY(-11.2em); } }
+@keyframes v-stage-ring {
+  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--wait) 60%, transparent); }
+  to { box-shadow: 0 0 0 1em transparent; }
+}
+@keyframes v-stage-ask-colour { 0%, 12% { color: var(--work); } 15%, 46% { color: var(--wait); } 49%, 100% { color: var(--work); } }
+@keyframes v-stage-ask-on { 0%, 12% { opacity: 0; } 15%, 46% { opacity: 1; } 49%, 100% { opacity: 0; } }
+@keyframes v-stage-ask-off { 0%, 12% { opacity: 1; } 15%, 46% { opacity: 0; } 49%, 100% { opacity: 1; } }
+/* Its output stops while it waits. */
+@keyframes v-stage-ask-tick {
+  0% { transform: translateY(0); animation-timing-function: steps(2); }
+  12%, 48% { transform: translateY(-2.8em); animation-timing-function: steps(6); }
+  100% { transform: translateY(-11.2em); }
+}
+@keyframes v-stage-yes {
+  0%, 42.5% { background-color: transparent; color: var(--wait); }
+  43.5%, 49% { background-color: var(--wait); color: #1a1000; }
+  100% { background-color: transparent; color: var(--wait); }
+}
+@keyframes v-stage-end-colour { 0%, 64% { color: var(--work); } 67%, 93% { color: var(--done); } 100% { color: var(--work); } }
+@keyframes v-stage-end-on { 0%, 64% { opacity: 0; } 67%, 93% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes v-stage-end-off { 0%, 64% { opacity: 1; } 67%, 93% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes v-stage-end-tick {
+  0% { transform: translateY(0); animation-timing-function: steps(6); }
+  64%, 94% { transform: translateY(-8.4em); animation-timing-function: steps(2); }
+  100% { transform: translateY(-11.2em); }
+}
+@keyframes v-stage-cursor {
+  0%, 24% { translate: 33em 24em; scale: 1; animation-timing-function: cubic-bezier(.5, 0, .2, 1); }
+  39%, 42% { translate: 21em 11.2em; scale: 1; }
+  43.5% { translate: 21em 11.2em; scale: .8; }
+  45%, 54% { translate: 21em 11.2em; scale: 1; animation-timing-function: cubic-bezier(.5, 0, .2, 1); }
+  72%, 100% { translate: 33em 24em; scale: 1; }
+}

@@ -1,0 +1,228 @@
+/* The town portal: a session on the desk waits, the phone shows it and answers.
+   The frame is 40em by 30em. Unmoving, it shows the waiting state: the desk
+   tile amber, the phone's row amber, the lock on the thread between them. */
+.v-portal { line-height: 1; color: var(--dim); isolation: isolate; }
+.v-portal em { font-style: normal; }
+.v-portal u { text-decoration: none; }
+
+/* The desk side: one tile of the stage. */
+.v-portal-where {
+  position: absolute; left: 1.8em; top: 7.2em; width: 14.5em;
+  font-size: 1em; letter-spacing: .14em; color: #8a8e98;
+}
+.v-portal-tile {
+  position: absolute; left: 1.8em; top: 9.2em; width: 14.5em; height: 11.6em; padding: 0 .9em;
+  background: #0b0d10; border-radius: .5em;
+  border: 1px solid color-mix(in srgb, var(--wait) 60%, #2a2d33);
+  box-shadow: 0 0 2em -.6em color-mix(in srgb, var(--wait) 60%, transparent);
+  animation: v-portal-tile 10s linear infinite;
+}
+.v-portal-tile p { font-size: .9em; line-height: 1.75; white-space: nowrap; color: #8a8e98; }
+.v-portal-tile .v-portal-title {
+  display: flex; align-items: center; gap: .55em; margin: 0 -1em .5em; padding: .35em 1em;
+  color: var(--text); border-bottom: 1px solid #1a1d22;
+}
+.v-portal-title i {
+  width: .55em; height: .55em; border-radius: 50%; flex: none;
+  background: var(--wait); box-shadow: 0 0 .7em var(--wait);
+  animation: v-portal-desk-lamp 10s linear infinite;
+}
+.v-portal-title em { margin-left: auto; color: var(--dim); }
+.v-portal-tile .v-portal-said { color: var(--text); }
+.v-portal-tile b {
+  display: inline-block; width: .45em; height: .45em; margin-right: .7em; border-radius: 50%;
+  vertical-align: .1em; background: var(--done);
+}
+.v-portal-tile .v-portal-out { padding-left: 1.15em; color: var(--dim); }
+.v-portal-step { animation: v-portal-step 10s linear infinite; }
+.v-portal-step b { background: var(--wait); animation: v-portal-desk-lamp 10s linear infinite; }
+/* The last line: what it asks while it waits, what it does once answered. */
+.v-portal-end { position: relative; padding-left: 1.15em; }
+.v-portal-end span { display: block; }
+.v-portal-asks { color: var(--wait); animation: v-portal-asks 10s linear infinite; }
+.v-portal-runs { position: absolute; left: 1.15em; top: 0; opacity: 0; color: var(--work); animation: v-portal-runs 10s linear infinite; }
+
+/* The thread, the lock on it, and the spark that carries a message across. */
+.v-portal-link {
+  position: absolute; left: 16.3em; top: 15em; width: 7.2em; height: 1px;
+  background: color-mix(in srgb, var(--rune) 45%, #1a1d22);
+}
+.v-portal-spark {
+  position: absolute; left: 16.3em; top: 15em; width: .5em; height: .5em; margin: -.25em 0 0 -.25em;
+  border-radius: 50%; background: var(--rune); box-shadow: 0 0 .8em .1em var(--rune);
+  opacity: 0; animation: v-portal-spark 10s linear infinite;
+}
+.v-portal-lock {
+  position: absolute; left: 18.6em; top: 13.7em; width: 2.6em; height: 2.6em;
+  display: grid; place-items: center; border-radius: 50%; background: #07080a;
+  border: 1px solid color-mix(in srgb, var(--rune) 55%, #1a1d22);
+  box-shadow: 0 0 1.2em -.3em color-mix(in srgb, var(--rune) 60%, transparent);
+  animation: v-portal-lock 10s linear infinite;
+}
+.v-portal-lock svg { width: 1.5em; height: 1.5em; fill: none; stroke: var(--rune); stroke-width: 1; stroke-linecap: round; }
+.v-portal-sealed {
+  position: absolute; text-align: center; font-size: .85em; letter-spacing: .14em; color: var(--dim);
+  /* The em here is smaller, so the box is set back onto the frame's grid. */
+  left: calc(16.3em / .85); top: calc(16.9em / .85); width: calc(7.2em / .85);
+}
+
+/* The phone. */
+.v-portal-phone {
+  position: absolute; left: 23.5em; top: 1.5em; width: 14.5em; height: 27em; padding: .5em;
+  background: #0a0b0e; border: 1px solid #2a2d33; border-radius: 2em;
+}
+.v-portal-screen {
+  position: relative; width: 100%; height: 100%; overflow: hidden;
+  background: #07080a; border: 1px solid #16181c; border-radius: 1.5em;
+}
+.v-portal-notch { display: block; width: 3.4em; height: .5em; margin: .6em auto 0; border-radius: .25em; background: #16181c; }
+.v-portal-head {
+  display: flex; align-items: baseline; justify-content: space-between; padding: 1.1em 1em .9em;
+  color: var(--text); letter-spacing: .06em;
+}
+.v-portal-head em { font-size: .8em; color: var(--dim); letter-spacing: .02em; }
+
+/* A session in the list: a lamp, its name, the line that says what it does. */
+.v-portal-row {
+  position: relative; display: grid; grid-template-columns: auto 1fr; column-gap: .7em; row-gap: .5em;
+  align-items: center; padding: .85em 1em; border-top: 1px solid #14161a;
+}
+.v-portal-row > i { width: .55em; height: .55em; border-radius: 50%; background: currentColor; box-shadow: 0 0 .6em currentColor; }
+.v-portal-row > p { color: var(--text); white-space: nowrap; }
+.v-portal-row > .v-portal-line { grid-column: 2; font-size: .85em; color: var(--dim); }
+.v-portal-work { color: var(--work); }
+.v-portal-work > i { animation: v-portal-breathe 2s ease-in-out infinite; }
+.v-portal-done { color: var(--done); }
+/* The one that waits. Its colour drives its lamp, its wash and its line. */
+.v-portal-hot { color: var(--wait); animation: v-portal-phase 10s linear infinite; }
+.v-portal-hot::before {
+  content: ""; position: absolute; inset: 0; background: currentColor; opacity: .09;
+  animation: v-portal-wash 10s linear infinite;
+}
+.v-portal-hot > p:first-of-type { display: flex; align-items: center; justify-content: space-between; }
+.v-portal-hot em {
+  font-size: .85em; padding: .3em .5em; border-radius: .3em; color: var(--wait);
+  border: 1px solid color-mix(in srgb, var(--wait) 50%, transparent);
+  animation: v-portal-chip 10s linear infinite;
+}
+.v-portal-hot > .v-portal-line { position: relative; color: inherit; }
+.v-portal-line span { display: block; }
+.v-portal-a, .v-portal-c { position: absolute; left: 0; top: 0; opacity: 0; }
+.v-portal-a { animation: v-portal-a 10s linear infinite; }
+.v-portal-b { animation: v-portal-b 10s linear infinite; }
+.v-portal-c { animation: v-portal-c 10s linear infinite; }
+
+/* A finger's touch: a ring that lands, presses and lifts. */
+.v-portal-tap {
+  position: absolute; width: 2.4em; height: 2.4em; border-radius: 50%; opacity: 0; pointer-events: none;
+  background: rgba(232, 233, 237, .16); border: 1px solid rgba(232, 233, 237, .75);
+}
+.v-portal-tap1 { right: 2.6em; top: 72%; margin-top: -1.2em; animation: v-portal-tap1 10s linear infinite; }
+/* Set a little off the word, so yes can still be read under the finger. */
+.v-portal-tap2 { left: 58%; top: 42%; animation: v-portal-tap2 10s linear infinite; }
+
+/* What the session asks, risen from the foot of the screen. */
+.v-portal-scrim { position: absolute; inset: 0; background: #000; opacity: 0; animation: v-portal-scrim 10s linear infinite; }
+.v-portal-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: .7em 1em 1.3em;
+  background: #0e1014; border-top: 1px solid #2a2d33; border-radius: 1.1em 1.1em 0 0;
+  transform: translateY(105%); animation: v-portal-sheet 10s linear infinite;
+}
+.v-portal-grip { display: block; width: 2.4em; height: .25em; margin: 0 auto .9em; border-radius: .2em; background: #2a2d33; }
+.v-portal-ask { color: var(--wait); }
+.v-portal-cmd {
+  margin: .8em 0 .9em; padding: .7em .6em; font-size: .8em; white-space: nowrap; color: var(--text);
+  background: #07080a; border: 1px solid #1a1d22; border-radius: .4em;
+}
+.v-portal-keys { display: flex; gap: .45em; }
+.v-portal-keys span {
+  position: relative; flex: 1; padding: .65em 0; text-align: center; font-size: .85em;
+  color: #8a8e98; border: 1px solid #2a2d33; border-radius: .45em;
+}
+.v-portal-keys .v-portal-yes {
+  color: var(--text); border-color: color-mix(in srgb, var(--rune) 70%, transparent);
+  animation: v-portal-yes 10s linear infinite;
+}
+
+/* One loop of 10s.
+   0 to 1.4s   it works, on desk and phone alike
+   1.4s        the desk tile asks and turns amber, a spark crosses, the phone's row turns amber
+   2.7s        a tap on the row, and what it asks rises
+   4.6s        a tap on yes, the sheet drops, a spark crosses back
+   6.1s        the desk tile works on, then the phone's row follows
+   9.2s        the line it wrote goes, and the loop closes */
+@keyframes v-portal-tile {
+  0%, 13% { border-color: #2a2d33; box-shadow: 0 0 0 0 transparent; }
+  15%, 60% {
+    border-color: color-mix(in srgb, var(--wait) 60%, #2a2d33);
+    box-shadow: 0 0 2em -.6em color-mix(in srgb, var(--wait) 60%, transparent);
+  }
+  62%, 100% { border-color: #2a2d33; box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes v-portal-desk-lamp {
+  0%, 13% { background: var(--work); box-shadow: 0 0 .7em var(--work); }
+  15%, 60% { background: var(--wait); box-shadow: 0 0 .7em var(--wait); }
+  62%, 100% { background: var(--work); box-shadow: 0 0 .7em var(--work); }
+}
+@keyframes v-portal-step { 0%, 10% { opacity: 0; } 13%, 92% { opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes v-portal-asks { 0%, 13% { opacity: 0; } 15%, 60% { opacity: 1; } 62%, 100% { opacity: 0; } }
+@keyframes v-portal-runs { 0%, 61% { opacity: 0; } 63%, 92% { opacity: 1; } 95%, 100% { opacity: 0; } }
+
+@keyframes v-portal-spark {
+  0%, 15% { transform: translateX(0); opacity: 0; }
+  15.5% { transform: translateX(0); opacity: 1; animation-timing-function: ease-in-out; }
+  20% { transform: translateX(7.2em); opacity: 1; }
+  20.5%, 54% { transform: translateX(7.2em); opacity: 0; }
+  54.5% { transform: translateX(7.2em); opacity: 1; animation-timing-function: ease-in-out; }
+  59% { transform: translateX(0); opacity: 1; }
+  59.5%, 100% { transform: translateX(0); opacity: 0; }
+}
+@keyframes v-portal-lock {
+  0%, 15% { box-shadow: 0 0 1.2em -.3em color-mix(in srgb, var(--rune) 60%, transparent); }
+  17.5% { box-shadow: 0 0 1.6em 0 var(--rune); }
+  21%, 54% { box-shadow: 0 0 1.2em -.3em color-mix(in srgb, var(--rune) 60%, transparent); }
+  56.5% { box-shadow: 0 0 1.6em 0 var(--rune); }
+  60%, 100% { box-shadow: 0 0 1.2em -.3em color-mix(in srgb, var(--rune) 60%, transparent); }
+}
+
+@keyframes v-portal-phase {
+  0%, 19.5% { color: var(--work); }
+  21.5%, 63% { color: var(--wait); }
+  65%, 100% { color: var(--work); }
+}
+@keyframes v-portal-wash {
+  0%, 19.5% { opacity: 0; }
+  21.5% { opacity: .2; }
+  26%, 63% { opacity: .09; }
+  65%, 100% { opacity: 0; }
+}
+@keyframes v-portal-chip { 0%, 19.5% { opacity: 0; } 21.5%, 63% { opacity: 1; } 65%, 100% { opacity: 0; } }
+@keyframes v-portal-a { 0%, 19.5% { opacity: 1; } 21%, 93% { opacity: 0; } 96%, 100% { opacity: 1; } }
+@keyframes v-portal-b { 0%, 20% { opacity: 0; } 21.5%, 63% { opacity: 1; } 64.5%, 100% { opacity: 0; } }
+@keyframes v-portal-c { 0%, 63.5% { opacity: 0; } 65%, 92% { opacity: 1; } 95%, 100% { opacity: 0; } }
+
+@keyframes v-portal-tap1 {
+  0%, 26% { opacity: 0; transform: scale(1.5); }
+  29% { opacity: 1; transform: scale(1); }
+  31% { opacity: 1; transform: scale(.72); }
+  35%, 100% { opacity: 0; transform: scale(1.35); }
+}
+@keyframes v-portal-tap2 {
+  0%, 45% { opacity: 0; transform: scale(1.5); }
+  48% { opacity: 1; transform: scale(1); }
+  50% { opacity: 1; transform: scale(.72); }
+  54%, 100% { opacity: 0; transform: scale(1.35); }
+}
+@keyframes v-portal-yes {
+  0%, 49% { background: transparent; }
+  50.5%, 100% { background: color-mix(in srgb, var(--rune) 40%, transparent); }
+}
+@keyframes v-portal-scrim { 0%, 32% { opacity: 0; } 37%, 53% { opacity: .55; } 58%, 100% { opacity: 0; } }
+@keyframes v-portal-sheet {
+  0%, 32% { transform: translateY(105%); animation-timing-function: cubic-bezier(.2, .7, .2, 1); }
+  37% { transform: translateY(0); }
+  53% { transform: translateY(0); animation-timing-function: cubic-bezier(.6, 0, .8, .3); }
+  58%, 100% { transform: translateY(105%); }
+}
+/* The steady lamp of a working session: 2s divides the loop, so it stays in step. */
+@keyframes v-portal-breathe { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }

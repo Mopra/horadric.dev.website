@@ -49,9 +49,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(app) }} />
         {/* Filming (app/film): with ?film, a stepped clock stands in for the real one before anything else runs. */}
         <script dangerouslySetInnerHTML={{ __html: FILM_CLOCK }} />
-        {/* Without script the stone never wakes, so the veil must not stand. */}
+        {/* Without script the stone never wakes, so the veil must not stand, and the
+            vignettes never start, so they show their still picture. */}
         <noscript>
-          <style>{".veil{display:none}"}</style>
+          <style>{".veil{display:none}.vignette *,.vignette *::before,.vignette *::after{animation:none!important}"}</style>
         </noscript>
         {children}
       </body>

@@ -1,0 +1,153 @@
+/* The folio: a conversation as a page. It grows by a turn, the pointer goes
+   back to an earlier prompt, and the page forks there: the old turns step
+   aside, kept, and a new way grows beside them. The frame is 40em by 30em.
+   Without animation this draws the last frame: the page, forked. */
+.v-folio { color: #8a8e98; line-height: 1.6; letter-spacing: 0; white-space: nowrap; }
+.v-folio i { font-style: normal; display: block; }
+
+.v-folio-page {
+  position: absolute; left: 1.5em; top: 1.75em; width: 37em; height: 26.5em;
+  background: #0a0b0e; border: 1px solid #1f2227; border-radius: .6em;
+}
+.v-folio-bar {
+  height: 2.2em; padding: 0 1em; display: flex; align-items: center; gap: .6em;
+  border-bottom: 1px solid #1a1d22; color: var(--rune); letter-spacing: .2em;
+}
+.v-folio-bar i { width: .5em; height: .5em; border-radius: 50%; background: var(--rune); box-shadow: 0 0 .6em var(--rune); }
+.v-folio-bar span { margin-left: auto; color: var(--dim); letter-spacing: 0; font-size: .9em; }
+
+/* A prompt: a plate against the right edge, a small rune before its words. */
+.v-folio-plate {
+  position: absolute; right: 1.75em; height: 2.1em; padding: 0 .8em;
+  display: flex; align-items: center; gap: .65em; color: var(--text);
+  background: #101116; border: 1px solid #1f2227; border-bottom-color: #2a2d33; border-radius: .25em;
+}
+.v-folio-plate i { width: .5em; height: .5em; rotate: 45deg; border: 1px solid var(--rune); }
+/* A reply: body text as bars from the left edge. */
+.v-folio-reply { position: absolute; left: 1.75em; transform-origin: 0 50%; }
+.v-folio-reply i { height: .5em; margin-bottom: .7em; border-radius: .2em; background: #24272d; transform-origin: 0 50%; }
+
+.v-folio-p1 { top: 3.1em; }
+.v-folio-r1 { top: 6em; }
+.v-folio-p2, .v-folio-p4 { top: 11.75em; }
+.v-folio-r2, .v-folio-r4 { top: 14.65em; }
+.v-folio-p3 { top: 18.65em; }
+.v-folio-r3 { top: 21.55em; }
+
+/* The old turns, set aside: plates slide to the left lane and the bars
+   narrow to fit it, so nothing has to be drawn twice. */
+.v-folio-was { position: absolute; inset: 0; opacity: .4; animation: v-folio-was 12s infinite; }
+.v-folio-p2, .v-folio-p3 { transform: translateX(-17.25em); }
+.v-folio-r2, .v-folio-r3 { transform: translateX(1em) scaleX(.455); }
+.v-folio-p2 { animation: v-folio-p2 12s infinite; }
+.v-folio-p3 { animation: v-folio-p3 12s infinite; }
+.v-folio-r2, .v-folio-r3 { animation: v-folio-narrow 12s infinite; }
+.v-folio-r3 i:nth-child(1) { animation: v-folio-r3a 12s infinite; }
+.v-folio-r3 i:nth-child(2) { animation: v-folio-r3b 12s infinite; }
+.v-folio-r3 i:nth-child(3) { animation: v-folio-r3c 12s infinite; }
+
+/* The lanes of the fork, hung from one line under the first turn. */
+.v-folio-rail { position: absolute; top: 9.95em; animation: v-folio-rail 12s infinite; }
+.v-folio-rail-was {
+  left: 1.75em; width: 18.25em; height: 14.65em;
+  border: 0 solid #2a2d33; border-width: 1px 0 0 1px; border-top-left-radius: .5em;
+}
+.v-folio-rail-now {
+  left: 20em; width: 15.25em; height: 9em;
+  border-left: 1px solid color-mix(in srgb, var(--rune) 70%, #2a2d33);
+}
+/* A knot where the new lane leaves the line. */
+.v-folio-rail-now::before {
+  content: ""; position: absolute; left: -.3em; top: -.25em; width: .5em; height: .5em;
+  border-radius: 50%; background: var(--rune); box-shadow: 0 0 .7em var(--rune);
+}
+/* Their em is smaller, so their places are the page's divided by .85. */
+.v-folio-tag { position: absolute; top: 12.2em; font-size: .85em; line-height: 1.3; animation: v-folio-rail 12s infinite; }
+.v-folio-tag-was { left: 3.25em; color: #7a7e88; }
+.v-folio-tag-now { left: 24.7em; color: var(--rune); letter-spacing: .2em; }
+
+/* The new way, on the right. */
+.v-folio-p4 {
+  border-color: color-mix(in srgb, var(--rune) 40%, #1f2227);
+  box-shadow: 0 0 1.6em -.6em var(--rune);
+  animation: v-folio-p4 12s infinite;
+}
+.v-folio-r4 { left: 21em; }
+.v-folio-r4 i { background: #2e3239; }
+.v-folio-r4 i:nth-child(1) { animation: v-folio-r4a 12s infinite; }
+.v-folio-r4 i:nth-child(2) { animation: v-folio-r4b 12s infinite; }
+.v-folio-r4 i:nth-child(3) { animation: v-folio-r4c 12s infinite; }
+.v-folio-r4 i:nth-child(4) { animation: v-folio-r4d 12s infinite; }
+
+/* What a prompt offers under the pointer, left of its plate as in the app. */
+.v-folio-acts {
+  position: absolute; top: 11.95em; right: 13em; display: flex; gap: .4em;
+  opacity: 0; animation: v-folio-acts 12s infinite;
+}
+.v-folio-acts span {
+  height: 1.7em; padding: 0 .7em; display: flex; align-items: center; font-size: .9em;
+  border: 1px solid #2a2d33; border-radius: .3em; background: #0d0e11;
+}
+.v-folio-acts .v-folio-edit { animation: v-folio-edit 12s infinite; }
+
+.v-folio-cursor {
+  position: absolute; left: 0; top: 0; width: 1.1em; overflow: visible;
+  opacity: 0; transform: translate(18.6em, 13em); animation: v-folio-cursor 12s infinite;
+}
+.v-folio-cursor path { fill: var(--text); stroke: #000; stroke-width: 1; stroke-linejoin: round; }
+
+/* The third turn is asked and answered. */
+@keyframes v-folio-p3 {
+  0%, 3% { opacity: 0; transform: translateY(.4em); } 5%, 42% { opacity: 1; transform: none; }
+  50%, 95% { opacity: 1; transform: translateX(-17.25em); } 95.1%, 100% { opacity: 0; transform: none; }
+}
+@keyframes v-folio-r3a { 0%, 7% { transform: scaleX(0); } 10%, 95% { transform: none; } 95.1%, 100% { transform: scaleX(0); } }
+@keyframes v-folio-r3b { 0%, 10% { transform: scaleX(0); } 13%, 95% { transform: none; } 95.1%, 100% { transform: scaleX(0); } }
+@keyframes v-folio-r3c { 0%, 13% { transform: scaleX(0); } 16%, 95% { transform: none; } 95.1%, 100% { transform: scaleX(0); } }
+
+/* The pointer goes back to the second prompt, then to its edit, and clicks. */
+@keyframes v-folio-cursor {
+  0%, 18% { opacity: 0; transform: translate(33em, 23em); }
+  20% { opacity: 1; transform: translate(33em, 23em); }
+  27%, 30% { opacity: 1; transform: translate(30em, 12.9em); }
+  35%, 36.5% { opacity: 1; transform: translate(18.6em, 13em); }
+  37.5% { opacity: 1; transform: translate(18.6em, 13em) scale(.8); }
+  39%, 41% { opacity: 1; transform: translate(18.6em, 13em); }
+  43%, 100% { opacity: 0; transform: translate(18.6em, 13em); }
+}
+@keyframes v-folio-acts { 0%, 26.5% { opacity: 0; } 28%, 41% { opacity: 1; } 43%, 100% { opacity: 0; } }
+@keyframes v-folio-edit {
+  0%, 34% { color: #8a8e98; border-color: #2a2d33; background: #0d0e11; }
+  35%, 37% { color: var(--text); border-color: #3a3e46; background: #15171b; }
+  38%, 100% { color: var(--rune); border-color: var(--rune); background: color-mix(in srgb, var(--rune) 18%, #0d0e11); }
+}
+
+/* The fork. Before it the old turns sit a little higher, right under the
+   first, and lie across the whole page. They jump back unseen at the end. */
+@keyframes v-folio-was {
+  0%, 42% { opacity: 1; transform: translateY(-1.6em); }
+  50%, 92% { opacity: .4; transform: none; }
+  95% { opacity: 0; transform: none; }
+  95.1% { opacity: 0; transform: translateY(-1.6em); }
+  100% { opacity: 1; transform: translateY(-1.6em); }
+}
+@keyframes v-folio-p2 {
+  0%, 26.5% { transform: none; border-color: #1f2227; }
+  28%, 42% { transform: none; border-color: #3a3e46; }
+  50%, 95% { transform: translateX(-17.25em); border-color: #1f2227; }
+  95.1%, 100% { transform: none; }
+}
+@keyframes v-folio-narrow {
+  0%, 42% { transform: none; } 50%, 95% { transform: translateX(1em) scaleX(.455); } 95.1%, 100% { transform: none; }
+}
+@keyframes v-folio-rail { 0%, 49% { opacity: 0; } 53%, 92% { opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes v-folio-p4 {
+  0%, 51% { opacity: 0; transform: translateY(.4em); box-shadow: 0 0 2.4em -.2em var(--rune); }
+  54% { opacity: 1; transform: none; box-shadow: 0 0 2.4em -.2em var(--rune); }
+  62%, 92% { opacity: 1; transform: none; box-shadow: 0 0 1.6em -.6em var(--rune); }
+  95%, 100% { opacity: 0; transform: none; }
+}
+@keyframes v-folio-r4a { 0%, 57% { transform: scaleX(0); } 60%, 92% { transform: none; opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes v-folio-r4b { 0%, 60% { transform: scaleX(0); } 63%, 92% { transform: none; opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes v-folio-r4c { 0%, 63% { transform: scaleX(0); } 66%, 92% { transform: none; opacity: 1; } 95%, 100% { opacity: 0; } }
+@keyframes v-folio-r4d { 0%, 66% { transform: scaleX(0); } 69%, 92% { transform: none; opacity: 1; } 95%, 100% { opacity: 0; } }

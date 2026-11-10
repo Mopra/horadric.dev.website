@@ -1,4 +1,5 @@
 import Copy from "./copy";
+import Explain from "./explain";
 import { RUNES } from "./runes";
 import Atmosphere from "./atmosphere";
 import Stone from "./stone";
@@ -47,8 +48,8 @@ export default async function Home() {
             </li>
           ))}
         </ul>
-        <a className="down" href="#install" aria-label="Scroll down to install">
-          install
+        <a className="down" href="#what" aria-label="Scroll down to see what Horadric is">
+          what it is
           <span />
         </a>
         <p className="needs">free, open source. needs a claude subscription</p>
@@ -66,6 +67,7 @@ export default async function Home() {
           </a>
         </nav>
       </section>
+      <Explain />
       <section className="install" id="install" aria-label="How to install Horadric">
         <div className="os" id="mac">
           <h2>mac</h2>
