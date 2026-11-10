@@ -1,118 +1,214 @@
-/* The quest log in small: a list that works itself down. Each 2.4s step one
-   quest is worked by a session tile beside the list, gets its check, and the
-   list rolls up a row. Five steps make the 12s loop, and the list wraps
-   unseen. Without animation: one row done, one working, the rest waiting. */
+/* The quest log driven by Warriv. An aim is typed, you leave, quests file
+   themselves, each is worked by a session of its own and lands as a commit on
+   main. One waits for you. The frame is 40em by 30em.
+   Without animation it shows the morning after: the aim, three landed, one
+   waiting in amber. */
 .v-quests { color: var(--dim); line-height: 1; }
+.v-quests p { white-space: nowrap; }
+.v-quests b { font-weight: inherit; }
+.v-quests em { font-style: normal; }
 
-/* You are gone: a clock that runs fast. */
-.v-quests-away {
-  position: absolute; left: 26.2em; top: 4.6em; height: 3.6em; display: flex; align-items: center; gap: .7em;
-  letter-spacing: .06em; color: #8a8e98;
-}
-.v-quests-away > span + span { font-size: .9em; }
-.v-quests-clock { position: relative; flex: none; width: 1.8em; height: 1.8em; border: 1px solid #5b5f68; border-radius: 50%; }
-.v-quests-clock i {
-  position: absolute; left: calc(50% - .5px); bottom: 50%; width: 1px; height: 38%; background: #9a9ea8;
-  transform-origin: 50% 100%; rotate: 0deg; animation: v-quests-turn 1.2s linear infinite;
-}
-.v-quests-clock i + i { height: 25%; rotate: 120deg; animation: v-quests-turn-slow 12s linear infinite; }
+/* All that the loop draws fades out together at its end and starts clean. */
+.v-quests-fade { animation: v-quests-fade 12s linear infinite; }
+.v-quests-side { position: absolute; inset: 0; }
 
 .v-quests-panel {
-  position: absolute; left: 1.6em; top: 4.6em; width: 22.8em;
+  position: absolute; left: 1.6em; top: 2.4em; width: 23em; height: 22.4em;
   border: 1px solid #1f2228; border-radius: .7em; background: #0b0c0f;
 }
-.v-quests-head { display: flex; align-items: center; gap: .8em; height: 3.6em; padding: 0 1.1em; }
-.v-quests-name { font-size: .8em; letter-spacing: .16em; color: #8a8e98; }
-.v-quests-auto {
-  margin-left: auto; padding: .4em .7em; border: 1px solid #2a2d33; border-radius: .4em;
-  font-size: .8em; color: var(--rune);
+.v-quests-head { display: flex; align-items: center; justify-content: space-between; height: 3.4em; padding: 0 1.1em; }
+.v-quests-name { font-size: .85em; letter-spacing: .16em; color: #8a8e98; }
+.v-quests-pill {
+  padding: .45em .7em; font-size: .85em; color: var(--rune); border-radius: .4em;
+  border: 1px solid color-mix(in srgb, var(--rune) 45%, #2a2d33);
+  animation: v-quests-pill 12s linear infinite;
 }
-.v-quests-plus { font-size: 1.2em; }
 
-.v-quests-list { height: 16em; overflow: hidden; }
-.v-quests-roll { animation: v-quests-roll 12s infinite; }
-.v-quests-row { display: flex; align-items: center; gap: .8em; height: 4em; padding: 0 1.1em; }
+/* The one line you write. */
+.v-quests-aim {
+  display: flex; align-items: center; height: 2.9em; margin: 0 1.1em; padding: 0 .8em;
+  color: var(--text); background: #07080a; border: 1px solid #2a2d33; border-radius: .45em;
+  animation: v-quests-focus 12s linear infinite;
+}
+.v-quests-aim b { color: var(--rune); }
+.v-quests-typed { position: relative; padding: .3em .4em .3em 0; overflow: hidden; }
+/* Typing without changing a width: a cover slides off the line a letter at a
+   time, and its left edge is the caret. */
+.v-quests-cover {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0;
+  background: #07080a; border-left: 1px solid var(--text);
+  animation: v-quests-type 12s linear infinite;
+}
+.v-quests-by {
+  display: flex; align-items: center; gap: .8em; height: 2.4em; padding: .3em 1.1em 0;
+  font-size: .85em; letter-spacing: .08em; color: #8a8e98;
+  animation: v-quests-by 12s linear infinite;
+}
+.v-quests-by::after { content: ""; flex: 1; height: 1px; background: #1f2228; }
+
+.v-quests-row { display: flex; align-items: center; gap: .8em; height: 3.3em; padding: 0 1.1em; }
 .v-quests-mark { position: relative; flex: none; width: 1.15em; height: 1.15em; }
-.v-quests-mark > * { position: absolute; inset: 0; width: 100%; height: 100%; animation: 12s var(--d) infinite; }
-.v-quests-box { border: 1px solid #5b5f68; border-radius: .2em; animation-name: v-quests-box; }
-.v-quests-play { fill: none; stroke: var(--work); stroke-width: 1.1; stroke-linejoin: round; opacity: 0; animation-name: v-quests-work; }
+.v-quests-mark > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+.v-quests-box { border: 1px solid #5b5f68; border-radius: .2em; opacity: 0; }
+.v-quests-play { fill: none; stroke: var(--work); stroke-width: 1.1; stroke-linejoin: round; opacity: 0; }
 .v-quests-check {
   fill: none; stroke: var(--done); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round;
   border: 1px solid color-mix(in srgb, var(--done) 60%, transparent); border-radius: .2em;
-  background: color-mix(in srgb, var(--done) 14%, transparent); opacity: 0; animation-name: v-quests-done;
+  background: color-mix(in srgb, var(--done) 14%, transparent);
 }
-.v-quests-title {
-  flex: 1; min-width: 0; padding: .2em 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-  color: #a9adb6; animation: v-quests-title 12s var(--d) infinite;
-}
-.v-quests-state { flex: none; font-size: .8em; color: var(--work); opacity: 0; animation: v-quests-work 12s var(--d) infinite; }
+.v-quests-bang { fill: none; stroke: var(--wait); stroke-width: 1.1; stroke-linecap: round; }
+.v-quests-title { flex: 1; color: #c4c7ce; white-space: nowrap; }
+.v-quests-state { position: relative; flex: none; width: 6em; height: 1em; font-size: .85em; }
+.v-quests-state span { position: absolute; right: 0; top: 0; }
+.v-quests-working { color: var(--work); opacity: 0; }
+.v-quests-landed { color: var(--done); }
+.v-quests-needs { color: var(--wait); }
 
-/* The still picture: the top row done, the next one working. */
-.v-quests-row[data-s] .v-quests-box { opacity: 0; }
-.v-quests-row[data-s="done"] .v-quests-check { opacity: 1; }
-.v-quests-row[data-s="done"] .v-quests-title { color: var(--dim); }
-.v-quests-row[data-s="work"] .v-quests-play, .v-quests-row[data-s="work"] .v-quests-state { opacity: 1; }
-.v-quests-row[data-s="work"] .v-quests-title { color: var(--text); }
-
-/* From the working row, which always sits second, to its session. */
-.v-quests-wire {
-  position: absolute; left: 24.4em; top: 14.2em; width: 1.6em; height: 1px;
-  background: color-mix(in srgb, var(--work) 55%, transparent); animation: v-quests-wire 2.4s infinite;
+/* The branch the work lands on. */
+.v-quests-main {
+  position: absolute; font-size: .85em; letter-spacing: .08em; text-align: center; color: #b4b7bf;
+  /* The em here is smaller, so the box is set back onto the frame's grid. */
+  left: calc(35.2em / .85); top: calc(8.7em / .85); width: calc(4em / .85);
 }
+.v-quests-rail { position: absolute; left: 37.2em; top: 10.3em; width: 1px; height: 14.5em; background: #2a2d33; }
+
+/* Night while you are gone, day when you are back. */
+.v-quests-chip {
+  position: absolute; left: 26em; top: 2.4em; height: 3.4em; display: flex; align-items: center; gap: .6em;
+  letter-spacing: .04em; color: #8a8e98;
+}
+.v-quests-chip svg { width: 1.5em; height: 1.5em; fill: none; stroke: currentColor; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
+.v-quests-away { opacity: 0; animation: v-quests-away 12s linear infinite; }
+.v-quests-back { color: var(--text); animation: v-quests-back 12s linear infinite; }
+.v-quests-back svg { stroke: var(--wait); }
+
+/* A lane runs from a quest's row to the rail. */
+.v-quests-lane { position: absolute; left: 24.6em; width: 13.8em; height: 3.3em; }
+.v-quests-lane[data-q="1"] { top: 11.1em; }
+.v-quests-lane[data-q="2"] { top: 14.4em; }
+.v-quests-lane[data-q="3"] { top: 17.7em; }
+.v-quests-lane[data-q="4"] { top: 21em; }
+.v-quests-wire { position: absolute; left: 0; top: 50%; width: 12.6em; height: 1px; background: #1f2228; }
 .v-quests-tile {
-  position: absolute; left: 26em; top: 9.7em; width: 12.4em; height: 9em; display: flex; flex-direction: column;
-  border: 1px solid color-mix(in srgb, currentColor 35%, #1f2228); border-radius: .5em; background: #0b0c0f;
-  box-shadow: 0 0 1.8em -.6em color-mix(in srgb, currentColor 55%, transparent);
-  color: var(--work); animation: v-quests-tile 2.4s infinite;
+  position: absolute; font-size: .85em; padding: 0 .7em;
+  left: calc(1.4em / .85); top: calc(.5em / .85); height: calc(2.3em / .85);
+  display: flex; align-items: center; gap: .5em; opacity: 0;
+  color: var(--work); background: #0b0c0f; border-radius: .45em;
+  border: 1px solid color-mix(in srgb, currentColor 45%, #1f2228);
+  box-shadow: 0 0 1.6em -.5em color-mix(in srgb, currentColor 60%, transparent);
 }
-.v-quests-tile-head { display: flex; align-items: center; gap: .5em; padding: .75em .7em .5em; }
-.v-quests-dot { flex: none; width: .55em; height: .55em; border-radius: 50%; background: currentColor; box-shadow: 0 0 .6em currentColor; }
-/* The tile's name steps to the next quest while the tile is away. */
-.v-quests-names { flex: 1; min-width: 0; height: 1.4em; overflow: hidden; font-size: .85em; color: #b4b7bf; }
-.v-quests-names > span { display: block; animation: v-quests-names 12s steps(5) infinite; }
-.v-quests-names > span > span { display: block; height: 1.4em; line-height: 1.4; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.v-quests-body { flex: 1; min-height: 0; margin: 0 .7em; overflow: hidden; }
-.v-quests-lines { animation: v-quests-tick 2.4s steps(4) infinite; }
-.v-quests-lines i { display: block; height: 1.4em; border: solid transparent; border-width: .5em 0; background: #2b2e36; background-clip: padding-box; border-radius: .7em; }
-.v-quests-lines i:nth-child(even) { margin-left: 1em; background-color: color-mix(in srgb, currentColor 40%, #15171b); }
-.v-quests-foot { position: relative; flex: none; height: 2.2em; margin: 0 .7em; font-size: .8em; letter-spacing: .04em; }
-.v-quests-foot span { position: absolute; left: 0; top: 50%; translate: 0 -50%; }
-.v-quests-working { animation: v-quests-tile-working 2.4s infinite; }
-.v-quests-finished { opacity: 0; animation: v-quests-tile-finished 2.4s infinite; }
+.v-quests-tile i {
+  width: .6em; height: .6em; border-radius: 50%; background: currentColor; box-shadow: 0 0 .6em currentColor;
+  animation: v-quests-breathe 1.5s ease-in-out infinite;
+}
+/* The session that waits stays, in amber. */
+.v-quests-lane[data-q="4"] .v-quests-tile { opacity: 1; color: var(--wait); }
+.v-quests-lane[data-q="4"] .v-quests-tile i { animation: none; }
+.v-quests-ring, .v-quests-commit, .v-quests-ping {
+  position: absolute; left: 12.15em; top: 1.2em; width: .9em; height: .9em; border-radius: 50%;
+}
+.v-quests-ring { background: #07080a; border: 1px solid #2a2d33; }
+.v-quests-commit { background: var(--done); box-shadow: 0 0 .8em color-mix(in srgb, var(--done) 70%, transparent); }
+.v-quests-ping { border: 1px solid var(--done); opacity: 0; }
+.v-quests-hash {
+  position: absolute; font-size: .85em; padding: .3em .5em; color: #8a8e98; background: #07080a;
+  right: calc(2.1em / .85); top: calc(1.65em / .85); translate: 0 -50%;
+}
 
-@keyframes v-quests-turn { to { rotate: 360deg; } }
-@keyframes v-quests-turn-slow { from { rotate: 120deg; } to { rotate: 480deg; } }
-/* Hold, then up one row, five times. */
-@keyframes v-quests-roll {
-  0%, 17% { transform: translateY(0); }
-  20%, 37% { transform: translateY(-4em); }
-  40%, 57% { transform: translateY(-8em); }
-  60%, 77% { transform: translateY(-12em); }
-  80%, 97% { transform: translateY(-16em); }
-  100% { transform: translateY(-20em); }
+.v-quests-sum {
+  position: absolute; left: 1.6em; top: 26.4em; letter-spacing: .04em; color: #8a8e98;
+  animation: v-quests-sum 12s linear infinite;
 }
-/* The life of the first row. It is done at the top as the loop starts, rolls
-   out, is reset where no one sees it, comes back in at the bottom, waits two
-   steps and works the last one. */
-@keyframes v-quests-box { 0%, 22% { opacity: 0; } 23.5%, 79% { opacity: 1; } 80%, 100% { opacity: 0; } }
-@keyframes v-quests-work { 0%, 79% { opacity: 0; } 80%, 95% { opacity: 1; } 96.5%, 100% { opacity: 0; } }
-@keyframes v-quests-done {
-  0%, 22% { opacity: 1; scale: 1; } 23.5%, 95% { opacity: 0; scale: .5; } 96.5% { opacity: 1; scale: 1.2; } 98%, 100% { opacity: 1; scale: 1; }
+.v-quests-sum b { color: var(--done); }
+.v-quests-sum em { color: var(--wait); }
+
+/* Each row, its lane and its marks keep the times of their quest. */
+.v-quests [data-q="1"] { animation: v-quests-in1 12s linear infinite; }
+.v-quests [data-q="2"] { animation: v-quests-in2 12s linear infinite; }
+.v-quests [data-q="3"] { animation: v-quests-in3 12s linear infinite; }
+.v-quests [data-q="4"] { animation: v-quests-in4 12s linear infinite; }
+[data-q="1"] .v-quests-box { animation: v-quests-box1 12s linear infinite; }
+[data-q="2"] .v-quests-box { animation: v-quests-box2 12s linear infinite; }
+[data-q="3"] .v-quests-box { animation: v-quests-box3 12s linear infinite; }
+[data-q="4"] .v-quests-box { animation: v-quests-box4 12s linear infinite; }
+[data-q="1"] :is(.v-quests-play, .v-quests-working, .v-quests-tile) { animation: v-quests-work1 12s linear infinite; }
+[data-q="2"] :is(.v-quests-play, .v-quests-working, .v-quests-tile) { animation: v-quests-work2 12s linear infinite; }
+[data-q="3"] :is(.v-quests-play, .v-quests-working, .v-quests-tile) { animation: v-quests-work3 12s linear infinite; }
+[data-q="4"] :is(.v-quests-play, .v-quests-working) { animation: v-quests-work4 12s linear infinite; }
+[data-q="1"] :is(.v-quests-check, .v-quests-landed, .v-quests-commit, .v-quests-hash) { animation: v-quests-done1 12s linear infinite; }
+[data-q="2"] :is(.v-quests-check, .v-quests-landed, .v-quests-commit, .v-quests-hash) { animation: v-quests-done2 12s linear infinite; }
+[data-q="3"] :is(.v-quests-check, .v-quests-landed, .v-quests-commit, .v-quests-hash) { animation: v-quests-done3 12s linear infinite; }
+[data-q="4"] :is(.v-quests-bang, .v-quests-needs) { animation: v-quests-done4 12s linear infinite; }
+[data-q="1"] .v-quests-ping { animation: v-quests-ping1 12s linear infinite; }
+[data-q="2"] .v-quests-ping { animation: v-quests-ping2 12s linear infinite; }
+[data-q="3"] .v-quests-ping { animation: v-quests-ping3 12s linear infinite; }
+.v-quests-lane[data-q="4"] .v-quests-tile { animation: v-quests-tile4 12s linear infinite; }
+
+/* One loop of 12s.
+   0.3 to 1.7s  the aim is typed
+   2.0s         you are away, and warriv starts to file
+   2.2 to 3.5s  four quests appear, one by one
+   2.9s         the first gets a session, 3.4s the second
+   5.0s         the first lands on main, 6.1s the second
+   5.2s         the third starts once the first has landed, and lands at 7.4s
+   6.3s         the fourth starts, and at 8.2s it needs you
+   9.0s         you are back: the sum of the night
+   11.3s        all fades, and the loop closes */
+@keyframes v-quests-fade { 0% { opacity: 0; } 2%, 94% { opacity: 1; } 97.5%, 100% { opacity: 0; } }
+@keyframes v-quests-focus {
+  0%, 15% { border-color: color-mix(in srgb, var(--rune) 60%, #2a2d33); }
+  17.5%, 100% { border-color: #2a2d33; }
 }
-@keyframes v-quests-title {
-  0%, 22% { color: var(--dim); } 23.5%, 79% { color: #a9adb6; } 80%, 95% { color: var(--text); } 96.5%, 100% { color: var(--dim); }
+/* 26 letters, each as wide as a 0 and its letter spacing. */
+@keyframes v-quests-type {
+  0%, 2.5% { opacity: 1; transform: translateX(0); animation-timing-function: steps(26); }
+  14% { opacity: 1; transform: translateX(calc(26ch + .52em)); }
+  15.5% { opacity: 1; transform: translateX(calc(26ch + .52em)); }
+  16%, 100% { opacity: 0; transform: translateX(calc(26ch + .52em)); }
 }
-/* One step of the tile: in, work, done, out. */
-@keyframes v-quests-tile {
-  0% { opacity: 0; transform: translateX(-.8em); color: var(--work); }
-  8% { opacity: 1; transform: none; }
-  75% { color: var(--work); }
-  81% { color: var(--done); }
-  87% { opacity: 1; transform: none; }
-  97%, 100% { opacity: 0; transform: translateY(-.5em); color: var(--done); }
+@keyframes v-quests-pill {
+  0%, 16% { box-shadow: 0 0 0 0 transparent; background: transparent; }
+  18.5%, 31% { box-shadow: 0 0 1.2em -.2em var(--rune); background: color-mix(in srgb, var(--rune) 16%, transparent); }
+  35%, 100% { box-shadow: 0 0 0 0 transparent; background: transparent; }
 }
-@keyframes v-quests-wire { 0% { opacity: 0; } 8%, 72% { opacity: 1; } 80%, 100% { opacity: 0; } }
-@keyframes v-quests-tile-working { 0%, 75% { opacity: 1; } 81%, 100% { opacity: 0; } }
-@keyframes v-quests-tile-finished { 0%, 75% { opacity: 0; } 81%, 100% { opacity: 1; } }
-@keyframes v-quests-names { to { transform: translateY(-7em); } }
-@keyframes v-quests-tick { to { transform: translateY(-5.6em); } }
+@keyframes v-quests-away { 0%, 15.5% { opacity: 0; } 17.5%, 73.5% { opacity: 1; } 75%, 100% { opacity: 0; } }
+@keyframes v-quests-back { 0%, 74.5% { opacity: 0; } 76.5%, 100% { opacity: 1; } }
+@keyframes v-quests-by { 0%, 16.5% { opacity: 0; } 18.5%, 100% { opacity: 1; } }
+@keyframes v-quests-sum {
+  0%, 76% { opacity: 0; transform: translateY(.5em); }
+  79%, 100% { opacity: 1; transform: none; }
+}
+
+@keyframes v-quests-in1 { 0%, 18% { opacity: 0; transform: translateY(.5em); } 20%, 100% { opacity: 1; transform: none; } }
+@keyframes v-quests-in2 { 0%, 21.5% { opacity: 0; transform: translateY(.5em); } 23.5%, 100% { opacity: 1; transform: none; } }
+@keyframes v-quests-in3 { 0%, 25% { opacity: 0; transform: translateY(.5em); } 27%, 100% { opacity: 1; transform: none; } }
+@keyframes v-quests-in4 { 0%, 28.5% { opacity: 0; transform: translateY(.5em); } 30.5%, 100% { opacity: 1; transform: none; } }
+
+@keyframes v-quests-box1 { 0%, 23.5% { opacity: 1; } 24.5%, 100% { opacity: 0; } }
+@keyframes v-quests-box2 { 0%, 27.5% { opacity: 1; } 28.5%, 100% { opacity: 0; } }
+@keyframes v-quests-box3 { 0%, 43% { opacity: 1; } 44%, 100% { opacity: 0; } }
+@keyframes v-quests-box4 { 0%, 52% { opacity: 1; } 53%, 100% { opacity: 0; } }
+
+@keyframes v-quests-work1 { 0%, 23.5% { opacity: 0; } 24.5%, 41.5% { opacity: 1; } 42.5%, 100% { opacity: 0; } }
+@keyframes v-quests-work2 { 0%, 27.5% { opacity: 0; } 28.5%, 50.5% { opacity: 1; } 51.5%, 100% { opacity: 0; } }
+@keyframes v-quests-work3 { 0%, 43% { opacity: 0; } 44%, 61.5% { opacity: 1; } 62.5%, 100% { opacity: 0; } }
+@keyframes v-quests-work4 { 0%, 52% { opacity: 0; } 53%, 67.5% { opacity: 1; } 68.5%, 100% { opacity: 0; } }
+
+@keyframes v-quests-done1 { 0%, 41.5% { opacity: 0; } 42.5%, 100% { opacity: 1; } }
+@keyframes v-quests-done2 { 0%, 50.5% { opacity: 0; } 51.5%, 100% { opacity: 1; } }
+@keyframes v-quests-done3 { 0%, 61.5% { opacity: 0; } 62.5%, 100% { opacity: 1; } }
+@keyframes v-quests-done4 { 0%, 67.5% { opacity: 0; } 68.5%, 100% { opacity: 1; } }
+
+/* A ring that spreads from the commit as it lands. */
+@keyframes v-quests-ping1 { 0%, 42% { opacity: 0; transform: scale(1); } 42.5% { opacity: 1; transform: scale(1); } 49%, 100% { opacity: 0; transform: scale(3.2); } }
+@keyframes v-quests-ping2 { 0%, 51% { opacity: 0; transform: scale(1); } 51.5% { opacity: 1; transform: scale(1); } 58%, 100% { opacity: 0; transform: scale(3.2); } }
+@keyframes v-quests-ping3 { 0%, 62% { opacity: 0; transform: scale(1); } 62.5% { opacity: 1; transform: scale(1); } 69%, 100% { opacity: 0; transform: scale(3.2); } }
+
+/* The fourth session does not go: it turns from working to waiting. */
+@keyframes v-quests-tile4 {
+  0%, 52% { opacity: 0; color: var(--work); }
+  53%, 67.5% { opacity: 1; color: var(--work); }
+  68.5%, 100% { opacity: 1; color: var(--wait); }
+}
+/* 1.5s divides the loop, so the lamp stays in step. */
+@keyframes v-quests-breathe { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }

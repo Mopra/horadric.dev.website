@@ -395,7 +395,7 @@ export default function Stone() {
             {rune.note && <i>{rune.note}</i>}
           </span>
         ) : (
-          <span className="what">one screen for all your claude code sessions</span>
+          <span className="what">give claude code a goal. it remembers, and keeps working.</span>
         )}
       </p>
     </>
