@@ -80,7 +80,7 @@ html { scroll-behavior: smooth; }
 .veil svg {
   width: 112px; overflow: visible;
   filter: drop-shadow(0 0 4px rgba(255, 158, 51, .9)) drop-shadow(0 0 18px rgba(255, 120, 30, .45));
-  animation: kindle 3.2s ease-in-out 2.2s infinite;
+  animation: kindle 3.2s ease-in-out 1.9s infinite;
   transition: transform 1.5s ease-in, filter 1.5s ease-in, opacity 1.2s ease-in;
 }
 .veil line {
@@ -90,7 +90,7 @@ html { scroll-behavior: smooth; }
 }
 .veil p {
   color: var(--dim); letter-spacing: .35em; padding-left: .35em;
-  opacity: 0; animation: dawn 1.4s ease-out 1.2s forwards;
+  opacity: 0; animation: dawn 1.2s ease-out .7s forwards;
 }
 .veil p { transition: opacity .9s ease-in, filter .9s ease-in; }
 .veil.lifted p { opacity: 0; filter: blur(4px); animation: none; }

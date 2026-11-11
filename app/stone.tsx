@@ -19,7 +19,9 @@ const HALF = 0.94; // the stone's half width, for picking a face
 const FRAME_MS = 33; // the stone turns slowly; thirty frames a second is plenty
 const MAX_PX = 1080; // above the drawn size where the GPU allows: smoother edges
 const TOUCH_PX = 600;
-const VEIL_MIN = 1800;
+// Long enough for the rune to be drawn whole and to breathe once before it
+// dissolves, however fast the stone wakes.
+const VEIL_MIN = 2400;
 const VEIL_SETTLE = 700;
 const VEIL_MAX = 12000;
 // The rune drawn on the veil: the stone's own, from the right face, in the
@@ -130,34 +132,27 @@ export default function Stone() {
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
       gl.enableVertexAttribArray(0);
       gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-      // The stone is drawn into two textures, its colour and its depth, and
-      // the lens draws them to the canvas.
-      const tex = () => {
-        const t = gl.createTexture()!;
-        gl.bindTexture(gl.TEXTURE_2D, t);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        return t;
-      };
-      const colTex = tex(), depTex = tex();
+      // The stone is drawn into a texture, its colour with its depth packed
+      // into the alpha (see the shader), and the lens draws that to the
+      // canvas. Never smoothed: a blend of two packed alphas means nothing.
+      const colTex = gl.createTexture()!;
+      gl.bindTexture(gl.TEXTURE_2D, colTex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
       const fbo = gl.createFramebuffer();
       let fboPx = 0;
       const target = (px: number) => {
         if (px === fboPx) return;
         fboPx = px;
-        for (const t of [colTex, depTex]) {
-          gl.bindTexture(gl.TEXTURE_2D, t);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, px, px, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-        }
+        gl.bindTexture(gl.TEXTURE_2D, colTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, px, px, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
         gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
         gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, colTex, 0);
-        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, depTex, 0);
-        gl.drawBuffers([gl.COLOR_ATTACHMENT0, gl.COLOR_ATTACHMENT1]);
       };
       const L = (n: string) => gl.getUniformLocation(lens, n);
-      const lu = { col: L("col"), dep: L("dep"), res: L("res"), maxR: L("maxR") };
+      const lu = { col: L("col"), res: L("res"), maxR: L("maxR") };
       const U = (n: string) => gl.getUniformLocation(prog, n);
       const u = { res: U("res"), light: U("lightCol"), yaw: U("yaw"), pitch: U("pitch"), glow: U("glowK"), ignite: U("ignite"), time: U("time") };
 
@@ -272,10 +267,7 @@ export default function Stone() {
         gl.useProgram(lens);
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, colTex);
-        gl.activeTexture(gl.TEXTURE1);
-        gl.bindTexture(gl.TEXTURE_2D, depTex);
         gl.uniform1i(lu.col, 0);
-        gl.uniform1i(lu.dep, 1);
         gl.uniform2f(lu.res, c.width, c.height);
         gl.uniform1f(lu.maxR, c.width * 0.0055);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -348,7 +340,6 @@ export default function Stone() {
         gl.deleteShader(lfs);
         gl.deleteBuffer(buf);
         gl.deleteTexture(colTex);
-        gl.deleteTexture(depTex);
         gl.deleteFramebuffer(fbo);
         ro.disconnect();
         io.disconnect();
@@ -372,14 +363,14 @@ export default function Stone() {
       <div className={veiled ? "veil" : "veil lifted"} aria-hidden="true">
         <svg viewBox="-1.2 -1.3 2.4 2.6">
           {VEIL_RUNE.map(([x1, y1, x2, y2], i) => (
-            <line key={i} x1={x1} y1={-y1} x2={x2} y2={-y2} pathLength={1} style={{ animationDelay: `${0.3 + i * 0.45}s` }} />
+            <line key={i} x1={x1} y1={-y1} x2={x2} y2={-y2} pathLength={1} style={{ animationDelay: `${0.15 + i * 0.35}s` }} />
           ))}
         </svg>
         <p>the stone wakes</p>
       </div>
       <div className={live ? "stone live" : asleep ? "stone asleep" : "stone"}>
         {/* The baked stone shows until the live one has drawn, and stays where WebGL2 is missing. */}
-        <img src="/stone.png" alt="" aria-hidden="true" />
+        <img src="/stone.webp" alt="" aria-hidden="true" />
         {/* While the live stone is compiled, the baked one breathes in the dark. */}
         <p className="waking" aria-hidden="true">
           <span>the stone wakes</span>

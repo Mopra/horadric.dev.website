@@ -19,9 +19,11 @@ uniform float ignite[6];
 // this shader took twenty seconds to compile.
 uniform int zero;
 const float LENS = .25; // smaller is closer; stone.tsx picks with the same lens
-layout(location = 0) out vec4 frag;
-// How far each pixel's stone is, for the lens pass: 0 nearest, 1 empty.
-layout(location = 1) out vec4 depth;
+// One output only. With a second one for depth, Direct3D compiled the whole
+// shader a second time at the first frame, and the page froze for a second.
+// So the alpha byte carries both, for the lens pass to take apart: below 128
+// it is empty air and its glow, from 128 up it is stone and how far it is.
+out vec4 frag;
 
 const float rough = 100. / 60.;
 const float chips = 40. / 55.;
@@ -37,14 +39,19 @@ float fbm(vec3 p) { float a = .5, s = 0.; for (int i = zero; i < 5; i++) { s += 
 float ridged(vec3 p) { float a = .5, s = 0.; for (int i = zero; i < 4; i++) { float n = 1. - abs(vnoise(p) * 2. - 1.); s += a * n * n; p = p * 2.1 + 3.3; a *= .5; } return s; }
 
 float seg(vec2 p, vec2 a, vec2 b) { vec2 pa = p - a, ba = b - a; float h = clamp(dot(pa, ba) / dot(ba, ba), 0., 1.); return length(pa - ba * h); }
+// The six runes, five strokes each (from.xy, to.zw); a rune of four repeats
+// its last. A table and one loop, not a branch per rune: the branches were
+// half of the shader's compile time.
+const vec4 SEG[30] = vec4[30](
+  vec4(0,-1,0,1), vec4(0,.2,-.62,.82), vec4(0,.2,.62,.82), vec4(-.42,-.5,.42,-.5), vec4(-.42,-.5,.42,-.5),
+  vec4(-.6,.9,.6,-.9), vec4(.6,.9,-.6,-.9), vec4(-.6,.9,.6,.9), vec4(-.6,-.9,.6,-.9), vec4(-.6,-.9,.6,-.9),
+  vec4(-.7,1,-.7,-1), vec4(-.7,.45,.7,1), vec4(-.7,-.15,.7,.4), vec4(.7,-1,.05,-.45), vec4(.7,-1,.05,-.45),
+  vec4(0,1,.62,0), vec4(.62,0,0,-1), vec4(0,-1,-.62,0), vec4(-.62,0,0,1), vec4(0,1,0,-1),
+  vec4(-.8,-.7,0,.9), vec4(0,.9,.8,-.7), vec4(.8,-.7,-.8,-.7), vec4(0,.9,0,-.2), vec4(0,.9,0,-.2),
+  vec4(-.7,.85,.7,.3), vec4(.7,.3,-.7,-.25), vec4(-.7,-.25,.7,-.8), vec4(0,1,0,-1), vec4(0,1,0,-1));
 float glyph(vec2 p, int g) {
   float d = 1e3;
-  if (g == 0) { d = min(d, seg(p, vec2(0,-1), vec2(0,1))); d = min(d, seg(p, vec2(0,.2), vec2(-.62,.82))); d = min(d, seg(p, vec2(0,.2), vec2(.62,.82))); d = min(d, seg(p, vec2(-.42,-.5), vec2(.42,-.5))); }
-  else if (g == 1) { d = min(d, seg(p, vec2(-.6,.9), vec2(.6,-.9))); d = min(d, seg(p, vec2(.6,.9), vec2(-.6,-.9))); d = min(d, seg(p, vec2(-.6,.9), vec2(.6,.9))); d = min(d, seg(p, vec2(-.6,-.9), vec2(.6,-.9))); }
-  else if (g == 2) { d = min(d, seg(p, vec2(-.7,1), vec2(-.7,-1))); d = min(d, seg(p, vec2(-.7,.45), vec2(.7,1))); d = min(d, seg(p, vec2(-.7,-.15), vec2(.7,.4))); d = min(d, seg(p, vec2(.7,-1), vec2(.05,-.45))); }
-  else if (g == 3) { d = min(d, seg(p, vec2(0,1), vec2(.62,0))); d = min(d, seg(p, vec2(.62,0), vec2(0,-1))); d = min(d, seg(p, vec2(0,-1), vec2(-.62,0))); d = min(d, seg(p, vec2(-.62,0), vec2(0,1))); d = min(d, seg(p, vec2(0,1), vec2(0,-1))); }
-  else if (g == 4) { d = min(d, seg(p, vec2(-.8,-.7), vec2(0,.9))); d = min(d, seg(p, vec2(0,.9), vec2(.8,-.7))); d = min(d, seg(p, vec2(.8,-.7), vec2(-.8,-.7))); d = min(d, seg(p, vec2(0,.9), vec2(0,-.2))); }
-  else { d = min(d, seg(p, vec2(-.7,.85), vec2(.7,.3))); d = min(d, seg(p, vec2(.7,.3), vec2(-.7,-.25))); d = min(d, seg(p, vec2(-.7,-.25), vec2(.7,-.8))); d = min(d, seg(p, vec2(0,1), vec2(0,-1))); }
+  for (int i = zero; i < 5; i++) { vec4 s = SEG[g * 5 + i]; d = min(d, seg(p, s.xy, s.zw)); }
   return d;
 }
 // The face a point is nearest: 0 +x, 1 -x, 2 +y, 3 -y, 4 +z, 5 -z.
@@ -79,9 +86,14 @@ float veil(vec3 p) {
   return vnoise(q) * .65 + vnoise(q * 2.1 + vec3(0., -time * .2, 0.)) * .35;
 }
 
+// The rune distance at the point map() was last asked about, so the march
+// need not work it out again.
+float runeAt;
 float map(vec3 p) {
   vec3 q = abs(p) - vec3(.8);
   float box = length(max(q, 0.)) + min(max(q.x, max(q.y, q.z)), 0.) - .14;
+  // Far from the stone its roughness cannot matter: the plain box will do.
+  if (box > .3) { runeAt = 1.; return box; }
   vec3 a = abs(p);
   float mx = max(a.x, max(a.y, a.z)), mn = min(a.x, min(a.y, a.z)), md = a.x + a.y + a.z - mx - mn;
   float edge = smoothstep(.55, .92, md);
@@ -91,29 +103,9 @@ float map(vec3 p) {
   d += (ridged(s * 3.6) - .35) * .028 * rough;
   d += (vnoise(s * 14.) - .5) * .006 * rough;
   d += edge * max(0., fbm(s * 2.6 + 11.) - .45) * .45 * chips;
-  d += (1. - smoothstep(W * .5, W, runeD(p))) * .085;
+  runeAt = runeD(p);
+  d += (1. - smoothstep(W * .5, W, runeAt)) * .085;
   return d;
-}
-// The tetrahedron normal, as a loop so map() is compiled once here, not four
-// times. The step is a little wider than a pixel's grain, so the finest
-// bumps don't shimmer.
-vec3 normalAt(vec3 p) {
-  vec3 n = vec3(0);
-  for (int i = zero; i < 4; i++) {
-    vec3 e = .5773 * (2. * vec3(float(((i + 3) >> 1) & 1), float((i >> 1) & 1), float(i & 1)) - 1.);
-    n += e * map(p + e * .0024);
-  }
-  return normalize(n);
-}
-float shadow(vec3 ro, vec3 rd) {
-  float r = 1., t = .02;
-  for (int i = zero; i < 48; i++) { float h = map(ro + rd * t); r = min(r, 7. * h / t); t += clamp(h, .01, .15); if (r < .002 || t > 4.) break; }
-  return clamp(r, 0., 1.);
-}
-float occlusion(vec3 p, vec3 n) {
-  float o = 0., w = 1.;
-  for (int i = zero + 1; i <= 5; i++) { float h = .025 * float(i); o += w * (h - map(p + n * h)); w *= .6; }
-  return clamp(1. - 6.5 * o, 0., 1.);
 }
 vec3 aces(vec3 x) { return clamp((x * (2.51 * x + .03)) / (x * (2.43 * x + .59) + .14), 0., 1.); }
 
@@ -126,28 +118,48 @@ void main() {
   vec3 key = normalize(-.55 * rt + .85 * up - .35 * fw);
   vec3 rim = normalize(.75 * rt + .35 * up + .7 * fw);
 
-  float t = 4.;
+  // Only rays through the box that holds the stone and its glow are marched,
+  // and from where they enter it.
+  vec3 bi = 1. / rd, b1 = (-1.1 - ro) * bi, b2 = (1.1 - ro) * bi, blo = min(b1, b2), bhi = max(b1, b2);
+  float t = max(4., max(max(blo.x, blo.y), blo.z)), tEnd = min(9., min(min(bhi.x, bhi.y), bhi.z));
   bool hit = false;
   float glowAcc = 0.;
-  for (int i = zero; i < 400; i++) {
-    vec3 p = ro + rd * t;
-    float d = map(p);
-    if (d < .06) {
-      float rd0 = runeD(p), hp = heat(p);
+  // One loop does it all, a phase at a time: the march to the stone (0), then
+  // at the hit its normal (1), its occlusion (2) and its shadow (3). That way
+  // map() is called from one place. The Direct3D compiler copies it into
+  // every place it is called from, and each copy cost over half a second.
+  int phase = 0, k = 0;
+  vec3 p = vec3(0), n = vec3(0), e = vec3(0);
+  float r = 0., ao = 0., aw = 1., ah = 0., sh = 1., st = .02;
+  for (int i = zero; i < 460; i++) {
+    vec3 q;
+    if (phase == 0) { if (t > tEnd || i >= 400) break; q = ro + rd * t; }
+    // The tetrahedron normal. The step is a little wider than a pixel's
+    // grain, so the finest bumps don't shimmer.
+    else if (phase == 1) { e = .5773 * (2. * vec3(float(((k + 3) >> 1) & 1), float((k >> 1) & 1), float(k & 1)) - 1.); q = p + e * .0024; }
+    else if (phase == 2) { ah = .025 * float(k); q = p + n * ah; }
+    else q = p + n * .004 + key * st;
+    float d = map(q);
+    if (phase == 0) {
       // A burning rune's halo is ragged and flickers, never a smooth bloom.
-      glowAcc += exp(-rd0 * 22.) * .012 * (1. + hp * (veil(p) * .9 - .2));
+      if (d < .06) glowAcc += exp(-runeAt * 22.) * .012 * (1. + heat(q) * (veil(q) * .9 - .2));
+      if (d < .0006) { hit = true; p = q; r = runeAt; phase = 1; k = 0; }
+      else t += d * (runeAt < .1 ? .22 : .6);
+    } else if (phase == 1) {
+      n += e * d;
+      if (++k == 4) { n = normalize(n); phase = 2; k = 1; }
+    } else if (phase == 2) {
+      ao += aw * (ah - d); aw *= .6;
+      if (++k > 5) { ao = clamp(1. - 6.5 * ao, 0., 1.); phase = 3; k = 0; }
+    } else {
+      sh = min(sh, 7. * d / st); st += clamp(d, .01, .15);
+      if (sh < .002 || st > 4. || ++k >= 48) break;
     }
-    if (d < .0006) { hit = true; break; }
-    t += d * (runeD(p) < .1 ? .22 : .6);
-    if (t > 9.) break;
   }
+  sh = clamp(sh, 0., 1.);
   vec3 L = lightCol;
   vec3 col = vec3(0); float alpha = 0.;
   if (hit) {
-    vec3 p = ro + rd * t, n = normalAt(p);
-    float ao = occlusion(p, n);
-    float sh = shadow(p + n * .004, key);
-    float r = runeD(p);
     float hp = heat(p);
     float g = glowK + hp * .15;
     float inCut = 1. - smoothstep(W * .45, W, r);
@@ -209,8 +221,7 @@ void main() {
   alpha = max(alpha, clamp(glowAcc * 3. * (.35 + glowK), 0., 1.));
   col = aces(col);
   col = pow(col, vec3(1. / 2.2));
-  frag = vec4(col, alpha);
-  depth = vec4(hit ? clamp((t - 4.) / 5., 0., .99) : 1., 0., 0., 1.);
+  frag = vec4(col, (hit ? 128. + floor(clamp((t - 4.) / 5., 0., .99) * 127. + .5) : floor(alpha * 127. + .5)) / 255.);
 }`;
 
 // The lens: the stone, drawn once with its depth, is blurred here only where
@@ -218,27 +229,39 @@ void main() {
 // A disk of taps, so bright specks in the blur open into soft discs.
 export const LENS_FS = `#version 300 es
 precision highp float;
-uniform sampler2D col, dep;
+uniform sampler2D col;
 uniform vec2 res;
 uniform float maxR;
 out vec4 o;
 
 // From 0 in focus to 1 fully soft, by distance along the ray.
 float coc(float d) { return d >= .999 ? .25 : smoothstep(.3, .66, d); }
+// A pixel of the stone pass, its alpha byte taken apart: the colour with its
+// true alpha, and how far the stone is there, 1 for empty air.
+vec4 tap(vec2 uv, out float d) {
+  vec4 c = texture(col, uv);
+  float a = c.a * 255.;
+  bool stone = a > 127.5;
+  d = stone ? (a - 128.) / 127. : 1.;
+  c.a = stone ? 1. : a / 127.;
+  return c;
+}
 
 void main() {
   vec2 uv = gl_FragCoord.xy / res;
-  float r = coc(texture(dep, uv).r) * maxR;
-  if (r < .35) { o = texture(col, uv); return; }
+  float d;
+  vec4 c0 = tap(uv, d);
+  float r = coc(d) * maxR;
+  if (r < .35) { o = c0; return; }
   vec4 acc = vec4(0); float ws = 0.;
   for (int i = 0; i < 24; i++) {
     float fi = float(i) + .5;
     float a = fi * 2.39996;
     vec2 off = vec2(cos(a), sin(a)) * sqrt(fi / 24.) * r / res;
-    vec4 c = texture(col, uv + off);
+    vec4 c = tap(uv + off, d);
     // A sharp near sample must not smear over the soft far ones behind it;
     // bright ones weigh more, which is what makes bokeh.
-    float w = (.1 + coc(texture(dep, uv + off).r)) * (1. + 3. * dot(c.rgb, vec3(.3, .5, .2)));
+    float w = (.1 + coc(d)) * (1. + 3. * dot(c.rgb, vec3(.3, .5, .2)));
     acc += c * w; ws += w;
   }
   o = acc / ws;

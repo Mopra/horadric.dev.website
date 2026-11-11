@@ -66,26 +66,40 @@ export default function Atmosphere() {
         const s = gl.createShader(type)!;
         gl.shaderSource(s, src);
         gl.compileShader(s);
-        return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
+        return s;
       };
       const vs = sh(gl.VERTEX_SHADER, SMOKE_VS), fs = sh(gl.FRAGMENT_SHADER, SMOKE_FS);
-      if (!vs || !fs) return null;
       const prog = gl.createProgram()!;
       gl.attachShader(prog, vs);
       gl.attachShader(prog, fs);
       gl.linkProgram(prog);
-      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
-      gl.useProgram(prog);
-      const buf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-      const loc = gl.getAttribLocation(prog, "pos");
-      gl.enableVertexAttribArray(loc);
-      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      // Compiled in the background where the browser can, as the stone is.
+      // Asking how it went any sooner holds the whole page still until it is
+      // done, a quarter of a second for each smoke, just as the veil's rune
+      // should start to draw. So the smoke waits, and draws once it is ready.
+      const ext = gl.getExtension("KHR_parallel_shader_compile");
+      let state = 0; // 0 compiling, 1 ready, -1 failed
+      let buf: WebGLBuffer | null = null;
       const U = (n: string) => gl.getUniformLocation(prog, n);
-      const u = { res: U("res"), time: U("time"), front: U("front"), heat: U("heat"), light: U("light"), par: U("par") };
+      let u: Record<"res" | "time" | "front" | "heat" | "light" | "par", WebGLUniformLocation | null>;
+      const ready = () => {
+        if (state) return state > 0;
+        if (ext && !gl.getProgramParameter(prog, ext.COMPLETION_STATUS_KHR)) return false;
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { state = -1; return false; }
+        gl.useProgram(prog);
+        buf = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+        const loc = gl.getAttribLocation(prog, "pos");
+        gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+        u = { res: U("res"), time: U("time"), front: U("front"), heat: U("heat"), light: U("light"), par: U("par") };
+        state = 1;
+        return true;
+      };
       return {
         draw(t: number) {
+          if (!ready()) return;
           gl.viewport(0, 0, c.width, c.height);
           gl.uniform2f(u.res, c.width, c.height);
           gl.uniform1f(u.time, t);
@@ -182,7 +196,7 @@ export default function Atmosphere() {
       }
     };
 
-    let raf = 0, n = 0, then = 0, vx = 0, vy = 0;
+    let raf = 0, then = 0, vx = 0, vy = 0;
     size();
     const ro = new ResizeObserver(() => {
       size();
@@ -262,9 +276,14 @@ export default function Atmosphere() {
     };
 
     const t0 = performance.now();
+    let last = 0;
     const frame = (now: number) => {
       raf = still ? 0 : requestAnimationFrame(frame);
       if (!visible || document.hidden) return;
+      // The air drifts slowly: thirty frames a second, as the stone, however
+      // fast the screen. A film draws every frame it steps.
+      if (now - last < 30 && !still && !filming()) return;
+      last = now;
       const t = still ? 40 : (now - t0) / 1000;
       // The world follows the pointer on a slow, heavy spring: it lags,
       // gathers way, and settles without a bounce, at any frame rate.
@@ -277,9 +296,7 @@ export default function Atmosphere() {
       shared.heat *= 0.994;
       const scene = filming()?.(now / 1000);
       if (scene) { shared.px = scene.px; shared.py = scene.py; }
-      // The smoke moves slowly: every other frame is enough, but a film
-      // wants every frame.
-      if (n++ % 2 === 0 || still || scene) for (const s of smokes) s?.draw(t);
+      for (const s of smokes) s?.draw(t);
       for (const [c, d, embers, sparks] of depths) runes(c, d, embers, sparks, t);
       shed(dt);
       then = now;
